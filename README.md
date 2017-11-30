@@ -2,4 +2,6 @@ Roomies
 
 This is a Web Atelier project.
 
-Luka Vassilis Daniela
+
+Luka Vassilis Jason Niccolo Daniela
+
