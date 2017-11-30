@@ -1,4 +1,5 @@
 Roomies
 
 This is a Web Atelier project.
-Vassilis
+
+Luka Vassilis
