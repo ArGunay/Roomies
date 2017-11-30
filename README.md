@@ -2,4 +2,4 @@ Roomies
 
 This is a Web Atelier project.
 
-Luka Vassilis Jason
+Luka Vassilis Jason Niccolo
