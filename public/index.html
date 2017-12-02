@@ -3,11 +3,18 @@
     <head>
         <title>Roomies</title>
         <link rel="stylesheet" href="./css/master.css">
-        <!-- <link rel="import" href="./elements/announcement-page/announcement-page.html"> -->
+        <link rel="stylesheet" href="./css/paperdialog.css">
+        <link rel="import" href="./elements/announcement-page/announcement-page.html">
+        <link rel="import" href="./bower_components/paper-button/paper-button.html">
+        <link rel="import" href="./bower_components/paper-dialog/paper-dialog.html">
         <!-- import your element under here -->
     </head>
     <body>
-        <!-- <announcement-page id="announcement-page"></announcement-page> -->
+
+        <paper-button raised onclick="animated.open()">open</paper-button>
+        <paper-dialog id="animated" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+            <announcement-page id="announcement-page"></announcement-page>
+        </paper-dialog>
         <!-- use your polymer element under here in order to develop the page eg:  <element-name id="element-id"></element-name>-->
         
 
