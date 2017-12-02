@@ -1,0 +1,40 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="announcement-page">
+    <template>
+        <h1>POLYMER ANNOUNCEMENT TEMPLATE</h1>
+
+
+
+
+
+        <style>
+
+            h1 {
+                color: palegreen;
+                text-align: center;
+            }
+
+        </style>
+    </template>
+
+    <script>
+
+        class AnnouncementPage extends Polymer.Element{
+            constructor(){
+                super();
+            }
+            static get is(){
+                return "announcement-page";
+            }
+        }
+
+
+
+
+        customElements.define(AnnouncementPage.is, AnnouncementPage)
+    </script>
+
+
+
+</dom-module>

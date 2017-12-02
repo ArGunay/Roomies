@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "handson5",
   "authors": [
     "Vassilis Triglianos <triglian@gmail.com>"
@@ -7,6 +8,14 @@
   "main": "index.html",
   "license": "MIT",
   "homepage": "",
+  "name": "Roomies",
+  "homepage": "https://github.com/ArGunay/Roomies",
+  "authors": [
+    "Ardil Gunay <guenaa@usi.ch>"
+  ],
+  "description": "Roomies web components",
+  "main": "index.html",
+  "license": "MIT",
   "private": true,
   "ignore": [
     "**/.*",
@@ -28,8 +37,8 @@
   },
   "resolutions": {
     "webcomponentsjs": "^v1.0.2",
-    "polymer": "^2.1.1",
     "paper-input": "^2.0.2",
     "paper-icon-button": "^2.0.1"
+    "polymer": "Polymer/polymer#^2.2.0"
   }
 }
