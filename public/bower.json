@@ -1,0 +1,21 @@
+{
+  "name": "Roomies",
+  "homepage": "https://github.com/ArGunay/Roomies",
+  "authors": [
+    "Ardil Gunay <guenaa@usi.ch>"
+  ],
+  "description": "Roomies web components",
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.2.0"
+  }
+}
