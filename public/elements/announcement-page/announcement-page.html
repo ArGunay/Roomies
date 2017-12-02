@@ -2,14 +2,26 @@
 
 <dom-module id="announcement-page">
     <template>
-        <h1>POLYMER ANNOUNCEMENT TEMPLATE</h1>
+        <h1>[[title]]</h1>
+        
+
+
+
+
+
+        
+                
+
+
 
 
         <style>
 
             h1 {
-                color: palegreen;
+                color: black;
                 text-align: center;
+                text-shadow: 0 0 3px #FF0000;
+                
             }
 
         </style>
@@ -23,6 +35,19 @@
             }
             static get is(){
                 return "announcement-page";
+            }
+
+            static get properties(){
+                return{
+                    title:{
+                        type: String,
+                        value: "Announcement Title"
+                    }
+                }
+
+                
+
+
             }
         }
 
