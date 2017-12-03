@@ -1,74 +1,224 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
-<link rel="import" href="../../bower_components/input-search/input-search.html">
+<link rel="import" href="../../bower_components/paper-search/paper-search.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
+<link rel="import" href="../../bower_components/iron-icons/social-icons.html">
+
+<!-- <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html"> -->
+
+<link href="https://fonts.googleapis.com/css?family=Indie+Flower|Shadows+Into+Light" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
 
 <dom-module id="main-page">
   <template>
     <header>
-      <input-search placeholder="Search..."></input-search>
-      <paper-button id="toggleRoomies" on-click="_setActive">Roomies</paper-button>
-      <paper-button id="toggleAppartments" on-click="_setActive">Appartments</paper-button>
+
+      <div id="headerTop">
+        <paper-icon-button icon="social:person"></paper-icon-button>
+        <h1>ROOMIES</h1>
+        <p>A platform for finding a roommate in Ticino</p>
+      </div>
+        <div id="links">
+          <a class="active" href="../index.html">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../login.html">Login</a>
+        </div>
+      </div>
+      <div id="headerBottom">
+        <h2>Detailed search for an appartment or roommate</h2>
+        <paper-search-bar></paper-search-bar>
+      </div>
     </header>
-    <main>
-      <template is="dom-repeat" items="{{people}}" as="person">
-        <paper-card preloadImage="true" fadeImage="true"
-        heading="{{person.name}}" image="{{person.picSrc}}" alt="pic">
-          <div class="card-content">
-            {{person.desc}}
-          </div>
-          <div class="card-actions">
-            <paper-button>Share</paper-button>
-            <paper-button>Explore!</paper-button>
-          </div>
-        </paper-card>
-      </template>
-   </main>
+    <hr />
+    <div id="main_container">
+      <aside>
+        <h2>Quick Filter</h2>
+        <p>I am looking for:</p>
+        <paper-button class="active" raised id="toggleRoomies" on-click="_setActive">Roomies</paper-button>
+        <paper-button raised id="toggleAppartments" on-click="_setActive">Appartments</paper-button>
+
+        <template is="dom-if" if="{{!toggle}}">
+          <span>Age:<br>
+            <paper-slider value="50"></paper-slider>
+          </span>
+        </template>
+
+        <template is="dom-if" if="{{toggle}}">
+          <span>Price:<br>
+            <paper-slider value="50"></paper-slider>
+          </span>
+        </template>
+        <!-- <template is="dom-if" if="!toggle"> -->
+        <!-- </template> -->
+        <paper-button raised>Filter!</paper-button>
+      </aside>
+      <main>
+        <template is="dom-if" if="{{!toggle}}">
+          <template is="dom-repeat" items="{{people}}" as="person">
+            <paper-card preloadImage="true" fadeImage="true"
+            heading="{{person.name}}" image="{{person.picSrc}}" alt="pic">
+              <div>
+                {{person.desc}}
+              </div>
+              <div>
+                <paper-button>More</paper-button>
+                <paper-button>Contact</paper-button>
+              </div>
+            </paper-card>
+          </template>
+        </template>
+
+        <template is="dom-if" if="{{toggle}}">
+          <template is="dom-repeat" items="{{appartments}}" as="appartment">
+            <paper-card preloadImage="true" fadeImage="true"
+            heading="{{appartment.name}}" image="{{appartment.picSrc}}" alt="pic">
+              <div>
+                {{appartment.desc}}
+              </div>
+              <div>
+                <paper-button>More</paper-button>
+                <paper-button>Contact</paper-button>
+              </div>
+            </paper-card>
+          </template>
+        </template>
+     </main>
+    </div>
 
     <style>
-      #main {
-        display: flex;
-        flex-direction : row;
-      }
       .active {
-        color : blue;
+        color : white;
+        background-color: #ff3333;
+      }
+      #main_container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+        height: 100px;
+      }
+      aside {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        min-height: 100vh;
+        height: 100%;
       }
       main {
         display : flex;
+        flex: 3;
         flex-direction: row;
         flex-wrap : wrap;
         justify-content: space-evenly;
       }
-      header {
-        width : 100%;
-        color : #8a0f26;
+      aside paper-button{
+        display: block;
+        margin: 5px;
       }
-      header div {
+      #headerTop {
+        background-color: #ff3333;
+        color: white;
+        /*font-family: "BubblegumSans";*/
+        /*font-family: 'Open Sans', sans-serif;*/
+        font-family: 'Indie Flower', cursive;
+        /*font-family: 'Shadows Into Light', cursive;*/
+        /*font-family: 'Amatic SC', cursive;*/
+        align-items: center;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+      }
+      #headerTop h1{
+        padding: 0;
+        font-size: 4em;
+        margin: 0;
+      }
+      #headerTop p {
+          padding: 0;
+          margin-top: 0;
+      }
+      #headerTop paper-icon-button {
+          align-self: flex-end;
+      }
+      #headerBottom {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        font-family: 'Open Sans', sans-serif;
+        font-family: 'Indie Flower', cursive;
+      }
+      #headerBottom h2 {
+        text-align: center;
+      }
+      #links {
+        /*min-height: 20vh;*/
+        justify-content: center;
+        align-items: center;
+        background-color: #404040;
+        font-family: 'Amatic SC', cursive;
+      }
+      #links a {
+        padding:10px;
+        font-size: 1.5em;
+      }
+      #links a.active {
+        color: white;
+        text-decoration: underline;
+        background-color: inherit;
+      }
+      #links a:hover {
+        color: black;
+        background-color: white;
+      }
 
+      header div {
+        /*margin: auto;*/
+        display: flex;
+        /*flex-wrap: nowrap;*/
+        /*justify-content: center;*/
+        /*align-items: center;*/
+      }
+      header {
+        margin-bottom: 15px;
+      }
+      header paper-icon-button{
+        align-self: flex-end;
+      }
+      header a {
+        color: white;
+        text-decoration: none;
+        text
       }
       .toggle {
         width : 40%;
       }
-
-
       paper-card {
         max-width: 400px;
         height : auto;
+        margin-bottom: 5px;
         --paper-card-header-color : white;
-        --paper-card-header-image-text {
-          color : red;
-
-        }
       }
-
-
-      input-search {
+      paper-card:hover {
+        background-color: #d9d9d9;
+        cursor: pointer;
+      }
+      paper-search-bar {
        border-radius: 22px;
        padding: 0 8px;
        font-family: sans-serif;
-       display: block;
-       width: 50%;
+       display: inline-block;
+       width: 35%;
        margin : auto;
+       background-color: white;
      }
     </style>
   </template>
@@ -87,22 +237,59 @@
         appartments : {
           type : Array,
           value : function() {
-            return []
+            return [
+              {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
+                name : "CoolPic",
+                desc : "Pic from internet"},
+                {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
+                 name : "CoolPic",
+                 desc : "Pic from internet"},
+                 {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
+                  name : "CoolPic",
+                  desc : "Pic from internet"},
+                  {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
+                   name : "CoolPic",
+                   desc : "Pic from internet"},
+                   {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
+                    name : "CoolPic",
+                    desc : "Pic from internet"},
+                    {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
+                      name : "CoolPic",
+                      desc : "Pic from internet"}
+            ]
           },
           notify: true
         },
         people : {
           type : Array,
           value : function() {
-            return [{picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
+            return [
+                  {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
                     name : "CoolPic",
                     desc : "Pic from internet"},
                     {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
                      name : "CoolPic",
-                     desc : "Pic from internet"}
+                     desc : "Pic from internet"},
+                     {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
+                      name : "CoolPic",
+                      desc : "Pic from internet"},
+                      {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
+                       name : "CoolPic",
+                       desc : "Pic from internet"},
+                       {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
+                        name : "CoolPic",
+                        desc : "Pic from internet"},
+                        {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
+                          name : "CoolPic",
+                          desc : "Pic from internet"}
                     ]
           },
           notify: true
+        },
+        toggle : {
+          type : Boolean,
+          value : false,
+          notify : true
         }
       }
     }
@@ -113,18 +300,23 @@
         return;
       }else {
         if(el.id === "toggleRoomies") {
-
+          this.shadowRoot.querySelector("#toggleAppartments").className = "";
+          // this.shadowRoot.querySelector("#toggleAppartments").active = false;
+          //el.setAttribute("raised", true);
+          // el.active = true;
+          this.toggle = false;
+          console.log("toggle is " + this.toggle);
+        }if(el.id === "toggleAppartments") {
+          this.shadowRoot.querySelector("#toggleRoomies").className = "";
+          //el.className = "active";
+          // this.shadowRoot.querySelector("#toggleRoomies").active = false;
+          // el.active = true;
+          this.toggle = true;
+          console.log("toggle is " + this.toggle);
         }
-        let list = this.shadowRoot.querySelectorAll("paper-button");
-        el.className = "active";
       }
-
-
-
-
-
-      }
-      console.log(document.getElementsByTagName("paper-button"));
+      // el.active = true;
+      el.className = "active";
     }
 
     _filterFunctionCalc(toggle) {
