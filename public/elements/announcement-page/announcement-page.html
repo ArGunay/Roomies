@@ -4,54 +4,106 @@
         
     <template>
             
-        <div id="title">[[title]]</div>
-
-
-        <div id="undertitle">
-            <div id="undertitle-left">
-                <img src="{{imageURL}}" alt="[[imgAlt]]">
-            </div>
-            <div id="unertitle-right">
-                <div id="description">Fast Description</div>
-                <div class="tick">HELLO</div>
-                <div class="tick">HELLO</div>
-                <div class="tick">HELLO</div>
-            </div>
-                
-        </div>
-        
-                
-        
 
         <section>
-            
+                <div id="announcementtitle">[[title]]</div>
             <paper-dialog-scrollable>
-                <p> Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
-                    Corporis neque minus blanditiis laborum nihil, deleniti,
-                    asperiores amet ab fuga rem labore exercitationem dolores
-                    reiciendis beatae? Error tenetur reiciendis necessitatibus
-                    dignissimos.</p>
-                <p> Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
-                    Corporis neque minus blanditiis laborum nihil, deleniti,
-                    asperiores amet ab fuga rem labore exercitationem dolores
-                    reiciendis beatae? Error tenetur reiciendis necessitatibus
-                    dignissimos.</p>
-                <p> Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
-                    Corporis neque minus blanditiis laborum nihil, deleniti,
-                    asperiores amet ab fuga rem labore exercitationem dolores
-                    reiciendis beatae? Error tenetur reiciendis necessitatibus
-                    dignissimos.</p>
-        
+                <div class="container">
+                    
+                        <div class="wrapper">
+                            <div id="leftcontent">
+
+                            </div>
+                            <div id="rightcontent">
+
+                            </div>
+                        </div>
+                        <div class="nextwrapper">
+                            <div id="descriptionbox">
+
+                            </div>
+                            <div id="chatbox">
+
+                            </div>
+                        </div>
+                        <div class="nextwrapper"></div>
+
+                </div>
+                            
+
             </paper-dialog-scrollable>
            
         </section>
             
-
-
+<!-- 
+    <img src="{{imageURL}}" alt="[[imgAlt]]">
+        <div class="tick">HELLO</div>
+        <div class="tick">HELLO</div>
+        <div class="tick">HELLO</div> -->
         <!-- TEMPLATE STYLE -->
         <style>
+            #leftcontent{
+                flex: none;
+                order:1;
+                background-color: green;
+                margin: 0;
+                width: 50%;
+                height: 100%;
+               
 
-            #description{
+            }
+
+            #rightcontent{
+                
+                order: 2;
+                background-color: pink;
+                width: 50%;
+                height: 100%;
+            }
+
+            .container{
+                display: flex;
+                flex-flow: row;
+                /* flex-direction: row; */
+                flex-wrap: wrap;
+                background-color: red;
+                width: 80vw;
+                /* height: 100%; */
+            }
+
+            .wrapper{
+                margin: 2%;
+                background-color: blue;
+                width: 100%;
+                height: 300px;
+            }
+
+
+            .nextwrapper{
+                margin: 0 2% 2% 2%;
+                background-color: blue;
+                width: 100%;
+                height: 300px;
+            }
+
+            section {
+                width: 100%;
+                height: 95%;
+                @apply --layout-vertical;
+            }
+            section paper-dialog-scrollable {
+                @apply --layout-flex;
+            }
+
+
+            #announcementtitle{
+                margin: 0 0 20px 0;
+                font-size: 2em;
+                color: black;
+                text-align: center;
+                text-shadow: 0 0 3px #FF0000;
+            }
+            /* #description{
                 background-color: red;
             }
             .tick{
@@ -62,14 +114,7 @@
                 
 
             }
-            section {
-                width: 100%;
-                height: 300px;
-                @apply --layout-vertical;
-            }
-            section paper-dialog-scrollable {
-                @apply --layout-flex;
-            }
+            
         
 
             #title {
@@ -104,7 +149,7 @@
                 height: 320px;
                 width: 420px;
                 
-            }
+            } */
 
         </style>
         
