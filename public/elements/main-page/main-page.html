@@ -8,10 +8,8 @@
 <link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../../bower_components/iron-icons/social-icons.html">
 
-<!-- <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
-<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
-<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html"> -->
+<link rel="import" href="../../bower_components/shadycss/apply-shim.html">
+<link rel="import" href="../shared-style/shared-style.html">
 
 <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Shadows+Into+Light" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
@@ -45,13 +43,13 @@
         <paper-button raised id="toggleAppartments" on-click="_setActive">Appartments</paper-button>
 
         <template is="dom-if" if="{{!toggle}}">
-          <span>Age:<br>
+          <span><p>Age:</p>
             <paper-slider value="50"></paper-slider>
           </span>
         </template>
 
         <template is="dom-if" if="{{toggle}}">
-          <span>Price:<br>
+          <span><p>Price:</p>
             <paper-slider value="50"></paper-slider>
           </span>
         </template>
@@ -67,9 +65,9 @@
               <div>
                 {{person.desc}}
               </div>
-              <div>
-                <paper-button>More</paper-button>
-                <paper-button>Contact</paper-button>
+              <div class="contact-buttons">
+                <paper-button raised>More</paper-button>
+                <paper-button raised>Contact</paper-button>
               </div>
             </paper-card>
           </template>
@@ -82,9 +80,9 @@
               <div>
                 {{appartment.desc}}
               </div>
-              <div>
-                <paper-button>More</paper-button>
-                <paper-button>Contact</paper-button>
+              <div class="contact-buttons">
+                <paper-button raised>More</paper-button>
+                <paper-button raised>Contact</paper-button>
               </div>
             </paper-card>
           </template>
@@ -92,10 +90,10 @@
      </main>
     </div>
 
-    <style>
+    <style include="shared-style">
       .active {
         color : white;
-        background-color: #ff3333;
+        background-color: var(--shared-main-color);
       }
       #main_container {
         display: flex;
@@ -113,6 +111,9 @@
         min-height: 100vh;
         height: 100%;
       }
+      aside h2, p {
+        font-family: var(--shared-text-font);
+      }
       main {
         display : flex;
         flex: 3;
@@ -120,18 +121,21 @@
         flex-wrap : wrap;
         justify-content: space-evenly;
       }
+      paper-button {
+        font-family: var(--shared-button-font);
+        padding: 2px;
+        text-align: center;
+      }
       aside paper-button{
         display: block;
         margin: 5px;
+        font-size: 1.5em;
+
       }
       #headerTop {
         background-color: #ff3333;
         color: white;
-        /*font-family: "BubblegumSans";*/
-        /*font-family: 'Open Sans', sans-serif;*/
-        font-family: 'Indie Flower', cursive;
-        /*font-family: 'Shadows Into Light', cursive;*/
-        /*font-family: 'Amatic SC', cursive;*/
+        font-family: var(--shared-text-font);
         align-items: center;
         flex-wrap: wrap;
         flex-direction: column;
@@ -153,18 +157,16 @@
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-        font-family: 'Open Sans', sans-serif;
-        font-family: 'Indie Flower', cursive;
+        font-family: var(--shared-text-font);
       }
       #headerBottom h2 {
         text-align: center;
       }
       #links {
-        /*min-height: 20vh;*/
         justify-content: center;
         align-items: center;
         background-color: #404040;
-        font-family: 'Amatic SC', cursive;
+        font-family: var(--shared-button-font);
       }
       #links a {
         padding:10px;
@@ -202,6 +204,7 @@
         width : 40%;
       }
       paper-card {
+        font-family: var(--shared-serious-font);
         max-width: 400px;
         height : auto;
         margin-bottom: 5px;
@@ -211,10 +214,15 @@
         background-color: #d9d9d9;
         cursor: pointer;
       }
+      .contact-buttons {
+        display: flex;
+        justify-content: center;
+        font-size: 1.2em;
+        margin-bottom: 3px;
+      }
       paper-search-bar {
        border-radius: 22px;
        padding: 0 8px;
-       font-family: sans-serif;
        display: inline-block;
        width: 35%;
        margin : auto;
