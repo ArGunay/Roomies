@@ -1,0 +1,130 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="roomie-headline.html">
+<link rel="import" href="roomie-stat.html">
+<link rel="import" href="roomie-tag.html">
+
+<link rel="import" href="../../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animations.html">
+<link rel="import" href="../../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+
+
+<dom-module id="roomie-element">
+  <template>
+    <style>
+      :host {
+        font-family: sans-serif;
+      }
+
+      paper-dialog {
+        border: 2px solid #404040;
+      }
+
+      .bottom-panel {
+        display: flex;
+        justify-content: space-around;
+        align-content: space-around;
+        align-items: stretch;
+        padding: 10px;
+      }
+
+      .person-quick-info {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 20px;
+        margin-bottom: 50px;
+      }
+
+      .profile-img {
+        border: 1px solid #404040;
+        border-radius: 120px;
+      }
+
+      .person-tag {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .about-tags {
+        display: flex;
+        flex-direction: column;
+        flex-basis: 50%;
+      }
+
+      .about-me {
+        display: flex;
+        justify-content: space-around;
+      }
+    </style>
+
+    <button on-click="openDialog">toggle profile</button>
+    <paper-dialog id="dialog" opened="true">
+      <paper-dialog-scrollable>
+        <div class="person-listing-padding">
+          <roomie-headline name="[[myRoomie.name]]" gender="[[myRoomie.gender]]" age="[[myRoomie.age]]"></roomie-headline>
+          <div class="person-quick-info">
+            <div class="person-dropzone img-container">
+              <img class="profile-img" src="https://flatmates-res.cloudinary.com/image/upload/c_thumb,f_auto,g_face,h_290,q_auto,w_290/v1/profile_images/gbrkyo9u78swdm0texwp.jpg">
+            </div>
+            <div class="person-tag">
+              <template is="dom-repeat" items="{{myRoomie.stats}}">
+                <roomie-stat stat="{{item}}"></roomie-stat>
+              </template>
+            </div>
+          </div>
+          <div class="bottom-panel">
+            <div class="about-tags">
+              <div class="description">
+                <h2>About me</h2>
+                <div class="person-description-formatted">
+                  <p>[[myRoomie.description]]</p>
+                </div>
+              </div>
+              <div>
+                <div class="about-me">
+                  <template is="dom-repeat" items="{{myRoomie.tags}}">
+                    <roomie-tag tag-name="{{item}}"></roomie-tag>
+                  </template>
+                </div>
+              </div>
+            </div>
+            <div id="rect" style="width:500px;height:500px;border:1px solid #000;"></div>
+          </div>
+        </div>
+      </paper-dialog-scrollable>
+    </paper-dialog>
+
+  </template>
+
+  <script>
+    class RoomieElement extends Polymer.Element {
+      static get is() { return 'roomie-element' }
+      static get properties() {
+        return {
+          myRoomie: {
+            type: Object,
+            value: {
+              description: "Hi, I’m Ryan. I study urban planning at UNSW but next year I am working full-time for the state government as part of my degree. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed consequat tincidunt ligula. Sed aliquet erat viverra purus ullamcorper posuere eget sit amet enim. Mauris tempus suscipit enim vitae tempus. Pellentesque nec odio mollis, luctus nisl non, venenatis orci. Donec vel commodo diam, ac interdum nibh. Pellentesque mattis, turpis vel consectetur pretium, erat ante lobortis tortor, at euismod lorem sem et mi. Fusce quis dictum ante, id porttitor ligula. Donec euismod lacus eleifend, sodales mi eget, tincidunt risus. Maecenas faucibus feugiat dolor pharetra placerat. Quisque pellentesque consectetur odio, nec lacinia lacus dictum eu. Nunc non neque fringilla, aliquam leo non, porta magna. In et tellus dolor. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec cursus lobortis auctor. Aenean orci nibh, posuere a lorem sed, porttitor cursus lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed consequat tincidunt ligula. Sed aliquet erat viverra purus ullamcorper posuere eget sit amet enim. Mauris tempus suscipit enim vitae tempus. Pellentesque nec odio mollis, luctus nisl non, venenatis orci. Donec vel commodo diam, ac interdum nibh. Pellentesque mattis, turpis vel consectetur pretium, erat ante lobortis tortor, at euismod lorem sem et mi. Fusce quis dictum ante, id porttitor ligula. Donec euismod lacus eleifend, sodales mi eget, tincidunt risus. Maecenas faucibus feugiat dolor pharetra placerat. Quisque pellentesque consectetur odio, nec lacinia lacus dictum eu. Nunc non neque fringilla, aliquam leo non, porta magna. In et tellus dolor. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec cursus lobortis auctor. Aenean orci nibh, posuere a lorem sed, porttitor cursus lacus.",
+              name: "Ryan",
+              age: 28,
+              gender: "Male",
+              stats: [{ title: "Rent Budget", value: "$350pw" }, { title: "Preferred stay length", value: "1 year +" }, { title: "Move date", value: "January 30th" }],
+              tags: ["Working full time", "Student", "Non-smoker", "No pets"]
+            }
+
+          },
+        }
+      }
+
+      ready() {
+        super.ready();
+      }
+
+      openDialog() {
+        this.$.dialog.open();
+      }
+    }
+    customElements.define(RoomieElement.is, RoomieElement);
+  </script>
+</dom-module>

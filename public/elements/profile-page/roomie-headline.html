@@ -1,0 +1,67 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+<dom-module id="roomie-headline">
+
+    <template>
+        <style>
+            .name {
+                background-color:  #404040;
+                /* border-radius: 10px; */
+                /* display: block;
+                /* margin: auto; */
+                margin-bottom: 40px;
+                justify-content: center;
+                /* width: 80%;
+                padding: 5px; */
+                color: white;
+                display: flex;
+                align-content: center;
+            }
+            .profile-img{
+                border: 1px solid #404040;
+                border-radius: 120px;
+                /* display: block;
+                margin: auto; */
+                margin-bottom: 50px;
+                display: flex;
+                justify-content: space-around;
+            }
+
+            
+
+        </style>
+        <!-- shadow DOM goes here -->
+        <div class="person-headline">
+            <div class="name">
+                <h2 class="inline white">[[name]], [[gender]], [[age]]</h2>
+            </div>
+            
+        </div>
+    </template>
+
+    <script>
+        class RoomieHeadline extends Polymer.Element {
+            static get is() {
+                return 'roomie-headline';
+            }
+            static get properties() {
+                return {
+                    name: {
+                        type: String,
+                    },
+                    gender: {
+                        type: String,
+                    },
+                    age: {
+                        type: Number,
+                    },
+                }
+            }
+            constructor() {
+                super();
+            }
+        }
+        customElements.define(RoomieHeadline.is, RoomieHeadline);
+    </script>
+
+</dom-module>

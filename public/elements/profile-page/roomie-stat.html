@@ -1,0 +1,46 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+<dom-module id="roomie-stat">
+
+    <template>
+        <style>
+            .stat {
+                border-top: 1px solid #404040;
+                border-bottom: 1px solid #404040;
+                border-radius: 15px;
+                display: flex;
+                justify-content: space-around;
+                margin: 10px;
+                padding: 15px;
+            }
+
+            p{
+                padding: 0 10px 0 10px;
+            }
+        </style>
+        <div class="stat">
+            <p>[[stat.title]]</p> </br>
+            <p>[[stat.value]]</p>
+        </div>
+    </template>
+
+    <script>
+        class RoomieStat extends Polymer.Element {
+            static get is() {
+                return 'roomie-stat';
+            }
+            static get properties() {
+                return {
+                    stat: {
+                        type: Object,
+                    }
+                }
+            }
+            constructor() {
+                super();
+            }
+        }
+        customElements.define(RoomieStat.is, RoomieStat);
+    </script>
+
+</dom-module>
