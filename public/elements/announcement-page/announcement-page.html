@@ -5,52 +5,42 @@
     <template>
             
         <div id="title">[[title]]</div>
-        <div id="imagecorousell">
+
+
+        <div id="undertitle">
+            <div id="undertitle-left">
                 <img src="{{imageURL}}" alt="[[imgAlt]]">
-                <img src="{{imageURL}}" alt="[[imgAlt]]">
-                <img src="{{imageURL}}" alt="[[imgAlt]]">
+            </div>
+            <div id="unertitle-right">
+                <div id="description">Fast Description</div>
+                <div class="tick">HELLO</div>
+                <div class="tick">HELLO</div>
+                <div class="tick">HELLO</div>
+            </div>
+                
         </div>
+        
+                
         
 
         <section>
             
             <paper-dialog-scrollable>
-                <p> STOCAZZO Alice was beginning to get very tired of sitting by her sister
-                    on the bank, and of having nothing to do: once or twice she had
-                    peeped into the book her sister was reading, but it had no
-                    pictures or conversations in it, 'and what is the use of a book,'
-                    thought Alice 'without pictures or conversation?'</p>
-                <p>So she was considering in her own mind (as well as she could,
-                    for the hot day made her feel very sleepy and stupid), whether
-                    the pleasure of making a daisy-chain would be worth the trouble
-                    of getting up and picking the daisies, when suddenly a White
-                    Rabbit with pink eyes ran close by her.</p>
-                <p>There was nothing so <i>very</i> remarkable in that; nor did
-                    Alice think it so <i>very</i> much out of the way to hear the
-                    Rabbit say to itself, 'Oh dear! Oh dear! I shall be late!' (when
-                    she thought it over afterwards, it occurred to her that she ought
-                    to have wondered at this, but at the time it all seemed quite
-                    natural); but when the Rabbit actually <i>took a watch out of its
-                        waistcoat-pocket,</i> and looked at it, and then hurried on,
-                    Alice started to her feet, for it flashed across her mind that
-                    she had never before seen a rabbit with either a
-                    waistcoat-pocket, or a watch to take out of it, and burning with
-                    curiosity, she ran across the field after it, and fortunately was
-                    just in time to see it pop down a large rabbit-hole under the
-                    hedge.</p>
-                <p>There was nothing so <i>very</i> remarkable in that; nor did
-                    Alice think it so <i>very</i> much out of the way to hear the
-                    Rabbit say to itself, 'Oh dear! Oh dear! I shall be late!' (when
-                    she thought it over afterwards, it occurred to her that she ought
-                    to have wondered at this, but at the time it all seemed quite
-                    natural); but when the Rabbit actually <i>took a watch out of its
-                        waistcoat-pocket,</i> and looked at it, and then hurried on,
-                    Alice started to her feet, for it flashed across her mind that
-                    she had never before seen a rabbit with either a
-                    waistcoat-pocket, or a watch to take out of it, and burning with
-                    curiosity, she ran across the field after it, and fortunately was
-                    just in time to see it pop down a large rabbit-hole under the
-                    hedge.</p>
+                <p> Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
+                    Corporis neque minus blanditiis laborum nihil, deleniti,
+                    asperiores amet ab fuga rem labore exercitationem dolores
+                    reiciendis beatae? Error tenetur reiciendis necessitatibus
+                    dignissimos.</p>
+                <p> Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
+                    Corporis neque minus blanditiis laborum nihil, deleniti,
+                    asperiores amet ab fuga rem labore exercitationem dolores
+                    reiciendis beatae? Error tenetur reiciendis necessitatibus
+                    dignissimos.</p>
+                <p> Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
+                    Corporis neque minus blanditiis laborum nihil, deleniti,
+                    asperiores amet ab fuga rem labore exercitationem dolores
+                    reiciendis beatae? Error tenetur reiciendis necessitatibus
+                    dignissimos.</p>
         
             </paper-dialog-scrollable>
            
@@ -60,30 +50,59 @@
 
         <!-- TEMPLATE STYLE -->
         <style>
-            section {
-                        width: 100%;
-                        height: 300px;
-                        @apply --layout-vertical;
-                    }
-                    section paper-dialog-scrollable {
-                        @apply --layout-flex;
-                    }
-            .box{
-                width: 80vw;
-                height: 150px;
+
+            #description{
                 background-color: red;
             }
+            .tick{
+                border: 1px solid #cf9b00;
+                border-radius: 5px;
+                padding: 8px;
+                
+                
+
+            }
+            section {
+                width: 100%;
+                height: 300px;
+                @apply --layout-vertical;
+            }
+            section paper-dialog-scrollable {
+                @apply --layout-flex;
+            }
+        
 
             #title {
                 margin: 0 0 20px 0;
+                font-size: 2em;
                 color: black;
                 text-align: center;
                 text-shadow: 0 0 3px #FF0000;
                 
             }
+
+
+            #undertitle {
+                display: flex;
+                   
+                padding: 24px;
+            }
+
+            #undertitle-left{
+                   
+                width:50%;
+            }
+        
+            #undertitle-right{
+                   
+                
+                margin: 20px;
+                
+            }
+
             img{
                 height: 320px;
-                width: 25vw;
+                width: 420px;
                 
             }
 
