@@ -9,25 +9,22 @@
                 <div id="announcementtitle">[[title]]</div>
             <paper-dialog-scrollable>
                 <div class="container">
-                    
-                        <div class="wrapper">
-                            <div id="leftcontent">
 
-                            </div>
-                            <div id="rightcontent">
+                    <div id="imagecontent">
+                        <img src="{{imageURL}}" alt="[[imgAlt]]">
+                    </div>
+                    <div id="recapcontent">
 
-                            </div>
-                        </div>
-                        <div class="nextwrapper">
-                            <div id="descriptionbox">
+                    </div>
+                
+                
+                    <div id="descriptionbox">
 
-                            </div>
-                            <div id="chatbox">
+                    </div>
+                    <div id="chatbox">
 
-                            </div>
-                        </div>
-                        <div class="nextwrapper"></div>
-
+                    </div>
+                        
                 </div>
                             
 
@@ -42,49 +39,57 @@
         <div class="tick">HELLO</div> -->
         <!-- TEMPLATE STYLE -->
         <style>
-            #leftcontent{
-                flex: none;
-                order:1;
-                background-color: green;
-                margin: 0;
-                width: 50%;
-                height: 100%;
-               
 
-            }
-
-            #rightcontent{
-                
-                order: 2;
-                background-color: pink;
-                width: 50%;
-                height: 100%;
-            }
 
             .container{
                 display: flex;
-                flex-flow: row;
-                /* flex-direction: row; */
+                flex-direction: row;
                 flex-wrap: wrap;
-                background-color: red;
+                /* background-color: red; */
                 width: 80vw;
-                /* height: 100%; */
+                height: 100vh;
+                
             }
-
-            .wrapper{
+            #imagecontent{
+                display: flex;
+                flex-grow: 1;
+                width: 40%;
+                height: 400px;
+                background-color: blue;
                 margin: 2%;
-                background-color: blue;
-                width: 100%;
-                height: 300px;
+                justify-content: center;
+                align-items: center;
+                align-content: center;
+            }
+
+            #recapcontent{
+                min-width: 500px;
+                flex-grow: 1;
+                width: 50%;
+                height: 400px;
+                background-color: yellow;
+                margin: 2%;
+            }
+            #descriptionbox{
+                background-color: green;
+                flex-grow: 1;
+                width: 40%;
+                height: 400px;
+                margin: 2%;
+
+            }
+
+            #chatbox{
+                background-color: fuchsia;
+                min-width: 500px;
+                flex-grow: 1;
+                width: 50%;
+                height: 400px;
+                margin: 2%;
             }
 
 
-            .nextwrapper{
-                margin: 0 2% 2% 2%;
-                background-color: blue;
-                width: 100%;
-                height: 300px;
-            }
+
 
             section {
                 width: 100%;
@@ -103,53 +108,12 @@
                 text-align: center;
                 text-shadow: 0 0 3px #FF0000;
             }
-            /* #description{
-                background-color: red;
-            }
-            .tick{
-                border: 1px solid #cf9b00;
-                border-radius: 5px;
-                padding: 8px;
-                
-                
-
-            }
             
-        
-
-            #title {
-                margin: 0 0 20px 0;
-                font-size: 2em;
-                color: black;
-                text-align: center;
-                text-shadow: 0 0 3px #FF0000;
-                
-            }
-
-
-            #undertitle {
-                display: flex;
-                   
-                padding: 24px;
-            }
-
-            #undertitle-left{
-                   
-                width:50%;
-            }
-        
-            #undertitle-right{
-                   
-                
-                margin: 20px;
-                
-            }
-
             img{
-                height: 320px;
-                width: 420px;
+                max-height: 100%;
+                width: auto;
                 
-            } */
+            } 
 
         </style>
         
@@ -173,7 +137,7 @@
                     },
                     imageURL:{
                         type: String,
-                        value: "https://source.unsplash.com/_-JR5TxKNSo"
+                        value: "https://source.unsplash.com/psrloDbaZc8"
                     }
                 }
 
@@ -192,3 +156,40 @@
 
 
 </dom-module>
+
+
+/* 
+dont touch
+#leftcontent{
+    flex: none;
+    order:1;
+    background-color: green;
+    margin: 0;
+    width: 50%;
+    height: 100%;
+}
+
+#rightcontent{
+    
+    order: 2;
+    background-color: pink;
+    width: 50%;
+    height: 100%;
+}
+
+
+
+.wrapper{
+    margin: 2%;
+    background-color: blue;
+    width: 100%;
+    height: 300px;
+}
+
+
+.nextwrapper{
+    margin: 0 2% 2% 2%;
+    background-color: blue;
+    width: 100%;
+    height: 300px;
+} */
