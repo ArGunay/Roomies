@@ -1,8 +1,12 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 
 <dom-module id="announcement-page">
         
     <template>
+            <paper-button raised on-click="openDialog">more</paper-button>
+            <paper-dialog id="dialog">
         <section>
                 <div id="announcementtitle">[[title]]</div>
             <paper-dialog-scrollable>
@@ -11,52 +15,38 @@
                         <img src="{{imageURL}}" alt="[[imgAlt]]">
                     </div>
                     <div id="recapcontent">
-
-                        <div class="recapelement">
-                            <div class="smarttitle">BEDROOM</div>
-                            <div class="smartrecap">
-                                <img class="recapimg" src="../../src/img/bed.svg" alt="[[imageAlt]]">
-                                <span class="smartvalue">5</span>
+                        <template is="dom-repeat" items="{{smarttitles}}" as="smarttitle">
+                            <div class="recapelement">
+                                <div class="smarttitle">{{smarttitle.title}}</div>
+                                <div class="smartrecap">
+                                    <img class="recapimg" src="{{smarttitle.img}}">
+                                    <span class="smartvalue">{{smarttitle.val}}</span>
+                                </div>
                             </div>
-                            
-                        </div>
-                        <div class="recapelement">
-                            <div class="smarttitle">ROOM SIZE</div>
-                            <div class="smartrecap">
-                                <img class="recapimg" src="../../src/img/blueprint.svg" alt="[[imageAlt]]">
-                                <span class="smartvalue" slot="suffix">25</span>
-                            </div>
-                            
-                        </div>
-                        <div class="recapelement">
-                            <div class="smarttitle">RENT</div>
-                            <div class="smartrecap">
-                                <img class="recapimg" src="../../src/img/money.svg" alt="[[imageAlt]]">
-                                <span class="smartvalue">250</span>
-                            </div>
-                        </div>
-                        <div class="recapelement">
-                            <div class="smarttitle">BATHROOMS</div>
-                            <div class="smartrecap">
-                                <img class="recapimg" src="../../src/img/toilet.svg" alt="[[imageAlt]]">
-                                <span class="smartvalue">3</span>
-                            </div>
-                        </div>
-                        
+                        </template>     
                     </div>
                     <div id="descriptionbox">
                         <div id="descriptiontitle">Description</div>
                         <paper-dialog-scrollable id="descriptiontext">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa repellat eligendi deleniti debitis, quia, dicta iure, fugit eius numquam aperiam dolorum? Odio commodi quae impedit natus debitis odit suscipit consectetur.</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam!</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam!</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam!</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam!</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam!</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam!</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa repellat eligendi deleniti debitis, quia, dicta iure, fugit eius numquam aperiam dolorum? Odio commodi quae impedit natus debitis odit suscipit consectetur.
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam!
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam!
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam!
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam!
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam!
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam!</p>
                         </paper-dialog-scrollable>
                     </div>
                     <div id="messagebox">
+                        <div id="namefield" contenteditable> {{message.name}}
+
+                        </div>
+                        <div id="surnamefield" contenteditable> {{message.surname}}
+
+                        </div>
+                        <div id="messagefield" contenteditable> {{ message.text}}
+
+                        </div>
                             
                     </div>
                         
@@ -66,10 +56,33 @@
             </paper-dialog-scrollable>
            
         </section>
+        </paper-dialog>
             
         <style include="shared-style">
+            #dialog{
+                width: 90vw;
+                height: 90vh;
+            }
+
+            /* MessageBox Section */
             #messagebox{
                 border: 1px solid black;
+                display: flex;
+                flex-flow: column;
+
+                
+            }
+            #namefield{
+                
+
+                background-color: red;
+
+            }
+            surnamefield{
+
+            }
+            messagefield{
+
             }
 
 
@@ -95,7 +108,7 @@
                 vertical-align: middle;
                 margin: 15%;
                 padding-bottom: 27%;
-                font-size: 4em;
+                font-size: 3.5em;
                 font-family: var(--shared-serious-font);
             }
             .recapimg{
@@ -164,7 +177,7 @@
             }
 
             #messagebox{
-                /* background-color: rgb(255, 191, 0); */
+                background-color: rgb(255, 191, 0);
                 min-width: 450px;
                 flex-grow: 1;
                 width: 50%;
@@ -244,12 +257,45 @@
                         type: String,
                         value: "https://source.unsplash.com//_-JR5TxKNSo"
                     },
+
+                    smarttitles:{
+                        type: Array,
+                        value: function(){
+                            return[{
+                                img: "../../src/img/bed.svg",
+                                val: 3,
+                                title: "BEDROOM",
+                            },
+                            {
+                                img:"../../src/img/blueprint.svg",
+                                val: 22,
+                                title: "ROOM SIZE"
+                            },
+                            {
+                                img: "../../src/img/money.svg",
+                                val: 150,
+                                title: "REEENT",
+                            },
+                            {
+                                img: "../../src/img/toilet.svg" ,
+                                val: 2,
+                                title: "BATHROOMS",
+                            }]
+                        }
+
+                    }
                     
                 }
 
                 
+                
+                
 
 
+            }
+
+            openDialog() {
+                this.$.dialog.open();
             }
         }
 
