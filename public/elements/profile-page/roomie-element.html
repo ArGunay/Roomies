@@ -21,42 +21,44 @@
       paper-dialog {
         border: 2px solid #404040;
         max-width: 90%;
-        /* font-family: var(--shared-serious-font); */
-        font-family: var(--shared-text-font);
+        font-family: var(--shared-serious-font);
+        /* font-family: var(--shared-text-font); */
       }
 
-      paper-button{
+      paper-button {
         font-family: var(--shared-button-font)
+      }
+
+      .person-listing {
+        margin: 0 1vw 0 1vw;
       }
 
       .bottom-panel {
         display: flex;
-        justify-content: space-around;
-        align-content: space-around;
-        align-items: stretch;
-        padding: 10px;
+        justify-content: flex-start;
+        align-items: baseline;
+        margin: 0;
       }
 
       .person-quick-info {
+        width: 106vw;
         display: flex;
-        justify-content: space-around;
         align-items: center;
-        padding: 20px;
+        justify-content: space-around;
         margin-bottom: 50px;
+      }
+
+      .imgcontainer {
+        width: 20vw;
+        display: flex;
+        justify-content: center;
       }
 
       .profile-img {
         border: 1px solid #404040;
         border-radius: 10px;
-        max-width: 400px;
-        max-height: 500px;
-
-      }
-
-      .person-tag {
-        
-        display: flex;
-        flex-direction: column;
+        max-width: 700px;
+        max-height: 450px;
       }
 
       .about-tags {
@@ -70,6 +72,12 @@
         justify-content: space-around;
       }
 
+      .description {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+
       .person-description {
         padding-bottom: 20px;
       }
@@ -78,13 +86,7 @@
         padding-bottom: 20px;
       }
 
-      .contact-form {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-      }
-
-      #dialog{
+      #dialog {
         width: 90vw;
         height: 90vh;
       }
@@ -96,52 +98,50 @@
         @apply --layout-vertical;
       }
 
-      section paper-dialog-scrollable{
+      section paper-dialog-scrollable {
         margin: 0;
         @apply --layout-flex;
       }
     </style>
 
-    <!-- <button on-click="dialog.open()">toggle  profile</button> -->
-    <!-- <paper-dialog id="dialog" opened="true"> -->
     <paper-button raised on-click="openDialog">more</paper-button>
     <paper-dialog id="dialog">
-      <div class="person-listing-padding">
-        <roomie-headline name="[[myRoomie.name]]" gender="[[myRoomie.gender]]" age="[[myRoomie.age]]"></roomie-headline>
-        <section>
-          <paper-dialog-scrollable>
-          <div class="person-quick-info">
-            <div class="person-dropzone img-container">
-              <img class="profile-img" src="https://images.unsplash.com/photo-1506055306-3b99905bc598?auto=format&fit=crop&w=934&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D">
-              <!-- <img class="profile-img" src="https://images.unsplash.com/photo-1493666438817-866a91353ca9?auto=format&fit=crop&w=2249&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D"> -->
-            </div>
-            <div class="person-tag">
-              <template is="dom-repeat" items="{{myRoomie.stats}}">
-                <roomie-stat stat="{{item}}"></roomie-stat>
-              </template>
-            </div>
-          </div>
-          <div class="bottom-panel">
-            <div class="about-tags">
-              <div class="description">
-                <h2>About me</h2>
-                <div class="person-description">
-                  <p style="text-align:justify">[[myRoomie.description]]</p>
-                </div>
+      <roomie-headline name="[[myRoomie.name]]" gender="[[myRoomie.gender]]" age="[[myRoomie.age]]"></roomie-headline>
+      <section>
+        <paper-dialog-scrollable>
+          <div class="person-listing">
+            <div class="person-quick-info">
+              <div class="imgcontainer">
+                <!-- <img class="profile-img" src="https://images.unsplash.com/photo-1506055306-3b99905bc598?auto=format&fit=crop&w=934&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D"> -->
+                <img class="profile-img" src="https://images.unsplash.com/photo-1493666438817-866a91353ca9?auto=format&fit=crop&w=2249&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D">
               </div>
-              <div>
-                <div class="about-me">
-                  <template is="dom-repeat" items="{{myRoomie.tags}}">
-                    <roomie-tag tag-name="{{item}}"></roomie-tag>
-                  </template>
-                </div>
+              <div class="person-tag">
+                <template is="dom-repeat" items="{{myRoomie.stats}}">
+                  <roomie-stat stat="{{item}}"></roomie-stat>
+                </template>
               </div>
             </div>
-            <roomie-form></roomie-form>
+            <div class="bottom-panel">
+              <div class="about-tags">
+                <div class="description">
+                  <h2>About me</h2>
+                  <div class="person-description">
+                    <p style="text-align:justify">[[myRoomie.description]]</p>
+                  </div>
+                </div>
+                <div>
+                  <div class="about-me">
+                    <template is="dom-repeat" items="{{myRoomie.tags}}">
+                      <roomie-tag tag-name="{{item}}"></roomie-tag>
+                    </template>
+                  </div>
+                </div>
+              </div>
+              <roomie-form></roomie-form>
+            </div>
           </div>
-        </div>
-      </paper-dialog-scrollable>
-    </section>
+        </paper-dialog-scrollable>
+      </section>
     </paper-dialog>
 
   </template>
@@ -154,11 +154,11 @@
           myRoomie: {
             type: Object,
             value: {
-              description: "Hi, I’m Ryan. I study urban planning at UNSW but next year I am working full-time for the state government as part of my degree. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed consequat tincidunt ligula. Sed aliquet erat viverra purus ullamcorper posuere eget sit amet enim. Mauris tempus suscipit enim vitae tempus. Pellentesque nec odio mollis, luctus nisl non, venenatis orci. Donec vel commodo diam, ac interdum nibh. Pellentesque mattis, turpis vel consectetur pretium, erat ante lobortis tortor, at euismod lorem sem et mi. Fusce quis dictum ante, id porttitor ligula. Donec euismod lacus eleifend, sodales mi eget, tincidunt risus. Maecenas faucibus feugiat dolor pharetra placerat. Quisque pellentesque consectetur odio, nec lacinia lacus dictum eu. Nunc non neque fringilla, aliquam leo non, porta magna. In et tellus dolor. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec cursus lobortis auctor. Aenean orci nibh, posuere a lorem sed, porttitor cursus lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed consequat tincidunt ligula. Sed aliquet erat viverra purus ullamcorper posuere eget sit amet enim. Mauris tempus suscipit enim vitae tempus. Pellentesque nec odio mollis, luctus nisl non, venenatis orci. Donec vel commodo diam, ac interdum nibh. Pellentesque mattis, turpis vel consectetur pretium, erat ante lobortis tortor, at euismod lorem sem et mi. Fusce quis dictum ante, id porttitor ligula. Donec euismod lacus eleifend, sodales mi eget, tincidunt risus. Maecenas faucibus feugiat dolor pharetra placerat. Quisque pellentesque consectetur odio, nec lacinia lacus dictum eu. Nunc non neque fringilla, aliquam leo non, porta magna. In et tellus dolor. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec cursus lobortis auctor. Aenean orci nibh, posuere a lorem sed, porttitor cursus lacus.",
-              name: "Ryan",
+              description: "Hi, I’m Sarah. I study urban planning at UNSW but next year I am working full-time for the state government as part of my degree. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed consequat tincidunt ligula. Sed aliquet erat viverra purus ullamcorper posuere eget sit amet enim. Mauris tempus suscipit enim vitae tempus. Pellentesque nec odio mollis, luctus nisl non, venenatis orci. Donec vel commodo diam, ac interdum nibh. Pellentesque mattis, turpis vel consectetur pretium, erat ante lobortis tortor, at euismod lorem sem et mi. Fusce quis dictum ante, id porttitor ligula. Donec euismod lacus eleifend, sodales mi eget, tincidunt risus. Maecenas faucibus feugiat dolor pharetra placerat. Quisque pellentesque consectetur odio, nec lacinia lacus dictum eu. Nunc non neque fringilla, aliquam leo non, porta magna. In et tellus dolor. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec cursus lobortis auctor. Aenean orci nibh, posuere a lorem sed, porttitor cursus lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed consequat tincidunt ligula. Sed aliquet erat viverra purus ullamcorper posuere eget sit amet enim. Mauris tempus suscipit enim vitae tempus. Pellentesque nec odio mollis, luctus nisl non, venenatis orci. Donec vel commodo diam, ac interdum nibh. Pellentesque mattis, turpis vel consectetur pretium, erat ante lobortis tortor, at euismod lorem sem et mi. Fusce quis dictum ante, id porttitor ligula. Donec euismod lacus eleifend, sodales mi eget, tincidunt risus. Maecenas faucibus feugiat dolor pharetra placerat. Quisque pellentesque consectetur odio, nec lacinia lacus dictum eu. Nunc non neque fringilla, aliquam leo non, porta magna. In et tellus dolor. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec cursus lobortis auctor. Aenean orci nibh, posuere a lorem sed, porttitor cursus lacus.",
+              name: "Sarah",
               age: 28,
-              gender: "Male",
-              stats: [{ title: "Rent Budget", value: "$350pw" }, { title: "Preferred stay length", value: "1 year +" }, { title: "Move date", value: "January 30th" }],
+              gender: "Female",
+              stats: [{ title: "Rent Budget", value: "$350pw", img: "../../src/img/rent.svg" }, { title: "Preferred stay length", value: "1 year +", img: "../../src/img/clock.svg" }, { title: "Move date", value: "January 30th", img: "../../src/img/luggage.svg" }],
               tags: ["Working full time", "Student", "Non-smoker", "No pets"]
             }
 
