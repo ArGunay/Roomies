@@ -1,23 +1,32 @@
-<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="roomie-headline.html">
 <link rel="import" href="roomie-stat.html">
 <link rel="import" href="roomie-tag.html">
+<link rel="import" href="roomie-form.html">
 
-<link rel="import" href="../../../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../../../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
-<link rel="import" href="../../../bower_components/neon-animation/neon-animations.html">
-<link rel="import" href="../../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
+<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+
+<link rel="stylesheet" href="../shared-style/shared-style.html">
 
 
-<dom-module id="roomie-element">
+<dom-module id="roomie-element" replace>
   <template>
-    <style>
-      :host {
+    <style include="shared-style">
+      /* :host {
         font-family: sans-serif;
-      }
+      } */
 
       paper-dialog {
         border: 2px solid #404040;
+        max-width: 90%;
+        /* font-family: var(--shared-serious-font); */
+        font-family: var(--shared-text-font);
+      }
+
+      paper-button{
+        font-family: var(--shared-button-font)
       }
 
       .bottom-panel {
@@ -38,10 +47,14 @@
 
       .profile-img {
         border: 1px solid #404040;
-        border-radius: 120px;
+        border-radius: 10px;
+        max-width: 400px;
+        max-height: 500px;
+
       }
 
       .person-tag {
+        
         display: flex;
         flex-direction: column;
       }
@@ -56,16 +69,51 @@
         display: flex;
         justify-content: space-around;
       }
+
+      .person-description {
+        padding-bottom: 20px;
+      }
+
+      h2 {
+        padding-bottom: 20px;
+      }
+
+      .contact-form {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+
+      #dialog{
+        width: 90vw;
+        height: 90vh;
+      }
+
+      section {
+        width: 100%;
+        min-height: 100px;
+        height: 70vh;
+        @apply --layout-vertical;
+      }
+
+      section paper-dialog-scrollable{
+        margin: 0;
+        @apply --layout-flex;
+      }
     </style>
 
-    <button on-click="openDialog">toggle profile</button>
-    <paper-dialog id="dialog" opened="true">
-      <paper-dialog-scrollable>
-        <div class="person-listing-padding">
-          <roomie-headline name="[[myRoomie.name]]" gender="[[myRoomie.gender]]" age="[[myRoomie.age]]"></roomie-headline>
+    <!-- <button on-click="dialog.open()">toggle  profile</button> -->
+    <!-- <paper-dialog id="dialog" opened="true"> -->
+    <paper-button raised on-click="openDialog">more</paper-button>
+    <paper-dialog id="dialog">
+      <div class="person-listing-padding">
+        <roomie-headline name="[[myRoomie.name]]" gender="[[myRoomie.gender]]" age="[[myRoomie.age]]"></roomie-headline>
+        <section>
+          <paper-dialog-scrollable>
           <div class="person-quick-info">
             <div class="person-dropzone img-container">
-              <img class="profile-img" src="https://flatmates-res.cloudinary.com/image/upload/c_thumb,f_auto,g_face,h_290,q_auto,w_290/v1/profile_images/gbrkyo9u78swdm0texwp.jpg">
+              <img class="profile-img" src="https://images.unsplash.com/photo-1506055306-3b99905bc598?auto=format&fit=crop&w=934&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D">
+              <!-- <img class="profile-img" src="https://images.unsplash.com/photo-1493666438817-866a91353ca9?auto=format&fit=crop&w=2249&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D"> -->
             </div>
             <div class="person-tag">
               <template is="dom-repeat" items="{{myRoomie.stats}}">
@@ -77,8 +125,8 @@
             <div class="about-tags">
               <div class="description">
                 <h2>About me</h2>
-                <div class="person-description-formatted">
-                  <p>[[myRoomie.description]]</p>
+                <div class="person-description">
+                  <p style="text-align:justify">[[myRoomie.description]]</p>
                 </div>
               </div>
               <div>
@@ -89,10 +137,11 @@
                 </div>
               </div>
             </div>
-            <div id="rect" style="width:500px;height:500px;border:1px solid #000;"></div>
+            <roomie-form></roomie-form>
           </div>
         </div>
       </paper-dialog-scrollable>
+    </section>
     </paper-dialog>
 
   </template>
@@ -114,6 +163,10 @@
             }
 
           },
+          roomieId: {
+            type: String,
+            value: "dialog"
+          }
         }
       }
 
