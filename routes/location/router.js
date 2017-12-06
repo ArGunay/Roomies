@@ -3,8 +3,7 @@ const router = express.Router()
 
 const mongoose = require('mongoose');
 
-//TODO should import the config, but there's still no file
-const config = require()//insert the path
+const config = require("../../config.js") 
 
 
 //import the model
