@@ -11,7 +11,7 @@ const LocationSchema = exports.LocationSchema = new Schema({
     buildingNumber: { type: String },
     owners: { type: Array },
     historicData: { type: Array },
-    reviews: { type Array },
+    reviews: { type: Array },
     description: { type: String },
     applicantFilters: { type: Array }
 });

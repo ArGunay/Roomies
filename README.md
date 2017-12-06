@@ -1,7 +1,13 @@
-Roomies
+# Roomies
 
-This is a Web Atelier project.
+This is the project for the web atelier class. <br>
 
+Team members are: <br>
 
-Luka Vassilis Jason Niccolo Daniela
+Ardil Günay <br>
+Daniela Gianora <br>
+Jason Naldi <br>
+Luka Volk <br>
+Niccolò Zuppichini <br>
+Stefano Malagò
 
