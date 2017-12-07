@@ -48,11 +48,11 @@ app.use("/message", message)
 
 
 app.use(function (err, req, res, next) {
-  
+  console.log("next is called")
     res.status(err.status || 500);
     console.log(err.status)
     
-    res.sendStatus(err.status);})
+    res.sendStatus(err.status || 500);})
 
 
 
