@@ -6,10 +6,10 @@
 <dom-module id="announcement-page">
         
     <template>
-            <paper-button raised on-click="openDialog">more</paper-button>
-            <paper-dialog id="dialog">
+        <paper-button raised on-click="openDialog">more</paper-button>
+        <paper-dialog id="dialog">
         <section>
-                <div id="announcementtitle">[[title]]</div>
+            <div id="announcementtitle">[[title]]</div>
             <paper-dialog-scrollable>
                 <div class="container">
                     <div id="imagecontent">
@@ -36,53 +36,27 @@
                                     {{requirement.description}}:<iron-icon icon="icons:check"></iron-icon>
                                 </div>
                             </template>
-                            
-                            
                         </paper-dialog-scrollable>
                     </div>
                     <div id="messagebox">
-                            <!-- <form action="mailto:{{thispersonemail}}" method="post" enctype="text/plain">
-                                Name:<br>
-                                <input type="text" name="name"><br>
-                                E-mail:<br>
-                                <input type="text" name="mail"><br>
-                                Message:<br>
-                                <input type="text" name="comment"><br><br>
-                                <paper-button raised on-click="sendMessage">Send</paper-button>
-                                
-                            </form> -->
+                        <div id="mailform">
+                            <form action="mailto:{{thispersonemail}}" method="post" enctype="text/plain">
 
-                            <div id="mailform">
-                                <form action="mailto:{{thispersonemail}}" method="post" enctype="text/plain">
-                                    <label for="fname">First Name</label>
-                                    <input type="text" id="fname" name="firstname" placeholder="Your name..">
-                                
-                                    <label for="email">E-Mail</label>
-                                    <input type="text" id="email" name="mail" placeholder="Your E-mail..">
-
-                                    <label for="tex">Message</label>
-                                    <textarea type="text" id="tex" name="comment" placeholder="Your message.."></textarea>
-                                
-                                    <input type="submit" value="Submit">
-                                </form>
-                            </div>
-                        <!-- <div id="namefield" contenteditable> {{message.name}}
-
-                        </div>
-                        <div id="surnamefield" contenteditable> {{message.surname}}
-
-                        </div>
-                        <div id="messagefield" contenteditable> {{ message.text}}
-
-                        </div> -->
+                                <label for="fname">First Name</label>
+                                <input type="text" id="fname" name="firstname" placeholder="Your name..">
                             
+                                <label for="email">E-Mail</label>
+                                <input type="text" id="email" name="mail" placeholder="Your E-mail..">
+
+                                <label for="tex">Message</label>
+                                <textarea type="text" id="tex" name="comment" placeholder="Your message.."></textarea>
+                            
+                                <input type="submit" value="Submit">
+                            </form>
+                        </div>
                     </div>
-                        
                 </div>
-                            
-
             </paper-dialog-scrollable>
-           
         </section>
         </paper-dialog>
             
@@ -130,9 +104,6 @@
                 padding: 20px;
             }
 
-
-
-
             #requiring{
                 display: inline-block;
                 /* background-color: green; */
@@ -146,7 +117,6 @@
                 flex-flow: column;
                 justify-content: space-around;
             }
-
 
             #dialog{
                 width: 90vw;
@@ -197,7 +167,6 @@
                 flex-wrap: wrap;
 
             }
-            
             .recapelement{
                 flex-grow: 1;
                 min-width: 200px;
@@ -234,7 +203,6 @@
                 align-content: center;
             }
 
-            
             #descriptionbox{
                 /* background-color: green; */
                 flex-grow: 1;
@@ -280,7 +248,6 @@
                 @apply --layout-flex;
             }
 
-
             #announcementtitle{
                 margin: 10px 0 20px 0;
                 font-size: 3em;
@@ -302,7 +269,6 @@
             }
 
         </style>
-        
     </template>
 
     <script>
