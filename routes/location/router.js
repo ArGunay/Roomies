@@ -1,3 +1,4 @@
+
 // TODO:
 //  - correct status codes
 
@@ -6,7 +7,7 @@ const router = express.Router()
 
 const mongoose = require('mongoose');
 
-const config = require("../../config.js") 
+const config = require("../../config.js")
 
 require('../../models/Location.js');
 const Location = mongoose.model("Location");
@@ -29,6 +30,7 @@ router.get('/', (req, res) => {
 
 //Get all the locations with the given parameters
 
+
 router.get('/', (req, res) => {
     var filter = {};
 
@@ -45,7 +47,8 @@ router.get('/', (req, res) => {
         }
     });
 });
-
+    res.send(newFavorites)
+})
 
 
 //update a listing
@@ -71,6 +74,7 @@ router.post('/', (req, res) => {
 
 //remove a listing
 router.delete('/', (req, res) => {
+
     var filter = {
         "id": req.body.id
     };
@@ -90,3 +94,4 @@ router.delete('/', (req, res) => {
 
 
 module.exports = router
+
