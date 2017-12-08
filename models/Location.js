@@ -42,6 +42,16 @@ const LocationSchema = exports.LocationSchema = new Schema({
         required: true
     },
 
+    rooms: {
+        type: Number,
+        required: true
+    },
+
+    bathrooms: {
+        type: Number,
+        required: true
+    },
+
     accept_smokers: { type: Boolean },
     accept_animals: { type: Boolean },
     gender: { type: String },
