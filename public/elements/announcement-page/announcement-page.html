@@ -1,14 +1,15 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
 
 <dom-module id="announcement-page">
         
     <template>
-            <paper-button raised on-click="openDialog">more</paper-button>
-            <paper-dialog id="dialog">
+        <paper-button raised on-click="openDialog">more</paper-button>
+        <paper-dialog id="dialog">
         <section>
-                <div id="announcementtitle">[[title]]</div>
+            <div id="announcementtitle">[[title]]</div>
             <paper-dialog-scrollable>
                 <div class="container">
                     <div id="imagecontent">
@@ -28,65 +29,102 @@
                     <div id="descriptionbox">
                         <div id="descriptiontitle">Description</div>
                         <paper-dialog-scrollable id="descriptiontext">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa repellat eligendi deleniti debitis, quia, dicta iure, fugit eius numquam aperiam dolorum? Odio commodi quae impedit natus debitis odit suscipit consectetur.
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam!
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam!
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam!
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam!
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam!
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam!</p>
+                            <p>{{description}}</p>
+                            <br>
+                            <template is="dom-repeat" items="{{requirements}}" as="requirement" >
+                                <div id="requiring">
+                                    {{requirement.description}}:<iron-icon icon="icons:check"></iron-icon>
+                                </div>
+                            </template>
                         </paper-dialog-scrollable>
                     </div>
                     <div id="messagebox">
-                        <div id="namefield" contenteditable> {{message.name}}
+                        <div id="mailform">
+                            <form action="mailto:{{thispersonemail}}" method="post" enctype="text/plain">
 
-                        </div>
-                        <div id="surnamefield" contenteditable> {{message.surname}}
-
-                        </div>
-                        <div id="messagefield" contenteditable> {{ message.text}}
-
-                        </div>
+                                <label for="fname">First Name</label>
+                                <input type="text" id="fname" name="firstname" placeholder="Your name..">
                             
+                                <label for="email">E-Mail</label>
+                                <input type="text" id="email" name="mail" placeholder="Your E-mail..">
+
+                                <label for="tex">Message</label>
+                                <textarea type="text" id="tex" name="comment" placeholder="Your message.."></textarea>
+                            
+                                <input type="submit" value="Submit">
+                            </form>
+                        </div>
                     </div>
-                        
                 </div>
-                            
-
             </paper-dialog-scrollable>
-           
         </section>
         </paper-dialog>
             
         <style include="shared-style">
+            textarea {
+                resize: none;
+                height: 120px;
+                font-family: var(--shared-text-font);
+            }
+
+            input[type=text], select, textarea {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid rgb(218, 76, 76);
+                border-radius: 4px;
+                box-sizing: border-box;
+                font-family: var(--shared-text-font);
+            }
+
+            input[type=submit] {
+                width: 100%;
+                background-color: var(--shared-main-color);
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                
+                font-family: var(--shared-serious-font);
+            }
+
+            input[type=submit]:hover {
+                background-color: #45a049;
+                
+            }
+
+            #mailform {
+                border-radius: 5px;
+                font-family: var(--shared-serious-font);
+                /* background-color: #ffffff; */
+                
+                padding: 20px;
+            }
+
+            #requiring{
+                display: inline-block;
+                /* background-color: green; */
+                width: 200px;
+                height: 50px;
+                vertical-align: middle;
+                font-size: 2em;
+                border: 1px solid black;
+                border-radius: 5px;
+                display: flex;
+                flex-flow: column;
+                justify-content: space-around;
+            }
+
             #dialog{
                 width: 90vw;
                 height: 90vh;
             }
 
             /* MessageBox Section */
-            #messagebox{
-                border: 1px solid black;
-                display: flex;
-                flex-flow: column;
-
-                
-            }
-            #namefield{
-                
-
-                background-color: red;
-
-            }
-            surnamefield{
-
-            }
-            messagefield{
-
-            }
-
-
-
+            
             /* DESCRIPTION SECTION */
  
             .smarttitle{
@@ -129,7 +167,6 @@
                 flex-wrap: wrap;
 
             }
-            
             .recapelement{
                 flex-grow: 1;
                 min-width: 200px;
@@ -166,7 +203,6 @@
                 align-content: center;
             }
 
-            
             #descriptionbox{
                 /* background-color: green; */
                 flex-grow: 1;
@@ -177,7 +213,7 @@
             }
 
             #messagebox{
-                background-color: rgb(255, 191, 0);
+                /* background-color: rgb(255, 191, 0); */
                 min-width: 450px;
                 flex-grow: 1;
                 width: 50%;
@@ -204,14 +240,13 @@
             }
 
             section {
-                width: 100%;
+                width: 96%;
                 height: 95%;
                 @apply --layout-vertical;
             }
             section paper-dialog-scrollable {
                 @apply --layout-flex;
             }
-
 
             #announcementtitle{
                 margin: 10px 0 20px 0;
@@ -234,7 +269,6 @@
             }
 
         </style>
-        
     </template>
 
     <script>
@@ -255,7 +289,8 @@
                     },
                     imageURL:{
                         type: String,
-                        value: "https://source.unsplash.com//_-JR5TxKNSo"
+                        value: "https://source.unsplash.com//_-JR5TxKNSo",
+                        
                     },
 
                     smarttitles:{
@@ -274,7 +309,7 @@
                             {
                                 img: "../../src/img/money.svg",
                                 val: 150,
-                                title: "REEENT",
+                                title: "RENT",
                             },
                             {
                                 img: "../../src/img/toilet.svg" ,
@@ -283,19 +318,65 @@
                             }]
                         }
 
+                    },
+                    description:{
+                        type: String,
+                        value:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa repellat eligendi deleniti debitis, quia, dicta iure, fugit eius numquam aperiam dolorum? Odio commodi quae impedit natus debitis odit suscipit consectetur. Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam! Lorem ipsum dolor sit amet consectetur!"
+                    },
+
+                    // smoker gender price animals
+                    requirements: {
+                        type: Array,
+                        value: function(){
+                            return[
+                                {
+                                    description: "Smoker",
+                                    control: Boolean,
+                                },
+                                {
+                                    description: "Gender",
+                                    control: String,
+                                    val:"M"
+                                },
+                                {
+                                    description: "Price",
+                                    control: Number,
+                                    val: "1"
+                                },
+                                {
+                                    description: "animals",
+                                    control: Boolean,
+                                },
+                                /*
+                                smoker:{
+                                    type: Boolean,
+                                    value: true,
+                                },
+                                gender: {
+                                    type: String,
+                                    value: "MALE"
+                                },
+                                price:{
+                                    type: Number,
+                                    value: "12",
+                                },
+                                animals:{
+                                    type: Boolean,
+                                    value: false,
+                                }
+                                */
+                            ]
+                        }   
                     }
-                    
                 }
+            } // END OF PROPERTIES
 
-                
-                
-                
-
-
-            }
-
+        
             openDialog() {
                 this.$.dialog.open();
+            }
+            sendMessage(){
+                console.log("SendMEssaage")
             }
         }
 
