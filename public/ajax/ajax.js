@@ -18,7 +18,7 @@ function doAJAXRequest(method, url, headers, data, callback) {
 
     for (var key in headers) {
         var attrName = key;
-        var attrValue = headers[ ];
+        var attrValue = headers[attrName];
         httpRequest.setRequestHeader(attrName, attrValue);
     }
 

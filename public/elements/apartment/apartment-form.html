@@ -1,0 +1,140 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="apartment-form">
+
+    <template>
+        <style>
+            textarea {
+                resize: none;
+                height: 120px;
+                font-family: var(--shared-serious-font);
+            }
+
+            input[type=text],
+            select,
+            textarea {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid rgb(218, 76, 76);
+                border-radius: 4px;
+                box-sizing: border-box;
+                font-family: var(--shared-serious-font);
+            }
+
+            input[type=submit] {
+                width: 100%;
+                background-color: var(--shared-main-color);
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+
+                font-family: var(--shared-serious-font);
+            }
+
+            input[type=submit]:hover {
+                background-color: #45a049;
+
+            }
+
+            #mailform {
+                border-radius: 5px;
+                font-family: var(--shared-serious-font);
+                padding: 20px;
+            }
+
+            h2 {
+                padding: 20px;
+            }
+
+            .form {
+                padding-left: 10vw;
+            }
+        </style>
+
+        <paper-button raised on-click="openDialog">Add</paper-button>
+        <paper-dialog id="dialog" opened>
+            <paper-dialog-scrollable>
+                <div class="form">
+                    <h2>Contact</h2>
+
+                    <form id="mailform">
+                        <label for="email">E-Mail</label>
+                        <input type="text" id="email" name="mail" placeholder="Your E-mail.." value="{{apartment.administrator}}">
+
+                        <label for="email">Nation</label>
+                        <input type="text" id="nation" name="nation" placeholder="Country" value="{{apartment.nation}}">
+                        <label for="email">City</label>
+                        <input type="text" id="city" name="city" placeholder="City" value="{{apartment.city}}">
+                        <label for="email">Cap</label>
+                        <input type="text" id="cap" name="cap" placeholder="Cap" value="{{apartment.cap}}">
+                        <label for="email">Street</label>
+                        <input type="text" id="street" name="street" placeholder="Street" value="{{apartment.street}}">
+                        <label for="email">Price</label>
+                        <input type="text" id="price" name="price" placeholder="Price" value="{{apartment.monthly_price}}">
+                        <label for="tex">Description</label>
+                        <textarea type="text" id="description" name="description" placeholder="Your message.." value="{{apartment.description}}"></textarea>
+
+                        <paper-button raised on-click="submitForm">Submit</paper-button>
+
+                    </form>
+
+                </div>
+            </paper-dialog-scrollable>
+        </paper-dialog>
+    </template>
+
+    <script>
+        class ApartmentForm extends Polymer.Element {
+
+            static get is() {
+                return 'apartment-form';
+            }
+
+            static get properties() {
+                return {
+                    apartment: {
+                        type: Object,
+                        value: {
+                            administrator: 'rush@b.com',
+                            nation: 'Switzerland',
+                            city: 'Lugano',
+                            cap: '6900',
+                            street: 'via Nassa',
+                            monthly_price: 4000,
+                            bathrooms: 1,
+                            rooms: 3,
+                            description: 'You are not prepared'
+                        }
+                    }
+                }
+            }
+            constructor() {
+                super();
+            }
+
+
+
+            submitForm() {
+                console.log('submitting', this.apartment);
+
+                doJSONRequest('POST', '/location', {}, this.apartment, function (data) {
+                    console.log('callback!', data);
+                });
+
+
+            }
+
+            openDialog() {
+                this.$.dialog.open();
+            }
+        }
+        customElements.define(ApartmentForm.is, ApartmentForm);
+    </script>
+
+</dom-module>
