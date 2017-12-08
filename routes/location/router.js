@@ -1,4 +1,7 @@
 
+// TODO:
+//  - correct status codes
+
 const express = require('express')
 const router = express.Router()
 
@@ -6,84 +9,89 @@ const mongoose = require('mongoose');
 
 const config = require("../../config.js")
 
-
-//import the model
-const models = require('../../models/index.js')
-const Location = models.Location
-
-
+require('../../models/Location.js');
+const Location = mongoose.model("Location");
 
 //Get all the locations
 router.get('/', (req, res) => {
-    //body has to be json
-    filter = (req.body || {})
-    Location.find(filter, (err, results) => {
+    Location.find({}, (err, results) => {
+        if (err) {
+            console.log(err);
+            res.status(500).end();
+        } else {
+            console.log("Get all Locations function has been called");
 
-        if (err) next(err)
-
-        console.log("Get all Locations function has been called")
-
-        res.send(results)
-    })
+            res.status(200);
+            res.json(results);
+        }
+    });
 });
 
 
 //Get all the locations with the given parameters
-//Actually is the same as the previous one, so for now it s commented
-// router.get('/', (req, res) => {
-//     var filter = {}
-//     //to do: build filter
-//     Location.find({}, (err, results) => {
-//         if (err) next(err)
-//         res.send(results)
-//     })
-// });
 
 
+router.get('/', (req, res) => {
+    var filter = {};
 
-router.post('/', (req, res, next) => {
-    const data = req.body
-    console.log(data)
-    if (!req.is("application/json")) return res.sendStatus(400)
+    //TODO: build filter
+    Location.find(filter, (err, results) => {
+        if (err) {
+            console.log(err);
+            res.status(500).end();
+        } else {
+            console.log("Get all Locations function has been called");
 
-    var toSave = new Location(data)
-    toSave.save((err)=>{
-        if (err) next(err);
-        
-    })
-
+            res.status(200);
+            res.json(results);
+        }
+    });
+});
     res.send(newFavorites)
 })
 
 
+//update a listing
+router.post('/', (req, res) => {
+    console.log(req.body);
+    var filter = {
+        "id": req.body.id
+    };
 
-//TODO u have to use put, not post
-// //update a listing
-// router.post('/', (req, res) => {
-//     id = req.body.id
-//     var filter = {}
+    Location.update(filter, (err, results) => {
+        if (err) {
+            console.log(err);
+            res.status(500).end();
+        } else {
+            console.log("Get all Locations function has been called");
 
-//     //update the post with the given id 
-//     Location.update({id}, (err, results) => {
-//         if (err) next(err)
-//         res.send(results)
-//     })
-// });
+            res.status(200);
+            res.json(results);
+        }
+    });
+});
 
 
 //remove a listing
 router.delete('/', (req, res) => {
-    //provide an id to remove element 
-    id = req.body.id
+
+    var filter = {
+        "id": req.body.id
+    };
+
     //update the post with the given id 
-    Location.remove({id}, (err, results) => {
-        if (err) next(err)
-        res.send(results)
-    })
+    Location.remove(filter, (err, results) => {
+        if (err) {
+            next(err);
+        } else {
+            console.log("Get all Locations function has been called");
+
+            res.status(200);
+            res.json(results);
+        }
+    });
 });
 
 
-
-
-
 module.exports = router
+

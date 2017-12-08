@@ -11,6 +11,10 @@
 <link rel="import" href="../../bower_components/shadycss/apply-shim.html">
 <link rel="import" href="../shared-style/shared-style.html">
 
+<link rel="import" href="../announcement-page/announcement-page.html">
+<link rel="import" href="../profile-page/roomie-element.html">
+
+
 <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Shadows+Into+Light" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
 
@@ -66,7 +70,8 @@
                 {{person.desc}}
               </div>
               <div class="contact-buttons">
-                <paper-button raised>More</paper-button>
+                  <roomie-element></roomie-element>
+                <!-- <paper-button raised>More</paper-button> -->
                 <paper-button raised>Contact</paper-button>
               </div>
             </paper-card>
@@ -81,7 +86,7 @@
                 {{appartment.desc}}
               </div>
               <div class="contact-buttons">
-                <paper-button raised>More</paper-button>
+                <announcement-page></announcement-page>
                 <paper-button raised>Contact</paper-button>
               </div>
             </paper-card>
