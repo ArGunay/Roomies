@@ -1,0 +1,43 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+<dom-module id="roomie-tag">
+
+    <template>
+
+        <style>
+            /* shadow DOM styles go here */
+            :host {
+                border: 1px solid #FC363B;
+                border-radius: 15px;
+                display: inline-block;
+                margin-bottom: 0.5rem;
+                margin-right: 0.5rem;
+                padding: 8px;
+                width: auto;
+            }
+        </style>
+        <!-- shadow DOM goes here -->
+        <div>[[tagName]]</div>
+    </template>
+
+    <script>
+        class RoomieTag extends Polymer.Element {
+            static get is() {
+                return 'roomie-tag';
+            }
+            static get properties() {
+                return {
+                    tagName: {
+                        type: String
+                    },
+                }
+            }
+            constructor() {
+                super();
+            }
+
+        }
+        customElements.define(RoomieTag.is, RoomieTag);
+    </script>
+
+</dom-module>

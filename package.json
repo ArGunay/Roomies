@@ -1,0 +1,30 @@
+{
+  "name": "Roomies",
+  "version": "0.0.0",
+  "description": "Server for roomies web application",
+  "main": "app.js",
+  "scripts": {
+    "watch": "nodemon app.js"
+  },
+  "keywords": [
+    "Node.js",
+    "Express.js",
+    "MongoDB",
+    "Mongoose",
+    "REST"
+  ],
+  "author": "Niccolò Zuppichini",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "express": "^4.16.2",
+    "method-override": "^2.3.10",
+    "mongoose": "^4.13.1",
+    "morgan": "^1.9.0",
+    "supertest": "^3.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^4.0.1",
+    "should": "^13.1.3"
+  }
+}
