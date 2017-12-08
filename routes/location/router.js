@@ -45,20 +45,17 @@ router.get('/', (req, res) => {
         }
     });
 });
-    res.send(newFavorites)
-})
 
 router.post('/', (req, res) => {
-    Location.update(filter, (err, results) => {
-        if (err) {
-            console.log(err);
-            res.status(500).end();
-        } else {
 
-            res.status(200);
-            res.json(results);
-        }
-    });
+     var toSave = new Location(req.body)   
+    toSave.save((err)=>{
+        if(err){
+            res.status(500).end();            
+        } 
+    })
+    res.status(200)
+    res.json(req.body)
 });
 
 
