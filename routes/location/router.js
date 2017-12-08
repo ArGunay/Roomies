@@ -1,3 +1,6 @@
+// TODO:
+//  - correct status codes
+
 const express = require('express')
 const router = express.Router()
 
@@ -5,65 +8,85 @@ const mongoose = require('mongoose');
 
 const config = require("../../config.js") 
 
-
-//import the model
-const Location = require('../../models').Location
-
+require('../../models/Location.js');
+const Location = mongoose.model("Location");
 
 //Get all the locations
 router.get('/', (req, res) => {
     Location.find({}, (err, results) => {
+        if (err) {
+            console.log(err);
+            res.status(500).end();
+        } else {
+            console.log("Get all Locations function has been called");
 
-        if (err) next(err)
-
-        console.log("Get all Locations function has been called")
-
-        res.send(results)
-    })
+            res.status(200);
+            res.json(results);
+        }
+    });
 });
 
 
 //Get all the locations with the given parameters
 
 router.get('/', (req, res) => {
-    var filter = {}
-    //to do: build filter
-    Location.find({}, (err, results) => {
-        if (err) next(err)
-        res.send(results)
-    })
+    var filter = {};
+
+    //TODO: build filter
+    Location.find(filter, (err, results) => {
+        if (err) {
+            console.log(err);
+            res.status(500).end();
+        } else {
+            console.log("Get all Locations function has been called");
+
+            res.status(200);
+            res.json(results);
+        }
+    });
 });
 
 
 
 //update a listing
 router.post('/', (req, res) => {
-    id = req.body.id
-    var filter = {}
+    console.log(req.body);
+    var filter = {
+        "id": req.body.id
+    };
 
-    //update the post with the given id 
-    Location.update({id}, (err, results) => {
-        if (err) next(err)
-        res.send(results)
-    })
+    Location.update(filter, (err, results) => {
+        if (err) {
+            console.log(err);
+            res.status(500).end();
+        } else {
+            console.log("Get all Locations function has been called");
+
+            res.status(200);
+            res.json(results);
+        }
+    });
 });
 
 
 //remove a listing
 router.delete('/', (req, res) => {
-    id = req.body.id
-    var filter = {}
+    var filter = {
+        "id": req.body.id
+    };
 
     //update the post with the given id 
-    Location.remove({id}, (err, results) => {
-        if (err) next(err)
-        res.send(results)
-    })
+    Location.remove(filter, (err, results) => {
+        if (err) {
+            next(err);
+        } else {
+            console.log("Get all Locations function has been called");
+
+            res.status(200);
+            res.json(results);
+        }
+    });
 });
-
-
-
-
 
 
 module.exports = router

@@ -1,38 +1,25 @@
+const config = require('./config');
 const express = require('express');
 
-
 const app = express()
-const router = express.Router()
 const mongoose = require('mongoose')
-const conf = require('./config');
+const bodyParser = require('body-parser');
+const path = require('path');
 
+mongoose.connect(config.mongoUrl + config.mongoDbName ,{ useMongoClient: true });
 
-// //Routes
+//configure app
+app.use(bodyParser.urlencoded({ extended: false }));    // parse application/x-www-form-urlencoded
+app.use(bodyParser.json());    // parse application/json
+app.use(bodyParser.text());
+app.use(express.static(path.join(__dirname, 'public')));
+
 const location = require('./routes/location/router.js')
-const message = require('./routes/message/router.js')
-
-//TODO 
-
-//connect to mongoDB
-mongoose.connect(conf.mongoUrl + conf.mongoDbName ,{ useMongoClient: true });
-
-
-//routes 
-
 app.use("/location", location)
+
+const message = require('./routes/message/router.js')
 app.use("/message", message)
 
-
-app.use(function (err, req, res, next) {
-    console.log(err.status)
-  
-    res.status(err.status || 500);
-    res.sendStatus(err.status);})
-
-
-
-
 app.listen(3000, () => console.log('listening on port 3000'))
-
 
 module.exports.app = app;
