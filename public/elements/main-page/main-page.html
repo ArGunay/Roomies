@@ -1,12 +1,14 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
-<link rel="import" href="../../bower_components/paper-search/paper-search.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
-<link rel="import" href="../../bower_components/iron-icons/social-icons.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+
+<!-- <link rel="import" href="../../bower_components/neon-animation/web-animations.html"> -->
 
 <link rel="import" href="../../bower_components/shadycss/apply-shim.html">
 <link rel="import" href="../shared-style/shared-style.html">
@@ -14,31 +16,8 @@
 <link rel="import" href="../announcement-page/announcement-page.html">
 <link rel="import" href="../profile-page/roomie-element.html">
 
-
-<link href="https://fonts.googleapis.com/css?family=Indie+Flower|Shadows+Into+Light" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
-
 <dom-module id="main-page">
   <template>
-    <header>
-
-      <div id="headerTop">
-        <paper-icon-button icon="social:person"></paper-icon-button>
-        <h1>ROOMIES</h1>
-        <p>A platform for finding a roommate in Ticino</p>
-      </div>
-        <div id="links">
-          <a class="active" href="../index.html">Home</a>
-          <a href="../about.html">About</a>
-          <a href="../login.html">Login</a>
-        </div>
-      </div>
-      <div id="headerBottom">
-        <h2>Detailed search for an appartment or roommate</h2>
-        <paper-search-bar></paper-search-bar>
-      </div>
-    </header>
-    <hr />
     <div id="main_container">
       <aside>
         <h2>Quick Filter</h2>
@@ -48,8 +27,16 @@
 
         <template is="dom-if" if="{{!toggle}}">
           <span><p>Age:</p>
-            <paper-slider value="50"></paper-slider>
+            <paper-slider value="5"></paper-slider>
           </span>
+
+          <paper-dropdown-menu label="Choose a city">
+            <paper-listbox slot="dropdown-content" selected="1">
+              <paper-item>Bellinzona</paper-item>
+              <paper-item>Locarno</paper-item>
+              <paper-item>Lugano</paper-item>
+            </paper-listbox>
+          </paper-dropdown-menu>
         </template>
 
         <template is="dom-if" if="{{toggle}}">
@@ -57,8 +44,6 @@
             <paper-slider value="50"></paper-slider>
           </span>
         </template>
-        <!-- <template is="dom-if" if="!toggle"> -->
-        <!-- </template> -->
         <paper-button raised>Filter!</paper-button>
       </aside>
       <main>
@@ -71,8 +56,6 @@
               </div>
               <div class="contact-buttons">
                   <roomie-element></roomie-element>
-                <!-- <paper-button raised>More</paper-button> -->
-                <paper-button raised>Contact</paper-button>
               </div>
             </paper-card>
           </template>
@@ -86,20 +69,21 @@
                 {{appartment.desc}}
               </div>
               <div class="contact-buttons">
-                <announcement-page></announcement-page>
-                <paper-button raised>Contact</paper-button>
+                <announcement-page class$="{{appartment.id}}"
+                 _id="{{appartment.id}}"></announcement-page>
               </div>
             </paper-card>
+            <p>{{appartment.id}}</p>
           </template>
         </template>
      </main>
     </div>
 
     <style include="shared-style">
-      .active {
-        color : white;
-        background-color: var(--shared-main-color);
-      }
+    .active {
+      color : white;
+      background-color: var(--shared-main-color);
+    }
       #main_container {
         display: flex;
         flex-direction: row;
@@ -137,74 +121,7 @@
         font-size: 1.5em;
 
       }
-      #headerTop {
-        background-color: #ff3333;
-        color: white;
-        font-family: var(--shared-text-font);
-        align-items: center;
-        flex-wrap: wrap;
-        flex-direction: column;
-        align-items: center;
-      }
-      #headerTop h1{
-        padding: 0;
-        font-size: 4em;
-        margin: 0;
-      }
-      #headerTop p {
-          padding: 0;
-          margin-top: 0;
-      }
-      #headerTop paper-icon-button {
-          align-self: flex-end;
-      }
-      #headerBottom {
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        font-family: var(--shared-text-font);
-      }
-      #headerBottom h2 {
-        text-align: center;
-      }
-      #links {
-        justify-content: center;
-        align-items: center;
-        background-color: #404040;
-        font-family: var(--shared-button-font);
-      }
-      #links a {
-        padding:10px;
-        font-size: 1.5em;
-      }
-      #links a.active {
-        color: white;
-        text-decoration: underline;
-        background-color: inherit;
-      }
-      #links a:hover {
-        color: black;
-        background-color: white;
-      }
 
-      header div {
-        /*margin: auto;*/
-        display: flex;
-        /*flex-wrap: nowrap;*/
-        /*justify-content: center;*/
-        /*align-items: center;*/
-      }
-      header {
-        margin-bottom: 15px;
-      }
-      header paper-icon-button{
-        align-self: flex-end;
-      }
-      header a {
-        color: white;
-        text-decoration: none;
-        text
-      }
       .toggle {
         width : 40%;
       }
@@ -216,7 +133,7 @@
         --paper-card-header-color : white;
       }
       paper-card:hover {
-        background-color: #d9d9d9;
+        background-color: #f2f2f2;
         cursor: pointer;
       }
       .contact-buttons {
@@ -235,15 +152,84 @@
      }
     </style>
   </template>
+  <script src="../../ajax/ajax.js"></script>
+ <script src="../main.js"></script>
   <script>
   class MainPage extends Polymer.Element {
     constructor() {
       super();
+      doJSONRequest("GET", "/location", {}, {}, function(data) {
+        if(typeof data!=='undefined') {
+          console.log("called jsonReq");
+          this._deleteList(false);
+          let popListFun = this._popList.bind(this);
+          popListFun(data, false);
+        }
+      }.bind(this)
+    );
     }
 
     static get is() {
       return 'main-page';
     }
+
+    _deleteList(flag) {
+      console.log(this);
+      if(flag) {
+        this.splice("people", 0, this.people.length);
+      }else {
+        this.splice("appartments", 0, this.appartments.length);
+      }
+    }
+
+    _popList(data) {
+      console.log(data);
+      if(typeof data !== "undefined") {
+        let address;
+        let addFun = this._addAppartment.bind(this);
+        data.forEach(function(e) {
+          address = "" + e.city + e.street + e.buildingNumber;
+          addFun(e._id, e.cap, address, e.description, [])
+        });
+      }
+    }
+
+    _setActive(e) {
+      let el = e.path[0];
+      if(el.className === "active") {
+        return;
+      }else {
+        if(el.id === "toggleRoomies") {
+          this.shadowRoot.querySelector("#toggleAppartments").className = "";
+          this.toggle = false;
+        }if(el.id === "toggleAppartments") {
+          this.shadowRoot.querySelector("#toggleRoomies").className = "";
+          this.toggle = true;
+        }
+      }
+      el.className = "active";
+    }
+
+    _addAppartment(iden, picsrc, nam, description, tgs) {
+      console.log("id is " + iden);
+      this.push("appartments", {
+        id : iden,
+        picSrc : picsrc,
+        name : nam,
+        desc : description,
+        tags : tgs
+      });
+    }
+
+    _addPeople(iden, picsrc, nam, description, tgs) {
+      this.push("people", {
+        id : iden,
+        picSrc : picsrc,
+        name : nam,
+        desc : description,
+        tags : tgs
+      });
+    };
 
     static get properties() {
       return {
@@ -251,24 +237,24 @@
           type : Array,
           value : function() {
             return [
-              {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
-                name : "CoolPic",
-                desc : "Pic from internet"},
-                {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
-                 name : "CoolPic",
-                 desc : "Pic from internet"},
-                 {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
-                  name : "CoolPic",
-                  desc : "Pic from internet"},
-                  {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
-                   name : "CoolPic",
-                   desc : "Pic from internet"},
-                   {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
-                    name : "CoolPic",
-                    desc : "Pic from internet"},
-                    {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
-                      name : "CoolPic",
-                      desc : "Pic from internet"}
+              // {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
+              //   name : "CoolPic",
+              //   desc : "Pic from internet"},
+              //   {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
+              //    name : "CoolPic",
+              //    desc : "Pic from internet"},
+              //    {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
+              //     name : "CoolPic",
+              //     desc : "Pic from internet"},
+              //     {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
+              //      name : "CoolPic",
+              //      desc : "Pic from internet"},
+              //      {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
+              //       name : "CoolPic",
+              //       desc : "Pic from internet"},
+              //       {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
+              //         name : "CoolPic",
+              //         desc : "Pic from internet"}
             ]
           },
           notify: true
@@ -277,24 +263,24 @@
           type : Array,
           value : function() {
             return [
-                  {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
-                    name : "CoolPic",
-                    desc : "Pic from internet"},
-                    {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
-                     name : "CoolPic",
-                     desc : "Pic from internet"},
-                     {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
-                      name : "CoolPic",
-                      desc : "Pic from internet"},
-                      {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
-                       name : "CoolPic",
-                       desc : "Pic from internet"},
-                       {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
-                        name : "CoolPic",
-                        desc : "Pic from internet"},
-                        {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
-                          name : "CoolPic",
-                          desc : "Pic from internet"}
+                  // {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
+                  //   name : "CoolPic",
+                  //   desc : "Pic from internet"},
+                  //   {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
+                  //    name : "CoolPic",
+                  //    desc : "Pic from internet"},
+                  //    {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
+                  //     name : "CoolPic",
+                  //     desc : "Pic from internet"},
+                  //     {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
+                  //      name : "CoolPic",
+                  //      desc : "Pic from internet"},
+                  //      {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
+                  //       name : "CoolPic",
+                  //       desc : "Pic from internet"},
+                  //       {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
+                  //         name : "CoolPic",
+                  //         desc : "Pic from internet"}
                     ]
           },
           notify: true
@@ -306,52 +292,6 @@
         }
       }
     }
-
-    _setActive(e) {
-      let el = e.path[0];
-      if(el.className === "active") {
-        return;
-      }else {
-        if(el.id === "toggleRoomies") {
-          this.shadowRoot.querySelector("#toggleAppartments").className = "";
-          // this.shadowRoot.querySelector("#toggleAppartments").active = false;
-          //el.setAttribute("raised", true);
-          // el.active = true;
-          this.toggle = false;
-          console.log("toggle is " + this.toggle);
-        }if(el.id === "toggleAppartments") {
-          this.shadowRoot.querySelector("#toggleRoomies").className = "";
-          //el.className = "active";
-          // this.shadowRoot.querySelector("#toggleRoomies").active = false;
-          // el.active = true;
-          this.toggle = true;
-          console.log("toggle is " + this.toggle);
-        }
-      }
-      // el.active = true;
-      el.className = "active";
-    }
-
-    _filterFunctionCalc(toggle) {
-      //return toggle ? "_filter" "";
-      return "";
-    }
-
-    _addAppartment() {
-    //  this.push("appartments",{
-
-      //});
-    }
-
-    _addPeople(picsrc, nam, description, tgs) {
-      this.push("people", {
-        picSrc : picsrc,
-        name : nam,
-        desc : description,
-        tags : tgs
-      });
-    };
-
 
   }
   customElements.define(MainPage.is, MainPage);

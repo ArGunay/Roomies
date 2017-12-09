@@ -4,7 +4,7 @@
 <link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
 
 <dom-module id="announcement-page">
-        
+
     <template>
         <paper-button raised on-click="openDialog">more</paper-button>
         <paper-dialog id="dialog">
@@ -24,7 +24,7 @@
                                     <span class="smartvalue">{{smarttitle.val}}</span>
                                 </div>
                             </div>
-                        </template>     
+                        </template>
                     </div>
                     <div id="descriptionbox">
                         <div id="descriptiontitle">Description</div>
@@ -44,13 +44,13 @@
 
                                 <label for="fname">First Name</label>
                                 <input type="text" id="fname" name="firstname" placeholder="Your name..">
-                            
+
                                 <label for="email">E-Mail</label>
                                 <input type="text" id="email" name="mail" placeholder="Your E-mail..">
 
                                 <label for="tex">Message</label>
                                 <textarea type="text" id="tex" name="comment" placeholder="Your message.."></textarea>
-                            
+
                                 <input type="submit" value="Submit">
                             </form>
                         </div>
@@ -59,7 +59,7 @@
             </paper-dialog-scrollable>
         </section>
         </paper-dialog>
-            
+
         <style include="shared-style">
             textarea {
                 resize: none;
@@ -87,20 +87,20 @@
                 border: none;
                 border-radius: 4px;
                 cursor: pointer;
-                
+
                 font-family: var(--shared-serious-font);
             }
 
             input[type=submit]:hover {
                 background-color: #45a049;
-                
+
             }
 
             #mailform {
                 border-radius: 5px;
                 font-family: var(--shared-serious-font);
                 /* background-color: #ffffff; */
-                
+
                 padding: 20px;
             }
 
@@ -124,9 +124,9 @@
             }
 
             /* MessageBox Section */
-            
+
             /* DESCRIPTION SECTION */
- 
+
             .smarttitle{
                 margin: 2%;
                 align-self: center;
@@ -187,7 +187,7 @@
                 /* background-color: red; */
                 width: 80vw;
                 height: 100vh;
-                
+
             }
 
             /* IMAGE SECTION */
@@ -223,7 +223,7 @@
 
 
             #descriptiontitle{
-                
+
                 padding: 3%;
                 margin-bottom: 2%;
                 border: 1px solid black;
@@ -255,13 +255,13 @@
                 text-align: center;
                 font-family: var(--shared-text-font);
             }
-            
+
             img{
                 max-height: 100%;
                 max-width: 99%;
                 width: auto;
-                
-            } 
+
+            }
             paper-button {
                 font-family: var(--shared-button-font);
                 padding: 2px;
@@ -276,6 +276,15 @@
         class AnnouncementPage extends Polymer.Element{
             constructor(){
                 super();
+                console.log("The id of this element is : " + this._id)
+                console.log("The class of this element is : " + this.className)
+            }
+
+            connectedCallback(){
+                super.connectedCallback();
+                console.log("The id of this element is : " + this._id)
+                console.log("The class of this element is : " + this.className)
+
             }
             static get is(){
                 return "announcement-page";
@@ -283,6 +292,11 @@
 
             static get properties(){
                 return{
+                  _id : {
+                    type : String,
+                    value : "sasa",
+                    notify : true
+                  },
                     title:{
                         type: String,
                         value: "Announcement Title"
@@ -290,7 +304,7 @@
                     imageURL:{
                         type: String,
                         value: "https://source.unsplash.com//_-JR5TxKNSo",
-                        
+
                     },
 
                     smarttitles:{
@@ -366,12 +380,12 @@
                                 }
                                 */
                             ]
-                        }   
+                        }
                     }
                 }
             } // END OF PROPERTIES
 
-        
+
             openDialog() {
                 this.$.dialog.open();
             }

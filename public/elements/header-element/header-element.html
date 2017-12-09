@@ -1,0 +1,90 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-search/paper-search.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/social-icons.html">
+<link rel="import" href="../shared-style/shared-style.html">
+
+<dom-module id="header-element">
+  <template>
+  <div id="headerTop">
+    <paper-icon-button icon="social:person"></paper-icon-button>
+    <h1>ROOMIES</h1>
+    <p>A platform for finding a roommate in Ticino</p>
+  </div>
+    <div id="links">
+      <a href="index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a class="active" href="apartmentForm.html">Form</a>
+    </div>
+  </div>
+  <style include="shared-style">
+      div {
+        display: flex;
+      }
+      paper-icon-button {
+        align-self: flex-end;
+      }
+      a {
+        color: white;
+        text-decoration: none;
+        text
+        }
+        #headerTop {
+          background-color: #ff3333;
+          color: white;
+          font-family: var(--shared-text-font);
+          align-items: center;
+          flex-wrap: wrap;
+          flex-direction: column;
+          align-items: center;
+        }
+        #headerTop h1{
+          padding: 0;
+          font-size: 4em;
+          margin: 0;
+        }
+        #headerTop p {
+            padding: 0;
+            margin-top: 0;
+        }
+        #headerTop paper-icon-button {
+            align-self: flex-end;
+        }
+        #links {
+          justify-content: center;
+          align-items: center;
+          background-color: #404040;
+          font-family: var(--shared-button-font);
+        }
+        #links a {
+          padding:10px;
+          font-size: 1.5em;
+        }
+        #links a.active {
+          color: white;
+          text-decoration: underline;
+          background-color: inherit;
+        }
+        #links a:hover {
+          color: black;
+          background-color: white;
+        }
+  </style>
+</template>
+<script>
+  class HeaderElement extends Polymer.Element {
+    constructor() {
+      super();
+      console.log(this.shadowRoot);
+    }
+
+    static get is() {
+      return "header-element";
+    }
+  }
+
+  customElements.define(HeaderElement.is, HeaderElement);
+</script>
+</dom-element>
