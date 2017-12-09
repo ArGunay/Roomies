@@ -1,12 +1,12 @@
 {
   "name": "Roomies",
-
   "version": "1.0.0",
   "main": "app.js",
   "repository": "https://github.com/ArGunay/Roomies.git",
   "author": "Jason Naldi <naldij@usi.ch>",
   "license": "MIT",
   "dependencies": {
+    "express": "^4.16.2",
     "mongoose": "^4.13.6"
   }
 }

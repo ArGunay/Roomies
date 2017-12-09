@@ -19,7 +19,6 @@ router.get('/', (req, res) => {
             console.log(err);
             res.status(500).end();
         } else {
-            console.log("Get all Locations function has been called");
 
             res.status(200);
             res.json(results);
@@ -40,36 +39,46 @@ router.get('/', (req, res) => {
             console.log(err);
             res.status(500).end();
         } else {
-            console.log("Get all Locations function has been called");
 
             res.status(200);
             res.json(results);
         }
     });
 });
-    res.send(newFavorites)
-})
 
-
-//update a listing
 router.post('/', (req, res) => {
-    console.log(req.body);
-    var filter = {
-        "id": req.body.id
-    };
 
-    Location.update(filter, (err, results) => {
-        if (err) {
-            console.log(err);
-            res.status(500).end();
-        } else {
-            console.log("Get all Locations function has been called");
-
-            res.status(200);
-            res.json(results);
-        }
-    });
+     var toSave = new Location(req.body)   
+    toSave.save((err)=>{
+        if(err){
+            res.status(500).end();            
+        } 
+    })
+    res.status(200)
+    res.json(req.body)
 });
+
+
+
+// //update a listing
+//TODO: to update an element u should use put, not post
+// router.post('/', (req, res) => {
+//     console.log(req.body);
+//     var filter = {
+//         "id": req.body.id
+//     };
+
+//     Location.update(filter, (err, results) => {
+//         if (err) {
+//             console.log(err);
+//             res.status(500).end();
+//         } else {
+
+//             res.status(200);
+//             res.json(results);
+//         }
+//     });
+// });
 
 
 //remove a listing
@@ -84,7 +93,6 @@ router.delete('/', (req, res) => {
         if (err) {
             next(err);
         } else {
-            console.log("Get all Locations function has been called");
 
             res.status(200);
             res.json(results);
