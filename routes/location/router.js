@@ -27,19 +27,18 @@ router.get('/', (req, res) => {
 });
 
 
-//Get all the locations with the given parameters
 
+//Get the location with the given id
+router.get('/:id', (req, res) => {
+    const id = req.params.id
 
-router.get('/', (req, res) => {
-    var filter = {};
-
-    //TODO: build filter
-    Location.find(filter, (err, results) => {
+    Location.findOne({_id: id}, (err, results) => {
         if (err) {
             console.log(err);
             res.status(500).end();
+            //return next(err)
         } else {
-
+            if(!results) return next(err)
             res.status(200);
             res.json(results);
         }
