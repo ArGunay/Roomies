@@ -52,6 +52,11 @@ const LocationSchema = exports.LocationSchema = new Schema({
         required: true
     },
 
+    pictures: [{
+        type: String,
+        required: true
+    }],
+
     accept_smokers: { type: Boolean },
     accept_animals: { type: Boolean },
     gender: { type: String },
