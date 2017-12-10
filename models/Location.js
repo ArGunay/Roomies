@@ -20,7 +20,7 @@ const LocationSchema = exports.LocationSchema = new Schema({
         required: true
     },
 
-    cap: { 
+    postalCode: { 
         type: String,
         required: true
     },
@@ -51,6 +51,11 @@ const LocationSchema = exports.LocationSchema = new Schema({
         type: Number,
         required: true
     },
+
+    pictures: [{
+        type: String,
+        required: true
+    }],
 
     accept_smokers: { type: Boolean },
     accept_animals: { type: Boolean },
