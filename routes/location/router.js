@@ -46,49 +46,47 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-
+    if(!req.is("application/json"))   return res.sendStatus(400)
      var toSave = new Location(req.body)   
-    toSave.save((err)=>{
+    toSave.save((err, newLocation)=>{
+        console.log("caio")
         if(err){
+            console.log("THIS ERR",err)
             res.status(500).end();            
-        } 
+        } else{
+            res.status(200)
+            res.json(newLocation)
+        }
     })
-    res.status(200)
-    res.json(req.body)
+    
 });
 
 
 
-// //update a listing
-//TODO: to update an element u should use put, not post
-// router.post('/', (req, res) => {
-//     console.log(req.body);
-//     var filter = {
-//         "id": req.body.id
-//     };
 
-//     Location.update(filter, (err, results) => {
-//         if (err) {
-//             console.log(err);
-//             res.status(500).end();
-//         } else {
+//update a listing
+// TODO: to update an element u should use put, not post
+router.put('/:id', (req, res) => {
+    const id = req.params.id    
+    Location.update({_id: id}, req.body, (err, results) => {
+        if (err) {
+            console.log(err);
+            res.status(500).end();
+        } else {
 
-//             res.status(200);
-//             res.json(results);
-//         }
-//     });
-// });
+            res.status(200);
+            res.json(results);
+        }
+    });
+});
 
 
 //remove a listing
-router.delete('/', (req, res) => {
+router.delete('/:id', (req, res) => {
 
-    var filter = {
-        "id": req.body.id
-    };
-
+    const id = req.params.id
     //update the post with the given id 
-    Location.remove(filter, (err, results) => {
+    Location.remove({_id: id}, (err, results) => {
         if (err) {
             next(err);
         } else {
