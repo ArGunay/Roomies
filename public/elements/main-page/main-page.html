@@ -30,8 +30,6 @@
             <p>Age</p>
             <paper-slider id="price" pin value="3" max="1000" editable></paper-slider>
           </span>
-
-
         </template>
 
         <template is="dom-if" if="{{toggle}}">
@@ -64,9 +62,9 @@
         <template is="dom-if" if="{{!toggle}}">
           <template is="dom-repeat" items="{{people}}" as="person">
             <paper-card preloadImage="true" fadeImage="true"
-            heading="{{person.name}}" image="{{person.picSrc}}" alt="pic">
+            heading="{{person.title}}" image="{{person.imageURL}}" alt="pic">
               <div>
-                {{person.desc}}
+                {{person.description}}
               </div>
               <div class="contact-buttons">
                   <roomie-element></roomie-element>
@@ -78,13 +76,12 @@
         <template is="dom-if" if="{{toggle}}">
           <template is="dom-repeat" items="{{appartments}}" as="appartment">
             <paper-card preloadImage="true" fadeImage="true"
-            heading="{{appartment.name}}" image="{{appartment.picSrc}}" alt="pic">
+            heading="{{appartment.title}}" image="{{appartment.imageURL}}" alt="pic">
               <div>
-                {{appartment.desc}}
+                {{appartment.description}}
               </div>
               <div class="contact-buttons">
-                <announcement-page class$="{{appartment.id}}"
-                 _id="{{appartment.id}}"></announcement-page>
+                <announcement-page announcement="{{appartment}}"></announcement-page>
               </div>
             </paper-card>
             <p>{{appartment.id}}</p>
@@ -178,11 +175,11 @@
     </style>
   </template>
   <script src="../../ajax/ajax.js"></script>
- <script src="../main.js"></script>
   <script>
   class MainPage extends Polymer.Element {
     constructor() {
       super();
+      console.log("Innconst");
       doJSONRequest("GET", "/location", {}, {}, function(data) {
         if(typeof data!=='undefined') {
           console.log("called jsonReq");
@@ -213,8 +210,9 @@
         let address;
         let addFun = this._addAppartment.bind(this);
         data.forEach(function(e) {
-          address = "" + e.city + e.street + e.buildingNumber;
-          addFun(e._id, e.cap, address, e.description, [])
+          address = e.city + ", " +  e.street + " " + e.buildingNumber;
+          addFun(e._id, e.pictures[0], address, e.description, e.monthly_price, e.bathrooms,
+            e.bedrooms, 100, [e.accept_smokers, e.gender, e.accept_animals])
         });
       }
     }
@@ -235,15 +233,34 @@
       el.className = "active";
     }
 
-    _addAppartment(iden, picsrc, nam, description, tgs) {
-      console.log("id is " + iden);
+    _addAppartment(iden, picsrc, name, desc, price, bath, bed, size, tgs) {
+      // console.log("id is " + iden);
+      // this.push("appartments", {
+      //   id : iden,
+      //   //picSrc : picsrc,
+      //   imageURL : picsrc,
+      //   name : nam,
+      //   description : desc,
+      //   tags : tgs
+
       this.push("appartments", {
-        id : iden,
-        picSrc : picsrc,
-        name : nam,
-        desc : description,
-        tags : tgs
-      });
+        Id : iden,
+        description : desc,
+        imageURL : picsrc,
+        requirements : [
+          {description: "Smoker", control: tgs[0]},
+          {description: "Gender", control: Boolean, val : tgs[1]},
+          {description: "Price", control: Number, val : price},
+          {description: "animals", control: Boolean, val : true}
+        ],
+        smarttitles : [
+          {img: "../../src/img/bed.svg", val: bed , title: "BEDROOM"},
+          {img: "../../src/img/blueprint.svg", val: size, title: "ROOM SIZE"},
+          {img: "../../src/img/money.svg", val: price, title: "RENT", notify: true},
+          {img: "../../src/img/toilet.svg", val: bath, title: "BATHROOMS"}
+        ],
+        title : name
+        });
     }
 
     _addPeople(iden, picsrc, nam, description, tgs) {

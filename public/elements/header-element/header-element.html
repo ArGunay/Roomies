@@ -14,9 +14,9 @@
     <p>A platform for finding a roommate in Ticino</p>
   </div>
     <div id="links">
-      <a href="index.html">Home</a>
-      <a href="../about.html">About</a>
-      <a class="active" href="apartmentForm.html">Form</a>
+      <a id="index-link" href="index.html">Home</a>
+      <a id="about-link" href="../about.html">About</a>
+      <a id="forms-link" href="apartmentForm.html">Forms</a>
     </div>
   </div>
   <style include="shared-style">
@@ -77,7 +77,19 @@
   class HeaderElement extends Polymer.Element {
     constructor() {
       super();
-      console.log(this.shadowRoot);
+    }
+
+    connectedCallback() {
+      super.connectedCallback();
+      let el = document.getElementsByTagName("body")[0].id;
+
+      if(el === "main-page") {
+        this.shadowRoot.querySelector("#index-link").className = "active";
+      }else if(el === "about-page") {
+        this.shadowRoot.getElementById("about-link").className = "active";
+      }else if(el === "forms-page") {
+        this.shadowRoot.getElementById("forms-link").className = "active";
+      }
     }
 
     static get is() {
