@@ -7,7 +7,7 @@
 <link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
-
+<link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
 <!-- <link rel="import" href="../../bower_components/neon-animation/web-animations.html"> -->
 
 <link rel="import" href="../../bower_components/shadycss/apply-shim.html">
@@ -26,23 +26,37 @@
         <paper-button raised id="toggleAppartments" on-click="_setActive">Appartments</paper-button>
 
         <template is="dom-if" if="{{!toggle}}">
-          <span><p>Age:</p>
-            <paper-slider value="5"></paper-slider>
+          <span>
+            <p>Age</p>
+            <paper-slider id="price" pin value="3" max="1000" editable></paper-slider>
           </span>
 
-          <paper-dropdown-menu label="Choose a city">
-            <paper-listbox slot="dropdown-content" selected="1">
-              <paper-item>Bellinzona</paper-item>
-              <paper-item>Locarno</paper-item>
-              <paper-item>Lugano</paper-item>
-            </paper-listbox>
-          </paper-dropdown-menu>
+
         </template>
 
         <template is="dom-if" if="{{toggle}}">
           <span><p>Price:</p>
-            <paper-slider value="50"></paper-slider>
+            <paper-slider id="price" pin value="3" max="1000" editable></paper-slider>
           </span>
+          <span>
+            <p>City:</p>
+            <paper-dropdown-menu id="city" label="Choose a city">
+              <paper-listbox slot="dropdown-content">
+                <paper-item>Bellinzona</paper-item>
+                <paper-item>Locarno</paper-item>
+                <paper-item>Lugano</paper-item>
+              </paper-listbox>
+            </paper-dropdown-menu>
+          </span>
+          <span>
+            <p>Allows smokers:</p>
+            <paper-toggle-button id="smokers"></paper-toggle-button>
+          </span>
+          <div>
+            <p>Allows Pets:</p>
+            <paper-toggle-button id="pets"></paper-toggle-button>
+          </div>
+
         </template>
         <paper-button raised>Filter!</paper-button>
       </aside>
@@ -99,9 +113,20 @@
         align-items: center;
         min-height: 100vh;
         height: 100%;
+        text-align: center;
       }
       aside h2, p {
+        text-align: center;
         font-family: var(--shared-text-font);
+      }
+      p {
+        margin : 0;
+        padding:0;
+      }
+      paper-toggle-button {
+        /*display: block;
+        max-width : 200px;
+        margin: auto;*/
       }
       main {
         display : flex;
