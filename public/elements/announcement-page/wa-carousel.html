@@ -1,0 +1,105 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+
+<dom-module id="wa-carousel">
+  <template>
+    <style include="shared-style">
+      :host{
+        display: block;
+      }
+
+      #container{
+        display: flex;
+        align-items: center;
+      }
+
+      paper-icon-button{
+        width: 80px;
+        height: 80px;
+        color:  var(--shared-main-color);
+   
+      }
+
+      #buttonNext{
+        order: 2;
+      }
+
+      #slidesContent{
+        flex: 1;
+      }
+
+      ::slotted(img){
+        width: 100%;
+      }
+
+      ::slotted(.hidden){
+        display: none;
+      }
+
+    </style>
+    
+    <div id="container">
+      <paper-icon-button id="buttonPrev" icon="icons:chevron-left" on-click="_onClick"></paper-icon-button>
+      <paper-icon-button id="buttonNext" icon="icons:chevron-right" on-click="_onClick"></paper-icon-button>
+      <div id="slidesContent">
+
+        <slot name="slide"></slot>
+
+      </div>
+    </div>
+    
+  </template>
+  <script>
+
+    class WaCarousel extends Polymer.Element{
+
+      static get is(){
+        return 'wa-carousel';
+      }
+
+      connectedCallback(){
+        super.connectedCallback()
+        this.currentIdx = null;
+
+     
+        this.slides = this.querySelectorAll('img[slot="slide"]');
+
+        if(this.slides){
+          this.slideNum = this.slides.length;
+          this._goto(0);
+        }
+      }
+      
+      // user defined prototype methods
+      _onClick(event, detail){
+        if(event.target.id == 'buttonPrev'){
+           let index =  this.currentIdx;
+           const newIndex = (--index == -1) ? (this.slideNum -1) : index;   
+           this._goto(newIndex);
+         }
+         else if(event.target.id == 'buttonNext'){
+           let index =  this.currentIdx;
+           const newIndex = (++index == this.slideNum) ? 0 : index;   
+           this._goto(newIndex);
+         }
+      }
+      _goto(index){
+        this.currentIdx = index;
+        this.slides.forEach( (slide, idx) => {
+          if(idx == index){
+           return slide.classList.remove('hidden');
+          }
+          slide.classList.add('hidden');
+        });
+
+        this.dispatchEvent(new CustomEvent('slideindexchanged', {
+          detail: {
+            slideindex: this.currentIdx }
+          }));
+      } 
+    };
+
+    customElements.define(WaCarousel.is, WaCarousel);
+  </script>
+</dom-module>

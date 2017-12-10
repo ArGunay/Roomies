@@ -1,5 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="smart-recap.html">
+<link rel="import" href="image-slider.html">
+<link rel="import" href="wa-carousel.html">
 
 <link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
@@ -191,18 +193,25 @@
         <paper-dialog-scrollable>
             <div class="container">
                 <div id="imagecontent">
-                    <img src="{{announcement.imageURL}}" alt="[[imgAlt]]">
+                    <wa-carousel>
+                        <img src="{{announcement.images1}}" slot="slide">
+                        <img src="{{announcement.images2}}" slot="slide">
+                        <img src="{{announcement.images3}}" slot="slide">
+                    </wa-carousel>
+
                 </div>
                 <div id="recapcontent">
                     <template is="dom-repeat" items="{{announcement.smarttitles}}">
                         <smart-recap recap={{item}}></smart-recap>   
-                    </template>     
+                    </template>
+
                 </div>
                 <div id="descriptionbox">
                     <div id="descriptiontitle">Description</div>
                     <paper-dialog-scrollable id="descriptiontext">
                         <p>{{announcement.description}}</p>
                         <br>
+
                         <template is="dom-repeat" items="{{announcement.requirements}}" as="requirement" >
                             <div id="requiring">
                                 {{requirement.description}}:<iron-icon icon="icons:check"></iron-icon>
@@ -251,7 +260,10 @@
                         value:{
                             Id: "", // ID OF ELEMENT SHOUlD GO HERE
                             title: "Announcement Title",
-                            imageURL: "https://source.unsplash.com//_-JR5TxKNSo",
+                            images1: "https://source.unsplash.com/_-JR5TxKNSo",
+                            images2: "https://source.unsplash.com/oTJ92KUXHls",
+                            images3: "https://source.unsplash.com/IEkMMvdZFc0",
+                                
                             smarttitles:[
                                 {
                                     img: "../../src/img/bed.svg",
