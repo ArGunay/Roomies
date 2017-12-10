@@ -20,7 +20,7 @@ const LocationSchema = exports.LocationSchema = new Schema({
         required: true
     },
 
-    cap: { 
+    postalCode: { 
         type: String,
         required: true
     },
