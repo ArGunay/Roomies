@@ -27,14 +27,48 @@ router.get('/', (req, res) => {
 });
 
 
-//Get all the locations with the given parameters
+
+//Get the location with the given id
+router.get('/:id', (req, res) => {
+    const id = req.params.id
+
+    Location.findOne({_id: id}, (err, results) => {
+        if (err) {
+            console.log(err);
+            res.status(500).end();
+            //return next(err)
+        } else {
+            if(!results) return next(err)
+            res.status(200);
+            res.json(results);
+        }
+    });
+});
+
+router.post('/', (req, res) => {
+    if(!req.is("application/json"))   return res.sendStatus(400)
+     var toSave = new Location(req.body)   
+    toSave.save((err, newLocation)=>{
+        console.log("caio")
+        if(err){
+            console.log("THIS ERR",err)
+            res.status(500).end();            
+        } else{
+            res.status(200)
+            res.json(newLocation)
+        }
+    })
+    
+});
 
 
-router.get('/', (req, res) => {
-    var filter = {};
 
-    //TODO: build filter
-    Location.find(filter, (err, results) => {
+
+//update a listing
+// TODO: to update an element u should use put, not post
+router.put('/:id', (req, res) => {
+    const id = req.params.id    
+    Location.update({_id: id}, req.body, (err, results) => {
         if (err) {
             console.log(err);
             res.status(500).end();
@@ -46,50 +80,13 @@ router.get('/', (req, res) => {
     });
 });
 
-router.post('/', (req, res) => {
-
-     var toSave = new Location(req.body)   
-    toSave.save((err)=>{
-        if(err){
-            res.status(500).end();            
-        } 
-    })
-    res.status(200)
-    res.json(req.body)
-});
-
-
-
-// //update a listing
-//TODO: to update an element u should use put, not post
-// router.post('/', (req, res) => {
-//     console.log(req.body);
-//     var filter = {
-//         "id": req.body.id
-//     };
-
-//     Location.update(filter, (err, results) => {
-//         if (err) {
-//             console.log(err);
-//             res.status(500).end();
-//         } else {
-
-//             res.status(200);
-//             res.json(results);
-//         }
-//     });
-// });
-
 
 //remove a listing
-router.delete('/', (req, res) => {
+router.delete('/:id', (req, res) => {
 
-    var filter = {
-        "id": req.body.id
-    };
-
+    const id = req.params.id
     //update the post with the given id 
-    Location.remove(filter, (err, results) => {
+    Location.remove({_id: id}, (err, results) => {
         if (err) {
             next(err);
         } else {
