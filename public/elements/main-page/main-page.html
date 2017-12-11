@@ -177,24 +177,53 @@
   <script src="../../ajax/ajax.js"></script>
   <script>
   class MainPage extends Polymer.Element {
-    constructor() {
-      super();
-      console.log("Innconst");
-      doJSONRequest("GET", "/location", {}, {}, function(data) {
-        if(typeof data!=='undefined') {
-          console.log("called jsonReq");
-          this._deleteList(false);
-          let popListFun = this._popList.bind(this);
-          popListFun(data, false);
-        }
-      }.bind(this)
-    );
-    }
 
+    //not sure what this is, web components don t work in this way
+    // constructor() {
+    //   super();
+    //   console.log("Innconst");
+    //   doJSONRequest("GET", "/location", {}, {}, function(data) {
+    //     if(typeof data!=='undefined') {
+    //       console.log("called jsonReq");
+    //       this._deleteList(false);
+    //       let popListFun = this._popList.bind(this);
+    //       popListFun(data, false);
+    //     }
+    //   }.bind(this)
+    // );
+    // }
     static get is() {
       return 'main-page';
     }
 
+    static get properties() {
+      return {
+        appartments : {
+          type : Array,
+          value : ()=>[]
+        },
+        people : {
+          type : Array,
+          value : ()=>[]
+        },
+        //what does toggle rappresent? 
+        toggle : {
+          type : Boolean,
+          value : false,
+          notify : true
+        }
+      }
+    }
+
+    
+    connectedCallback() {
+      console.log("cia")
+			super.connectedCallback();
+            doJSONRequest('GET', 'http://localhost:3000/location', {}, null, (par)=>{
+				this.appartments = par
+			})
+    }
+    
     _deleteList(flag) {
       console.log(this);
       if(flag) {
@@ -272,68 +301,6 @@
         tags : tgs
       });
     };
-
-    static get properties() {
-      return {
-        appartments : {
-          type : Array,
-          value : function() {
-            return [
-              // {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
-              //   name : "CoolPic",
-              //   desc : "Pic from internet"},
-              //   {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
-              //    name : "CoolPic",
-              //    desc : "Pic from internet"},
-              //    {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
-              //     name : "CoolPic",
-              //     desc : "Pic from internet"},
-              //     {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
-              //      name : "CoolPic",
-              //      desc : "Pic from internet"},
-              //      {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
-              //       name : "CoolPic",
-              //       desc : "Pic from internet"},
-              //       {picSrc: "http://www.book-a-flat.com/photo/paris/13166/large/salon7.jpg",
-              //         name : "CoolPic",
-              //         desc : "Pic from internet"}
-            ]
-          },
-          notify: true
-        },
-        people : {
-          type : Array,
-          value : function() {
-            return [
-                  // {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
-                  //   name : "CoolPic",
-                  //   desc : "Pic from internet"},
-                  //   {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
-                  //    name : "CoolPic",
-                  //    desc : "Pic from internet"},
-                  //    {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
-                  //     name : "CoolPic",
-                  //     desc : "Pic from internet"},
-                  //     {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
-                  //      name : "CoolPic",
-                  //      desc : "Pic from internet"},
-                  //      {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
-                  //       name : "CoolPic",
-                  //       desc : "Pic from internet"},
-                  //       {picSrc: "https://www.imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
-                  //         name : "CoolPic",
-                  //         desc : "Pic from internet"}
-                    ]
-          },
-          notify: true
-        },
-        toggle : {
-          type : Boolean,
-          value : false,
-          notify : true
-        }
-      }
-    }
 
   }
   customElements.define(MainPage.is, MainPage);
