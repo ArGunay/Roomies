@@ -33,7 +33,8 @@
         </template>
 
         <template is="dom-if" if="{{toggle}}">
-          <span><p>Price:</p>
+          <span>
+            <p>Price:</p>
             <paper-slider id="price" pin value="3" max="1000" editable></paper-slider>
           </span>
           <span>
@@ -61,13 +62,12 @@
       <main>
         <template is="dom-if" if="{{!toggle}}">
           <template is="dom-repeat" items="{{people}}" as="person">
-            <paper-card preloadImage="true" fadeImage="true"
-            heading="{{person.title}}" image="{{person.imageURL}}" alt="pic">
+            <paper-card preloadImage="true" fadeImage="true" heading="{{person.title}}" image="{{person.imageURL}}" alt="pic">
               <div>
                 {{person.description}}
               </div>
               <div class="contact-buttons">
-                  <roomie-element></roomie-element>
+                <roomie-element></roomie-element>
               </div>
             </paper-card>
           </template>
@@ -75,8 +75,7 @@
 
         <template is="dom-if" if="{{toggle}}">
           <template is="dom-repeat" items="{{appartments}}" as="appartment">
-            <paper-card preloadImage="true" fadeImage="true"
-            heading="{{appartment.title}}" image="{{appartment.imageURL}}" alt="pic">
+            <paper-card preloadImage="true" fadeImage="true" heading="{{appartment.title}}" image="{{appartment.imageURL}}" alt="pic">
               <div>
                 {{appartment.description}}
               </div>
@@ -87,14 +86,15 @@
             <p>{{appartment.id}}</p>
           </template>
         </template>
-     </main>
+      </main>
     </div>
 
     <style include="shared-style">
-    .active {
-      color : white;
-      background-color: var(--shared-main-color);
-    }
+      .active {
+        color: white;
+        background-color: var(--shared-main-color);
+      }
+
       #main_container {
         display: flex;
         flex-direction: row;
@@ -102,6 +102,7 @@
         justify-content: center;
         height: 100px;
       }
+
       aside {
         flex: 1;
         display: flex;
@@ -112,197 +113,195 @@
         height: 100%;
         text-align: center;
       }
-      aside h2, p {
+
+      aside h2,
+      p {
         text-align: center;
         font-family: var(--shared-text-font);
       }
+
       p {
-        margin : 0;
-        padding:0;
+        margin: 0;
+        padding: 0;
       }
+
       paper-toggle-button {
         /*display: block;
         max-width : 200px;
         margin: auto;*/
       }
+
       main {
-        display : flex;
+        display: flex;
         flex: 3;
         flex-direction: row;
-        flex-wrap : wrap;
+        flex-wrap: wrap;
         justify-content: space-evenly;
       }
+
       paper-button {
         font-family: var(--shared-button-font);
         padding: 2px;
         text-align: center;
       }
-      aside paper-button{
+
+      aside paper-button {
         display: block;
         margin: 5px;
         font-size: 1.5em;
-
       }
 
       .toggle {
-        width : 40%;
+        width: 40%;
       }
+
       paper-card {
         font-family: var(--shared-serious-font);
         max-width: 400px;
-        height : auto;
+        height: auto;
         margin-bottom: 5px;
-        --paper-card-header-color : white;
+        --paper-card-header-color: white;
       }
+
       paper-card:hover {
         background-color: #f2f2f2;
         cursor: pointer;
       }
+
       .contact-buttons {
         display: flex;
         justify-content: center;
         font-size: 1.2em;
         margin-bottom: 3px;
       }
+
       paper-search-bar {
-       border-radius: 22px;
-       padding: 0 8px;
-       display: inline-block;
-       width: 35%;
-       margin : auto;
-       background-color: white;
-     }
+        border-radius: 22px;
+        padding: 0 8px;
+        display: inline-block;
+        width: 35%;
+        margin: auto;
+        background-color: white;
+      }
     </style>
   </template>
   <script src="../../ajax/ajax.js"></script>
   <script>
-  class MainPage extends Polymer.Element {
+    class MainPage extends Polymer.Element {
 
-    //not sure what this is, web components don t work in this way
-    // constructor() {
-    //   super();
-    //   console.log("Innconst");
-    //   doJSONRequest("GET", "/location", {}, {}, function(data) {
-    //     if(typeof data!=='undefined') {
-    //       console.log("called jsonReq");
-    //       this._deleteList(false);
-    //       let popListFun = this._popList.bind(this);
-    //       popListFun(data, false);
-    //     }
-    //   }.bind(this)
-    // );
-    // }
-    static get is() {
-      return 'main-page';
-    }
+      //not sure what this is, web components don t work in this way
+      // constructor() {
+      //   super();
+      //   console.log("Innconst");
+      //   doJSONRequest("GET", "/location", {}, {}, function(data) {
+      //     if(typeof data!=='undefined') {
+      //       console.log("called jsonReq");
+      //       this._deleteList(false);
+      //       let popListFun = this._popList.bind(this);
+      //       popListFun(data, false);
+      //     }
+      //   }.bind(this)
+      // );
+      // }
+      static get is() {
+        return 'main-page';
+      }
 
-    static get properties() {
-      return {
-        appartments : {
-          type : Array,
-          value : ()=>[]
-        },
-        people : {
-          type : Array,
-          value : ()=>[]
-        },
-        //what does toggle rappresent? 
-        toggle : {
-          type : Boolean,
-          value : false,
-          notify : true
+      static get properties() {
+        return {
+          appartments: {
+            type: Array,
+            value: () => []
+          },
+          people: {
+            type: Array,
+            value: () => []
+          },
+          //what does toggle rappresent? 
+          toggle: {
+            type: Boolean,
+            value: false
+          }
         }
       }
-    }
 
-    
-    connectedCallback() {
-      console.log("cia")
-			super.connectedCallback();
-            doJSONRequest('GET', 'http://localhost:3000/location', {}, null, (par)=>{
-				this.appartments = par
-			})
-    }
-    
-    _deleteList(flag) {
-      console.log(this);
-      if(flag) {
-        this.splice("people", 0, this.people.length);
-      }else {
-        this.splice("appartments", 0, this.appartments.length);
+
+      connectedCallback() {
+        super.connectedCallback();
+        this.refresh()
       }
-    }
 
-    _popList(data) {
-      console.log(data);
-      if(typeof data !== "undefined") {
-        let address;
-        let addFun = this._addAppartment.bind(this);
-        data.forEach(function(e) {
-          address = e.city + ", " +  e.street + " " + e.buildingNumber;
-          addFun(e._id, e.pictures[0], address, e.description, e.monthly_price, e.bathrooms,
-            e.bedrooms, 100, [e.accept_smokers, e.gender, e.accept_animals])
-        });
+      refresh(){
+        doJSONRequest('GET', 'http://localhost:3000/location', {}, null, (par) => {
+          this.appartments = par
+        })
       }
-    }
-
-    _setActive(e) {
-      let el = e.path[0];
-      if(el.className === "active") {
-        return;
-      }else {
-        if(el.id === "toggleRoomies") {
-          this.shadowRoot.querySelector("#toggleAppartments").className = "";
-          this.toggle = false;
-        }if(el.id === "toggleAppartments") {
-          this.shadowRoot.querySelector("#toggleRoomies").className = "";
-          this.toggle = true;
+      
+      _deleteList(flag) {
+        console.log(this);
+        if (flag) {
+          this.splice("people", 0, this.people.length);
+        } else {
+          this.splice("appartments", 0, this.appartments.length);
         }
       }
-      el.className = "active";
-    }
 
-    _addAppartment(iden, picsrc, name, desc, price, bath, bed, size, tgs) {
-      // console.log("id is " + iden);
-      // this.push("appartments", {
-      //   id : iden,
-      //   //picSrc : picsrc,
-      //   imageURL : picsrc,
-      //   name : nam,
-      //   description : desc,
-      //   tags : tgs
+      _popList(data) {
+        console.log(data);
+        if (typeof data !== "undefined") {
+          let address;
+          let addFun = this._addAppartment.bind(this);
+          data.forEach(function (e) {
+            address = e.city + ", " + e.street + " " + e.buildingNumber;
+            addFun(e._id, e.pictures[0], address, e.description, e.monthly_price, e.bathrooms,
+              e.bedrooms, 100, [e.accept_smokers, e.gender, e.accept_animals])
+          });
+        }
+      }
 
-      this.push("appartments", {
-        Id : iden,
-        description : desc,
-        imageURL : picsrc,
-        requirements : [
-          {description: "Smoker", control: tgs[0]},
-          {description: "Gender", control: Boolean, val : tgs[1]},
-          {description: "Price", control: Number, val : price},
-          {description: "animals", control: Boolean, val : true}
-        ],
-        smarttitles : [
-          {img: "../../src/img/bed.svg", val: bed , title: "BEDROOM"},
-          {img: "../../src/img/blueprint.svg", val: size, title: "ROOM SIZE"},
-          {img: "../../src/img/money.svg", val: price, title: "RENT", notify: true},
-          {img: "../../src/img/toilet.svg", val: bath, title: "BATHROOMS"}
-        ],
-        title : name
+      _setActive(e) {
+        let el = e.path[0];
+        if (el.className === "active") {
+          return;
+        } else {
+          if (el.id === "toggleRoomies") {
+            this.shadowRoot.querySelector("#toggleAppartments").className = "";
+            this.toggle = false;
+          }
+          if (el.id === "toggleAppartments") {
+            this.shadowRoot.querySelector("#toggleRoomies").className = "";
+            this.toggle = true;
+          }
+        }
+        el.className = "active";
+      }
+
+      _addAppartment(){
+        //first of all post the new appartament
+        //TODO : understand how to retrieve the data
+        doJSONRequest('POST', 'http://localhost:3000/location', {}, null, (par) => {
+          this.appartments = par
+        })
+        this.refresh()
+      }
+
+      //TODO
+      //Actually there still no model for people so......
+      _addPeople(iden, picsrc, nam, description, tgs) {
+        this.push("people", {
+          id: iden,
+          picSrc: picsrc,
+          name: nam,
+          desc: description,
+          tags: tgs
         });
+      };
     }
 
-    _addPeople(iden, picsrc, nam, description, tgs) {
-      this.push("people", {
-        id : iden,
-        picSrc : picsrc,
-        name : nam,
-        desc : description,
-        tags : tgs
-      });
-    };
+    //TODO
+    //Query for only smokers ap
+    //And all the other parameters 
 
-  }
-  customElements.define(MainPage.is, MainPage);
+    customElements.define(MainPage.is, MainPage);
   </script>
 </dom-module>
