@@ -1,65 +1,18 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="smart-recap.html">
+<link rel="import" href="image-slider.html">
+<link rel="import" href="wa-carousel.html">
+
 <link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
+<script src="../../ajax/ajax.js"></script>
 
 <dom-module id="announcement-page">
-        
+
     <template>
-        <paper-button raised on-click="openDialog">more</paper-button>
-        <paper-dialog id="dialog">
-        <section>
-            <div id="announcementtitle">[[title]]</div>
-            <paper-dialog-scrollable>
-                <div class="container">
-                    <div id="imagecontent">
-                        <img src="{{imageURL}}" alt="[[imgAlt]]">
-                    </div>
-                    <div id="recapcontent">
-                        <template is="dom-repeat" items="{{smarttitles}}" as="smarttitle">
-                            <div class="recapelement">
-                                <div class="smarttitle">{{smarttitle.title}}</div>
-                                <div class="smartrecap">
-                                    <img class="recapimg" src="{{smarttitle.img}}">
-                                    <span class="smartvalue">{{smarttitle.val}}</span>
-                                </div>
-                            </div>
-                        </template>     
-                    </div>
-                    <div id="descriptionbox">
-                        <div id="descriptiontitle">Description</div>
-                        <paper-dialog-scrollable id="descriptiontext">
-                            <p>{{description}}</p>
-                            <br>
-                            <template is="dom-repeat" items="{{requirements}}" as="requirement" >
-                                <div id="requiring">
-                                    {{requirement.description}}:<iron-icon icon="icons:check"></iron-icon>
-                                </div>
-                            </template>
-                        </paper-dialog-scrollable>
-                    </div>
-                    <div id="messagebox">
-                        <div id="mailform">
-                            <form action="mailto:{{thispersonemail}}" method="post" enctype="text/plain">
 
-                                <label for="fname">First Name</label>
-                                <input type="text" id="fname" name="firstname" placeholder="Your name..">
-                            
-                                <label for="email">E-Mail</label>
-                                <input type="text" id="email" name="mail" placeholder="Your E-mail..">
 
-                                <label for="tex">Message</label>
-                                <textarea type="text" id="tex" name="comment" placeholder="Your message.."></textarea>
-                            
-                                <input type="submit" value="Submit">
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </paper-dialog-scrollable>
-        </section>
-        </paper-dialog>
-            
         <style include="shared-style">
             textarea {
                 resize: none;
@@ -87,20 +40,20 @@
                 border: none;
                 border-radius: 4px;
                 cursor: pointer;
-                
+
                 font-family: var(--shared-serious-font);
             }
 
             input[type=submit]:hover {
                 background-color: #45a049;
-                
+
             }
 
             #mailform {
                 border-radius: 5px;
                 font-family: var(--shared-serious-font);
                 /* background-color: #ffffff; */
-                
+
                 padding: 20px;
             }
 
@@ -123,36 +76,7 @@
                 height: 90vh;
             }
 
-            /* MessageBox Section */
-            
-            /* DESCRIPTION SECTION */
- 
-            .smarttitle{
-                margin: 2%;
-                align-self: center;
-                flex-grow: 1;
-                font-size: 1.6em;
-                vertical-align: middle;
-                font-family: var(--shared-serious-font);
-            }
 
-            .smartrecap{
-                height: auto;
-                width: 100%;
-                flex-grow: 2;
-            }
-            .smartvalue{
-                display: inline-block;
-                vertical-align: middle;
-                margin: 15%;
-                padding-bottom: 27%;
-                font-size: 3.5em;
-                font-family: var(--shared-serious-font);
-            }
-            .recapimg{
-                width: 30%;
-                height: 30%;
-            }
             #recapcontent{
                 min-width: 450px;
                 flex-grow: 1;
@@ -167,17 +91,6 @@
                 flex-wrap: wrap;
 
             }
-            .recapelement{
-                flex-grow: 1;
-                min-width: 200px;
-                width: 40%;
-                height: 180px;
-                margin: 10px;
-                /* background-color: red; */
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
 
             /* ALL CONTAINER */
             .container{
@@ -187,7 +100,7 @@
                 /* background-color: red; */
                 width: 80vw;
                 height: 100vh;
-                
+
             }
 
             /* IMAGE SECTION */
@@ -223,7 +136,7 @@
 
 
             #descriptiontitle{
-                
+
                 padding: 3%;
                 margin-bottom: 2%;
                 border: 1px solid black;
@@ -255,13 +168,13 @@
                 text-align: center;
                 font-family: var(--shared-text-font);
             }
-            
+
             img{
                 max-height: 100%;
                 max-width: 99%;
                 width: auto;
-                
-            } 
+
+            }
             paper-button {
                 font-family: var(--shared-button-font);
                 padding: 2px;
@@ -269,6 +182,65 @@
             }
 
         </style>
+
+
+
+
+    <paper-button raised on-click="openDialog">more</paper-button>
+    <paper-dialog id="dialog">
+    <section>
+        <div id="announcementtitle">[[announcement.title]]</div>
+        <paper-dialog-scrollable>
+            <div class="container">
+                <div id="imagecontent">
+                    <wa-carousel>
+                        <img src="{{announcement.images1}}" slot="slide">
+                        <img src="{{announcement.images2}}" slot="slide">
+                        <img src="{{announcement.images3}}" slot="slide">
+                    </wa-carousel>
+
+                </div>
+                <div id="recapcontent">
+                    <template is="dom-repeat" items="{{announcement.smarttitles}}">
+                        <smart-recap recap={{item}}></smart-recap>
+                    </template>
+
+                </div>
+                <div id="descriptionbox">
+                    <div id="descriptiontitle">Description</div>
+                    <paper-dialog-scrollable id="descriptiontext">
+                        <p>{{announcement.description}}</p>
+                        <br>
+
+                        <template is="dom-repeat" items="{{announcement.requirements}}" as="requirement" >
+                            <div id="requiring">
+                                {{requirement.description}}:<iron-icon icon="icons:check"></iron-icon>
+                            </div>
+                        </template>
+                    </paper-dialog-scrollable>
+                </div>
+                <div id="messagebox">
+                    <div id="mailform">
+                        <form action="mailto:{{thispersonemail}}" method="post" enctype="text/plain">
+
+                            <label for="fname">First Name</label>
+                            <input type="text" id="fname" name="firstname" placeholder="Your name..">
+
+                            <label for="email">E-Mail</label>
+                            <input type="text" id="email" name="mail" placeholder="Your E-mail..">
+
+                            <label for="tex">Message</label>
+                            <textarea type="text" id="tex" name="comment" placeholder="Your message.."></textarea>
+
+                            <input type="submit" value="Submit">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </paper-dialog-scrollable>
+    </section>
+    </paper-dialog>
+
     </template>
 
     <script>
@@ -276,6 +248,15 @@
         class AnnouncementPage extends Polymer.Element{
             constructor(){
                 super();
+                console.log("The id of this element is : " + this._id)
+                console.log("The class of this element is : " + this.className)
+            }
+
+            connectedCallback(){
+                super.connectedCallback();
+                console.log("The id of this element is : " + this._id)
+                console.log("The class of this element is : " + this.className)
+
             }
             static get is(){
                 return "announcement-page";
@@ -283,98 +264,91 @@
 
             static get properties(){
                 return{
-                    title:{
-                        type: String,
-                        value: "Announcement Title"
-                    },
-                    imageURL:{
-                        type: String,
-                        value: "https://source.unsplash.com//_-JR5TxKNSo",
-                        
-                    },
+                    announcement:{
+                        type: Object,
+                        value:{
+                            Id: "", // ID OF ELEMENT SHOUlD GO HERE
+                            title: "Announcement Title",
+                            images1: "https://source.unsplash.com/_-JR5TxKNSo",
+                            images2: "https://source.unsplash.com/oTJ92KUXHls",
+                            images3: "https://source.unsplash.com/IEkMMvdZFc0",
 
-                    smarttitles:{
-                        type: Array,
-                        value: function(){
-                            return[{
-                                img: "../../src/img/bed.svg",
-                                val: 3,
-                                title: "BEDROOM",
-                            },
-                            {
-                                img:"../../src/img/blueprint.svg",
-                                val: 22,
-                                title: "ROOM SIZE"
-                            },
-                            {
-                                img: "../../src/img/money.svg",
-                                val: 150,
-                                title: "RENT",
-                            },
-                            {
-                                img: "../../src/img/toilet.svg" ,
-                                val: 2,
-                                title: "BATHROOMS",
-                            }]
+                            smarttitles:[
+                                {
+                                    img: "../../src/img/bed.svg",
+                                    val: 111,
+                                    title: "BEDROOM",
+
+                                },
+                                {
+                                    img:"../../src/img/blueprint.svg",
+                                    val: 20,
+                                    title: "ROOM SIZE"
+                                },
+                                {
+                                    img: "../../src/img/money.svg",
+                                    val: "134",
+                                    title: "RENT",
+                                    notify: true,
+                                },
+                                {
+                                    img: "../../src/img/toilet.svg" ,
+                                    val: 2,
+                                    title: "BATHROOMS",
+                                }],
+                                description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa repellat eligendi deleniti debitis, quia, dicta iure, fugit eius numquam aperiam dolorum? Odio commodi quae impedit natus debitis odit suscipit consectetur. Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam! Lorem ipsum dolor sit amet consectetur!",
+                                requirements:[
+                                    {
+                                        description: "Smoker",
+                                        control: Boolean,
+                                    },
+                                    {
+                                        description: "Gender",
+                                        control: String,
+                                        val:"M"
+                                    },
+                                    {
+                                        description: "Price",
+                                        control: Number,
+                                        val: "1"
+                                    },
+                                    {
+                                        description: "animals",
+                                        control: Boolean,
+                                    },
+                                    /*
+                                    smoker:{
+                                        type: Boolean,
+                                        value: true,
+                                    },
+                                    gender: {
+                                        type: String,
+                                        value: "MALE"
+                                    },
+                                    price:{
+                                        type: Number,
+                                        value: "12",
+                                    },
+                                    animals:{
+                                        type: Boolean,
+                                        value: false,
+                                    }
+                                    */ // ADD OTHER PARAMS AND CONFORM WITH PASSED OBJ
+                                ]
+
                         }
-
-                    },
-                    description:{
-                        type: String,
-                        value:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa repellat eligendi deleniti debitis, quia, dicta iure, fugit eius numquam aperiam dolorum? Odio commodi quae impedit natus debitis odit suscipit consectetur. Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam! Lorem ipsum dolor sit amet consectetur!"
-                    },
-
-                    // smoker gender price animals
-                    requirements: {
-                        type: Array,
-                        value: function(){
-                            return[
-                                {
-                                    description: "Smoker",
-                                    control: Boolean,
-                                },
-                                {
-                                    description: "Gender",
-                                    control: String,
-                                    val:"M"
-                                },
-                                {
-                                    description: "Price",
-                                    control: Number,
-                                    val: "1"
-                                },
-                                {
-                                    description: "animals",
-                                    control: Boolean,
-                                },
-                                /*
-                                smoker:{
-                                    type: Boolean,
-                                    value: true,
-                                },
-                                gender: {
-                                    type: String,
-                                    value: "MALE"
-                                },
-                                price:{
-                                    type: Number,
-                                    value: "12",
-                                },
-                                animals:{
-                                    type: Boolean,
-                                    value: false,
-                                }
-                                */
-                            ]
-                        }   
                     }
+
+
                 }
             } // END OF PROPERTIES
 
-        
+
+
             openDialog() {
                 this.$.dialog.open();
             }
+
             sendMessage(){
                 console.log("SendMEssaage")
             }

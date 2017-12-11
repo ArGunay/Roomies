@@ -1,0 +1,83 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="smart-recap">
+    <template>
+        
+        <style>
+            .recapelement{
+                flex-grow: 1;
+                min-width: 200px;
+                width: 40%;
+                height: 180px;
+                margin: 10px;
+                /* background-color: red; */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .smarttitle{
+                margin: 2%;
+                align-self: center;
+                flex-grow: 1;
+                font-size: 1.6em;
+                vertical-align: middle;
+                font-family: var(--shared-serious-font);
+            }
+
+            .smartrecap{
+                height: auto;
+                width: 100%;
+                flex-grow: 2;
+            }
+            .smartvalue{
+                display: inline-block;
+                vertical-align: middle;
+                margin: 12%;
+                padding-bottom: 27%;
+                font-size: 3em;
+                font-family: var(--shared-serious-font);
+            }
+            .recapimg{
+                width: 30%;
+                height: 30%;
+            }
+
+        </style>
+        <div class="recapelement">
+                <div class="smarttitle">{{recap.title}}</div>
+                <div class="smartrecap">
+                    <img class="recapimg" src="{{recap.img}}">
+                    <span class="smartvalue">{{recap.val}}</span>
+                </div>
+            </div>
+    </template>
+    <script>
+        class SmartRecap extends Polymer.Element{
+            constructor(){
+                super()
+            }
+
+            static get is(){
+                return "smart-recap";
+
+            }
+            
+
+            static get properties(){
+                return {
+                    recap:{
+                        type: Object,
+                    }
+                }
+            }
+
+            prova(){
+                console.log("QUESTA PROVA!!")
+                console.log("QP: ",this.recap.Id)
+            }
+            
+        }
+        customElements.define(SmartRecap.is, SmartRecap);
+    </script>
+    
+</dom-module>
