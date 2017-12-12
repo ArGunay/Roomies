@@ -227,7 +227,12 @@
       refresh(){
         doJSONRequest('GET', '/location', {}, {}, (par) => {
           this._popList(par);
-        })
+        });
+
+        doJSONRequest("GET", "/roomie", {}, {}, function (result) {
+          console.log('retrieved roomies', result);
+          this.people = result;
+        }.bind(this));
       }
 
       _deleteList(flag) {

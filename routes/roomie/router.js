@@ -42,7 +42,7 @@ router.post('/query', (req, res) => {
 
 
 
-outer.get('/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     const id = req.params.id
     Roomie.findOne({_id: id}, (err, results) => {
         if (err) {
