@@ -301,12 +301,17 @@
 
             _deleteAnnouncement(e){
                 console.log("DELETED", this.announcement.Id);
+                let url = `/location/${ this.announcement.Id}`;
+                doAJAXRequest('DELETE', url, {}, null, function(){
+                    console.log("ELEMENT DELETED")
+                }.bind(this))
                 this.$.dialog.close();
+                
             }
 
 
             // _deleteBookmark(element){
-            // let url = `http://localhost:3000/favorites/${ element.model.fav._id}/`;
+            // let url = `http://localhost:3000/${ element.model.fav._id}/`;
             //     doAJAXRequest('DELETE', url, {}, null, function(){
             // }.bind(this))
 
