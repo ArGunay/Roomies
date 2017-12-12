@@ -107,9 +107,7 @@
             }
         </style>
 
-        <!-- <paper-button raised on-click="openDialog">Add</paper-button>
-        <paper-dialog id="dialog">
-            <paper-dialog-scrollable> -->
+
         <div class="form">
             <h2>Publish your apartment</h2>
             <h4>(fields marked with * are required)</h4>
@@ -118,42 +116,41 @@
                 </br>
                 <label for="email">E-Mail *</label>
                 </br>
-                <input type="text" id="email" name="mail" placeholder="Your E-mail.." value="{{apartment.administrator}}"> </br>
-                <label for="email">Country *</label>
-                </br>
-                <input type="text" id="nation" name="nation" placeholder="Switzerland" value="{{apartment.nation}}"> </br>
-                </br>
+                <input type="text" id="email" name="mail" placeholder="Your E-mail.." value="{{apartment.administrator::input}}">
 
                 <div class="doubles">
                     <label for="text" class="labelgroup">City *</label>
-                    <input type="text" id="city" name="city" placeholder="City" value="{{apartment.city}}">
+                    <input type="text" id="city" name="city" placeholder="City" value="{{apartment.city::input}}">
                     <label for="text" class="labelgroup">Postal code *</label>
-                    <input type="text" id="cap" name="cap" placeholder="CAP" value="{{apartment.postalCode}}">
+                    <input type="text" id="cap" name="cap" placeholder="CAP" value="{{apartment.postalCode::input}}">
                 </div>
 
                 <div class="doubles">
                     <label for="text" class="labelgroup">Street *</label>
-                    <input type="text" id="street" name="street" placeholder="Street" value="{{apartment.street}}">
+                    <input type="text" id="street" name="street" placeholder="Street" value="{{apartment.street::input}}">
                     <label for="text" class="labelgroup">Building Number</label>
-                    <input type="text" id="buildingNumber" name="buildingNumber" placeholder="#" value="{{apartment.buildingNumber}}">
+                    <input type="text" id="buildingNumber" name="buildingNumber" placeholder="#" value="{{apartment.buildingNumber::input}}">
                 </div>
 
                 <div class="doubles">
-                    <label for="email" class="labelgroup">Number of rooms *</label>
-                    <input type="text" id="rooms" name="rooms" placeholder="#" value="{{apartment.rooms}}"> </br>
+                    <label for="email" class="labelgroup">Number of bedrooms *</label>
+                    <input type="text" id="bedrooms" name="bedrooms" placeholder="#" value="{{apartment.bedrooms::input}}">
 
                     <label for="email" class="labelgroup">Number of bathrooms *</label>
-                    <input type="text" id="bathrooms" name="bathrooms" placeholder="#" value="{{apartment.bathrooms}}">
+                    <input type="text" id="bathrooms" name="bathrooms" placeholder="#" value="{{apartment.bathrooms::input}}">
                 </div>
-                </br>
 
-                <label for="text">Price (CHF) *</label>
-                <input type="text" id="price" name="price" placeholder="Price" value="{{apartment.monthly_price}}"> </br>
+                <div class="doubles">
+                    <label for="text" class="labelgroup">Price (CHF) *</label>
+                    <input type="text" id="price" name="price" placeholder="Price" value="{{apartment.monthly_price::input}}">
+                    <label for="text" class="labelgroup">Size of the room (mq) *</label>
+                    <input type="text" id="size" name="size" placeholder="Size of the place" value="{{apartment.size::input}}">
+                </div>
 
                 <div class="description">
                     <label>Description *</label>
                     </br>
-                    <textarea type="text" id="description" name="description" placeholder="Your message" value="{{apartment.description}}"></textarea>
+                    <textarea type="text" id="description" name="description" placeholder="Your message" value="{{apartment.description::input}}"></textarea>
                 </div>
 
                 <div class="doubles">
@@ -180,10 +177,7 @@
                 <paper-button raised on-click="submitForm">Submit</paper-button>
 
             </form>
-
         </div>
-        <!-- </paper-dialog-scrollable>
-        </paper-dialog> -->
     </template>
 
     <script>
@@ -197,18 +191,20 @@
                     apartment: {
                         type: Object,
                         value: {
-                            administrator: 'rush@b.com',
-                            nation: 'Switzerland',
-                            city: 'Lugano',
-                            postalCode: '6900',
-                            street: 'via Nassa',
-                            monthly_price: 4000,
-                            bathrooms: 1,
-                            rooms: 3,
-                            description: 'You are not prepared',
+                            administrator: 'your_email@gmail.com',
+                            city: '',
+                            postalCode: '',
+                            street: '',
+                            buildingNumber: '',
+                            monthly_price: 0,
+                            bathrooms: 0,
+                            bedrooms: 0,
+                            size: 0,
+                            description: '',
                             gender: '',
-                            pets: null,
-                            pictures: []
+                            pictures: [],
+                            accept_smokers: null,
+                            accept_animals: null
                         }
                     }
                 }
@@ -268,10 +264,6 @@
                     }
                 }.bind(this))
             }
-
-            // openDialog() {
-            //     this.$.dialog.open();
-            // }
 
             getBase64(file, callback) {
                 var reader = new FileReader();
