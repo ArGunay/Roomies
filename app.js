@@ -16,6 +16,7 @@ const path = require('path');
 mongoose.connect(config.mongoUrl + config.mongoDbName ,{ useMongoClient: true });
 
 //configure app
+app.use(bodyParser({limit: '50mb'}));
 app.use(bodyParser.urlencoded({ extended: false }));    // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());    // parse application/json
 app.use(bodyParser.text());
@@ -34,7 +35,7 @@ app.use("/roomie", roomie);
 //   console.log("next is called")
 //     res.status(err.status || 500);
 //     console.log(err.status)
-    
+
 //     res.sendStatus(err.status || 500);})
 
 
