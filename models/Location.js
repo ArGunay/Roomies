@@ -10,6 +10,11 @@ const LocationSchema = exports.LocationSchema = new Schema({
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
 
+    deleteSecret: {
+        required: true
+        type: String,
+    },
+
     city: {
         type: String,
         required: true
