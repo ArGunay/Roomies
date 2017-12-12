@@ -56,6 +56,7 @@
             <paper-toggle-button id="pets"></paper-toggle-button>
           </div>
 
+          <!-- PEOPLE -->
         </template>
         <paper-button raised>Filter!</paper-button>
       </aside>
@@ -73,9 +74,10 @@
           </template>
         </template>
 
+        <!-- Apartments -->
         <template is="dom-if" if="{{toggle}}">
           <template is="dom-repeat" items="{{appartments}}" as="appartment">
-            <paper-card preloadImage="true" fadeImage="true" heading="{{appartment.title}}" image="{{appartment.imageURL}}" alt="pic">
+            <paper-card preloadImage="true" fadeImage="true" heading="{{appartment.title}}" image="{{appartment.images1}}" alt="pic">
               <div>
                 {{appartment.description}}
               </div>
@@ -217,7 +219,7 @@
             type: Array,
             value: () => []
           },
-          //what does toggle rappresent? 
+          //what does toggle rappresent?
           toggle: {
             type: Boolean,
             value: false
@@ -228,15 +230,17 @@
 
       connectedCallback() {
         super.connectedCallback();
+        console.log("conncall");
         this.refresh()
       }
 
       refresh(){
         doJSONRequest('GET', 'http://localhost:3000/location', {}, null, (par) => {
-          this.appartments = par
+          //this.appartments = par
+          this._popList(par);
         })
       }
-      
+
       _deleteList(flag) {
         console.log(this);
         if (flag) {
@@ -247,7 +251,7 @@
       }
 
       _popList(data) {
-        console.log(data);
+        //console.log(data);
         if (typeof data !== "undefined") {
           let address;
           let addFun = this._addAppartment.bind(this);
@@ -276,13 +280,34 @@
         el.className = "active";
       }
 
-      _addAppartment(){
+      _addAppartment(iden, picsrc, name, desc, price, bath, bed,  size, tgs){
         //first of all post the new appartament
         //TODO : understand how to retrieve the data
-        doJSONRequest('POST', 'http://localhost:3000/location', {}, null, (par) => {
-          this.appartments = par
-        })
-        this.refresh()
+        // doJSONRequest('POST', 'http://localhost:3000/location', {}, null, (par) => {
+        //this.appartments = par
+        //
+        // })
+        //this.refresh()
+
+        this.push("appartments", {
+          Id : iden,
+          description : desc,
+          images1 : picsrc,
+          requirements : [
+            {description: "Smoker", control: tgs[0]},
+            {description: "Gender", control: Boolean, val : tgs[1]},
+            {description: "Price", control: Number, val : price},
+            {description: "animals", control: Boolean, val : true}
+          ],
+          smarttitles : [
+            {img: "../../src/img/bed.svg", val: bed , title: "BEDROOM"},
+            {img: "../../src/img/blueprint.svg", val: size, title: "ROOM SIZE"},
+            {img: "../../src/img/money.svg", val: price, title: "RENT", notify: true},
+            {img: "../../src/img/toilet.svg", val: bath, title: "BATHROOMS"}
+          ],
+          title : name
+          });
+
       }
 
       //TODO
@@ -300,7 +325,7 @@
 
     //TODO
     //Query for only smokers ap
-    //And all the other parameters 
+    //And all the other parameters
 
     customElements.define(MainPage.is, MainPage);
   </script>
