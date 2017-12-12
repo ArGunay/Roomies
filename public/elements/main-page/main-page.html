@@ -8,6 +8,7 @@
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <!-- <link rel="import" href="../../bower_components/neon-animation/web-animations.html"> -->
 
 <link rel="import" href="../../bower_components/shadycss/apply-shim.html">
@@ -37,28 +38,38 @@
             <p>Price:</p>
             <paper-slider id="price" pin value="3" max="1000" editable></paper-slider>
           </span>
-          <span>
+          <div>
             <p>City:</p>
-            <paper-dropdown-menu id="city" label="Choose a city">
-              <paper-listbox slot="dropdown-content">
+            <paper-dropdown-menu id="city"  label="Choose a city">
+              <paper-listbox selected="0" slot="dropdown-content">
+                <paper-item>All</paper-item>
                 <paper-item>Bellinzona</paper-item>
                 <paper-item>Locarno</paper-item>
                 <paper-item>Lugano</paper-item>
               </paper-listbox>
             </paper-dropdown-menu>
-          </span>
-          <span>
-            <p>Allows smokers:</p>
-            <paper-toggle-button id="smokers"></paper-toggle-button>
-          </span>
-          <div>
+          </div>
+          <div id="smoker-div">
+            <p>Allows Smokers:</p>
+            <paper-checkbox on-change="_setCheckbox" id="smokers-y">Yes</paper-checkbox>
+            <paper-checkbox on-change="_setCheckbox" id="smokers-n">No</paper-checkbox>
+          </div>
+
+          <div id="pets-div">
             <p>Allows Pets:</p>
-            <paper-toggle-button id="pets"></paper-toggle-button>
+            <paper-checkbox on-change="_setCheckbox" id="pets-y">Yes</paper-checkbox>
+            <paper-checkbox on-change="_setCheckbox" id="pets-n">No</paper-checkbox>
+          </div>
+
+          <div id="gender-div">
+            <p>Gender:</p>
+            <paper-checkbox on-change="_setCheckbox" id="gender-y">Yes</paper-checkbox>
+            <paper-checkbox on-change="_setCheckbox" id="gender-n">No</paper-checkbox>
           </div>
 
           <!-- PEOPLE -->
         </template>
-        <paper-button raised>Filter!</paper-button>
+        <paper-button on-click="_filterAndDisplay" raised>Filter!</paper-button>
       </aside>
       <main>
         <template is="dom-if" if="{{!toggle}}">
@@ -128,9 +139,6 @@
       }
 
       paper-toggle-button {
-        /*display: block;
-        max-width : 200px;
-        margin: auto;*/
       }
 
       main {
@@ -190,21 +198,6 @@
   <script src="../../ajax/ajax.js"></script>
   <script>
     class MainPage extends Polymer.Element {
-
-      //not sure what this is, web components don t work in this way
-      // constructor() {
-      //   super();
-      //   console.log("Innconst");
-      //   doJSONRequest("GET", "/location", {}, {}, function(data) {
-      //     if(typeof data!=='undefined') {
-      //       console.log("called jsonReq");
-      //       this._deleteList(false);
-      //       let popListFun = this._popList.bind(this);
-      //       popListFun(data, false);
-      //     }
-      //   }.bind(this)
-      // );
-      // }
       static get is() {
         return 'main-page';
       }
@@ -219,7 +212,6 @@
             type: Array,
             value: () => []
           },
-          //what does toggle rappresent?
           toggle: {
             type: Boolean,
             value: false
@@ -227,22 +219,19 @@
         }
       }
 
-
       connectedCallback() {
         super.connectedCallback();
-        console.log("conncall");
         this.refresh()
       }
 
       refresh(){
-        doJSONRequest('GET', '/location', {}, null, (par) => {
-          //this.appartments = par
+        doJSONRequest('GET', '/location', {}, {}, (par) => {
           this._popList(par);
         })
       }
 
       _deleteList(flag) {
-        console.log(this);
+        console.log("in delets");
         if (flag) {
           this.splice("people", 0, this.people.length);
         } else {
@@ -251,7 +240,7 @@
       }
 
       _popList(data) {
-        //console.log(data);
+        this._deleteList(false);
         if (typeof data !== "undefined") {
           let address;
           let addFun = this._addAppartment.bind(this);
@@ -281,22 +270,13 @@
       }
 
       _addAppartment(iden, picsrc, name, desc, price, bath, bed,  size, tgs){
-        //first of all post the new appartament
-        //TODO : understand how to retrieve the data
-        // doJSONRequest('POST', '/location', {}, null, (par) => {
-        //this.appartments = par
-        //
-        // })
-        //this.refresh()
-
         this.push("appartments", {
           Id : iden,
           description : desc,
           images1 : picsrc,
           requirements : [
-            {description: "Smoker", control: tgs[0]},
-            {description: "Gender", control: Boolean, val : tgs[1]},
-            {description: "Price", control: Number, val : price},
+            {description: "Smoker", control:Boolean, val : tgs[0]},
+            {description: "Gender", control: String, val : tgs[1]},
             {description: "animals", control: Boolean, val : true}
           ],
           smarttitles : [
@@ -310,8 +290,6 @@
 
       }
 
-      //TODO
-      //Actually there still no model for people so......
       _addPeople(iden, picsrc, nam, description, tgs) {
         this.push("people", {
           id: iden,
@@ -321,11 +299,64 @@
           tags: tgs
         });
       };
+
+      _setCheckbox(e) {
+        let el = e.target;
+        let parent = el.parentElement;
+        let nextSibling = el.nextSibling.nextSibling;
+
+        if(nextSibling==null) {
+          el.previousSibling.previousSibling.checked = false;
+        }else {
+          nextSibling.checked = false;
+        }
     }
 
-    //TODO
-    //Query for only smokers ap
-    //And all the other parameters
+    _filterAndDisplay(e) {
+      let filter = {};
+      let popListFun = this._popList.bind(this);
+      let city = this.shadowRoot.querySelector("#city").value;
+      let checkboxes = this.shadowRoot.querySelectorAll("paper-checkbox");
+
+      if(city !== "All") {
+        filter.city = city;
+      }
+      for(let i=0; i<checkboxes.length; i++) {
+        if(checkboxes[i].checked) {
+          let splitArr = checkboxes[i].id.split("-");
+
+          if(splitArr[0]==="smokers") {
+            if(splitArr[1]==="y") {
+              filter.accept_smokers  = true;
+            }else if(splitArr[1]==="n") {
+              filter.accept_smokers  = false;
+            }
+          }
+
+          if(splitArr[0]==="pets") {
+            if(splitArr[1]==="y") {
+              filter.accept_animals  = true;
+            }else if(splitArr[1]==="n") {
+              filter.accept_animals = false;
+            }
+          }
+
+          if(splitArr[0]==="gender") {
+            if(splitArr[1]==="y") {
+              filter.gender = "Male";
+            }else if(splitArr[1]==="n") {
+              filter.gender = "Female";
+            }
+          }
+        }
+      }
+
+      console.log(filter);
+      doJSONRequest("POST", "/location/query", {}, filter, popListFun);
+    }
+  }
+
+
 
     customElements.define(MainPage.is, MainPage);
   </script>
