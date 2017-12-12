@@ -104,6 +104,35 @@
                 color: white !important;
                 width: 100%;
             }
+
+            .upload-btn-wrapper {
+                position: relative;
+                overflow: hidden;
+                display: inline-block;
+                padding-top: 30px;
+            }
+
+            .btn {
+                border: 1px solid rgb(218, 76, 76);
+                background-color: white;
+                padding: 8px 20px;
+                border-radius: 8px;
+                font-size: 16px;
+                font-family: var(--shared-serious-font);
+            }
+
+            .upload-btn-wrapper input[type=file] {
+                font-size: 100px;
+                position: absolute;
+                left: 0;
+                top: 0;
+                opacity: 0;
+            }
+
+            #uploadedpic{
+                padding: 20px 20px 0 20px;
+                max-width: 300px;
+            }
         </style>
 
 
@@ -174,12 +203,15 @@
                         <paper-checkbox id="femaleCheck" on-change="setGender" noink>Female</paper-checkbox>
                         <paper-checkbox id="maleCheck" on-change="setGender" noink>Male</paper-checkbox>
                         <paper-checkbox id="indifferentCheck" on-change="setGender" noink>Indifferent</paper-checkbox>
-                        
                     </div>
                 </div>
-                <input id="pictureInput" type="file" name="file" accept="image/*" on-change="pictureUpload">
+
+                <div class="upload-btn-wrapper">
+                    <button class="btn">Upload your picture(s) *</button>
+                    <input id="pictureInput" type="file" name="file" accept="image/*" on-change="pictureUpload">
+                </div>
                 <template is="dom-repeat" items="{{apartment.pictures}}" as="picture">
-                    <img src="{{picture}}" />
+                    <img id="uploadedpic" src="{{picture}}" />
                 </template>
                 <paper-button raised on-click="submitForm">Submit</paper-button>
 
