@@ -235,7 +235,7 @@
       }
 
       refresh(){
-        doJSONRequest('GET', 'http://localhost:3000/location', {}, null, (par) => {
+        doJSONRequest('GET', '/location', {}, {}, (par) => {
           //this.appartments = par
           this._popList(par);
         })
