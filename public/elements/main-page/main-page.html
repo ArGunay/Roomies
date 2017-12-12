@@ -235,7 +235,7 @@
       }
 
       refresh(){
-        doJSONRequest('GET', 'http://localhost:3000/location', {}, null, (par) => {
+        doJSONRequest('GET', '/location', {}, null, (par) => {
           //this.appartments = par
           this._popList(par);
         })
@@ -283,7 +283,7 @@
       _addAppartment(iden, picsrc, name, desc, price, bath, bed,  size, tgs){
         //first of all post the new appartament
         //TODO : understand how to retrieve the data
-        // doJSONRequest('POST', 'http://localhost:3000/location', {}, null, (par) => {
+        // doJSONRequest('POST', '/location', {}, null, (par) => {
         //this.appartments = par
         //
         // })
