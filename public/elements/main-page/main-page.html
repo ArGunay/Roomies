@@ -258,7 +258,7 @@
           data.forEach(function (e) {
             address = e.city + ", " + e.street + " " + e.buildingNumber;
             addFun(e._id, e.pictures[0], address, e.description, e.monthly_price, e.bathrooms,
-              e.bedrooms, 100, [e.accept_smokers, e.gender, e.accept_animals])
+              e.bedrooms, e.size, [e.accept_smokers, e.gender, e.accept_animals])
           });
         }
       }
