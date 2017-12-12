@@ -53,6 +53,6 @@ app.use(function(req, res, next) {
 const message = require('./routes/message/router.js')
 app.use("/message", message)
 
-app.listen(3000, () => console.log('listening on port 3000'))
+app.listen(8081, () => console.log('listening on port 8081'))
 
 module.exports.app = app;

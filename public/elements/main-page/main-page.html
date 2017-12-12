@@ -230,13 +230,12 @@
 
       connectedCallback() {
         super.connectedCallback();
-        console.log("conncall");
         this.refresh()
       }
 
       refresh(){
         doJSONRequest('GET', '/location', {}, null, (par) => {
-          //this.appartments = par
+          // this.appartments = par
           this._popList(par);
         })
       }

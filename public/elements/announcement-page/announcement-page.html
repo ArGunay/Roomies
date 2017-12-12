@@ -269,7 +269,7 @@
                     announcement:{
                         type: Object,
                         value:{
-                            Id: "", // ID OF ELEMENT SHOUlD GO HERE
+                            Id: "", // this is the id of the parsed element
                             title: "Announcement Title",
                             images1: "https://source.unsplash.com/_-JR5TxKNSo",
                             images2: "https://source.unsplash.com/oTJ92KUXHls",
@@ -353,6 +353,13 @@
 
             sendMessage(){
                 console.log("SendMEssaage")
+            }
+
+            deleteApt(id){
+                doJSONRequest('DELETE', 'http://localhost:3000/location', {}, null, (par) => {
+          //this.appartments = par
+          this._popList(par);
+        })
             }
         }
 
