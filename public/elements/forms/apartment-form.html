@@ -174,7 +174,7 @@
                         <paper-checkbox id="indifferentCheck" on-change="setGender" noink>Indifferent</paper-checkbox>
                     </div>
                 </div>
-                <input id="pictureInput" type="file" name="file" on-change="pictureUpload" multiple>
+                <input id="pictureInput" type="file" name="file" accept="image/*" on-change="pictureUpload">
                 <img src="{{apartment.pictures[0]}}" />
                 <paper-button raised on-click="submitForm">Submit</paper-button>
 
@@ -268,17 +268,14 @@
 
             getBase64(file, callback) {
                 var reader = new FileReader();
-                if (file.substr(-4) === ".png") {
-                    reader.readAsDataURL(file);
-                    reader.onload = function () {
-                        callback(null, reader.result);
-                    };
-                    reader.onerror = function (error) {
-                        callback(error);
-                    };
-                } else {
-                    throw "file provided is not of type png";
-                }
+
+                reader.readAsDataURL(file);
+                reader.onload = function () {
+                    callback(null, reader.result);
+                };
+                reader.onerror = function (error) {
+                    callback(error);
+                };
             }
         }
         customElements.define(ApartmentForm.is, ApartmentForm);

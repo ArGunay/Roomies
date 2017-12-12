@@ -59,11 +59,11 @@
             #requiring{
                 display: inline-block;
                 /* background-color: green; */
-                width: 200px;
+                width: 500px;
                 height: 50px;
                 vertical-align: middle;
                 font-size: 2em;
-                border: 1px solid black;
+                /* border: 1px solid black; */
                 border-radius: 5px;
                 display: flex;
                 flex-flow: column;
@@ -193,9 +193,13 @@
             <div class="container">
                 <div id="imagecontent">
                     <wa-carousel>
+                        {{carousellFunction(announcement.images1)}}
+
+
+                        <!-- <img src="{{announcement.images1}}" slot="slide">
+                        <img src="https://source.unsplash.com/photos/BL1ipcOKmmE" slot="slide">
                         <img src="{{announcement.images1}}" slot="slide">
-                        <img src="{{announcement.images2}}" slot="slide">
-                        <img src="{{announcement.images3}}" slot="slide">
+                        <img src="https://source.unsplash.com/photos/BL1ipcOKmmE" slot="slide"> -->
                     </wa-carousel>
 
                 </div>
@@ -203,6 +207,9 @@
                     <template is="dom-repeat" items="{{announcement.smarttitles}}">
                         <smart-recap recap={{item}}></smart-recap>
                     </template>
+
+
+
 
                 </div>
                 <div id="descriptionbox">
@@ -212,14 +219,16 @@
                         <br>
 
                         <template is="dom-repeat" items="{{announcement.requirements}}" as="requirement" >
-                            <div id="requiring">
-                                {{requirement.description}}:<iron-icon icon="icons:check"></iron-icon>
-                            </div>
+                            <template is="dom-if" if="{{checknull(requirement.val)}}">
+                                    <div id="requiring">
+
+                                        {{requirement.description}} : {{gender(requirement.val)}}
+                                    </div>
+                            </template>
+
                         </template>
                     </paper-dialog-scrollable>
-                    <label for="password">Delete Announcement</label>
-                    <input type="text" id="password" name="password" placeholder="Your password..">
-                    <input type="submit" value="Submit">
+
                 </div>
                 <div id="messagebox">
                     <div id="mailform">
@@ -235,6 +244,11 @@
                             <textarea type="text" id="tex" name="comment" placeholder="Your message.."></textarea>
 
                             <input type="submit" value="Submit">
+
+
+                            <paper-input placeholder="password"></paper-input>
+                            <paper-button raised on-click="_deleteAnnouncement">Delete Announcement</paper-button>
+
                         </form>
                     </div>
                 </div>
@@ -250,16 +264,10 @@
         class AnnouncementPage extends Polymer.Element{
             constructor(){
                 super();
-                console.log("The id of this element is : " + this._id)
-                console.log("The class of this element is : " + this.className)
-            }
-
-            connectedCallback(){
-                super.connectedCallback();
-                console.log("The id of this element is : " + this._id)
-                console.log("The class of this element is : " + this.className)
 
             }
+
+
             static get is(){
                 return "announcement-page";
             }
@@ -269,74 +277,6 @@
                     announcement:{
                         type: Object,
                         value:{
-                            Id: "", // ID OF ELEMENT SHOUlD GO HERE
-                            title: "Announcement Title",
-                            images1: "https://source.unsplash.com/_-JR5TxKNSo",
-                            images2: "https://source.unsplash.com/oTJ92KUXHls",
-                            images3: "https://source.unsplash.com/IEkMMvdZFc0",
-
-                            smarttitles:[
-                                {
-                                    img: "../../src/img/bed.svg",
-                                    val: 111,
-                                    title: "BEDROOM",
-
-                                },
-                                {
-                                    img:"../../src/img/blueprint.svg",
-                                    val: 20,
-                                    title: "ROOM SIZE"
-                                },
-                                {
-                                    img: "../../src/img/money.svg",
-                                    val: "134",
-                                    title: "RENT",
-                                    notify: true,
-                                },
-                                {
-                                    img: "../../src/img/toilet.svg" ,
-                                    val: 2,
-                                    title: "BATHROOMS",
-                                }],
-                                description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa repellat eligendi deleniti debitis, quia, dicta iure, fugit eius numquam aperiam dolorum? Odio commodi quae impedit natus debitis odit suscipit consectetur. Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero assumenda delectus est, laborum dolore natus quas architecto aperiam nulla omnis odit autem, ratione eveniet amet atque, voluptates eligendi dicta ullam! Lorem ipsum dolor sit amet consectetur!",
-                                requirements:[
-                                    {
-                                        description: "Smoker",
-                                        control: Boolean,
-                                    },
-                                    {
-                                        description: "Gender",
-                                        control: String,
-                                        val:"M"
-                                    },
-                                    {
-                                        description: "Price",
-                                        control: Number,
-                                        val: "1"
-                                    },
-                                    {
-                                        description: "animals",
-                                        control: Boolean,
-                                    },
-                                    /*
-                                    smoker:{
-                                        type: Boolean,
-                                        value: true,
-                                    },
-                                    gender: {
-                                        type: String,
-                                        value: "MALE"
-                                    },
-                                    price:{
-                                        type: Number,
-                                        value: "12",
-                                    },
-                                    animals:{
-                                        type: Boolean,
-                                        value: false,
-                                    }
-                                    */ // ADD OTHER PARAMS AND CONFORM WITH PASSED OBJ
-                                ]
 
                         }
                     }
@@ -354,6 +294,55 @@
             sendMessage(){
                 console.log("SendMEssaage")
             }
+
+            _display(e){
+                console.log("_display:", e);
+            }
+
+            _deleteAnnouncement(e){
+                console.log("DELETED", this.announcement.Id);
+                let url = `/location/${ this.announcement.Id}`;
+                doAJAXRequest('DELETE', url, {}, null, function(){
+                    console.log("ELEMENT DELETED")
+                }.bind(this))
+                this.$.dialog.close();
+
+            }
+
+
+            checknull(e){
+                return !(e == null);
+            }
+            gender(e){
+                console.log("ACCEPTED?", e);
+                if(typeof(e === "string") && e == "Male"){
+                    return "Male";
+                }
+                else if (typeof(e === "string") && e == "Female"){
+                    return "Female";
+                }
+                else if (typeof(e === "string") && e == "Indifferent"){
+                    return "Indifferent";
+                }
+                else if ((typeof(e === "boolean") && e == true))
+                {
+                    return "Accepted"
+                }
+                else if ((typeof(e === "boolean") && e == false))
+                {
+                    return "Not accepted"
+                }
+            }
+
+            carousellFunction(images){
+
+                console.log('<img src="{{'+images+'}}"slot="slide">')
+                
+            }
+
+
+
+
         }
 
 

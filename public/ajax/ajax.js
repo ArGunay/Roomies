@@ -41,7 +41,7 @@ function doAJAXRequest(method, url, headers, data, callback) {
 }
 
 function doJSONRequest(method, url, headers, data, callback) {
-
+    console.log(data)
 
     if (typeof data !== 'object') {
         if (typeof data === "string") {

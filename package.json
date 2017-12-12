@@ -6,6 +6,7 @@
   "author": "Jason Naldi <naldij@usi.ch>, Niccolò Zuppichini <zuppin@usi.ch>",
   "license": "MIT",
   "dependencies": {
+    "all": "^0.0.0",
     "express": "^4.16.2",
     "mongoose": "^4.13.6"
   }

@@ -38,10 +38,21 @@ app.use("/roomie", roomie);
 
 //     res.sendStatus(err.status || 500);})
 
+// Allow Cross-Origin Resource Sharing, otherwise requests are refused (on Chrome).
+// https://stackoverflow.com/questions/32500073/request-header-field-access-control-allow-headers-is-not-allowed-by-itself-in-pr
+app.use(function(req, res, next) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Allow-Methods", "GET,DELETE,POST,PUT");
+    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+    next();
+});
+
+
 
 const message = require('./routes/message/router.js')
 app.use("/message", message)
 
-app.listen(3000, () => console.log('listening on port 3000'))
+app.listen(8081, () => console.log('listening on port 8081'))
 
 module.exports.app = app;
