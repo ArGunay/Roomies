@@ -79,7 +79,8 @@
                 {{person.description}}
               </div>
               <div class="contact-buttons">
-                <roomie-element></roomie-element>
+                <!-- <roomie-element></roomie-element> -->
+                <announcement-page announcement="{{person}}"></announcement-page>
               </div>
             </paper-card>
           </template>
@@ -221,36 +222,57 @@
 
       connectedCallback() {
         super.connectedCallback();
-        this.refresh()
+        // refreshLocation();
+        // refreshRoomies();
+        this._refreshRoomie();
+        this._refreshLocation();
       }
 
-      refresh(){
+      _refreshLocation(){
+        // console.log(document.querySelector("main-page"));
         doJSONRequest('GET', '/location', {}, {}, (par) => {
-          this._popList(par);
+          this._popListLocation(par);
+        })
+      }
+
+      _refreshRoomie(){
+        // console.log(document.querySelector("main-page"));
+        doJSONRequest('GET', '/location', {}, {}, (par) => {
+          this._popListRoomie(par);
         })
       }
 
       _deleteList(flag) {
-        console.log("in delets");
         if (flag) {
-          this.splice("people", 0, this.people.length);
-        } else {
           this.splice("appartments", 0, this.appartments.length);
+        } else {
+          this.splice("people", 0, this.people.length);
         }
       }
 
-      _popList(data) {
-        this._deleteList(false);
-        if (typeof data !== "undefined") {
-          let address;
-          let addFun = this._addAppartment.bind(this);
-          data.forEach(function (e) {
-            address = e.city + ", " + e.street + " " + e.buildingNumber;
-            addFun(e._id, e.pictures[0], address, e.description, e.monthly_price, e.bathrooms,
-              e.bedrooms, e.size, [e.accept_smokers, e.gender, e.accept_animals])
-          });
-        }
+      _popListLocation(data) {
+
+        this._deleteList(true);
+          if (typeof data !== "undefined") {
+            // let address;
+            let addFun = this._addLocation.bind(this);
+            data.forEach(function (e) {
+              // address = e.city + ", " + e.street + " " + e.buildingNumber;
+              addFun(e)
+            });
+          }
+    }
+
+    _popListRoomie(data) {
+      if (typeof data !== "undefined") {
+        // let address;
+        let addFun = this._addRoomie.bind(this);
+        data.forEach(function (e) {
+          // address = e.city + ", " + e.street + " " + e.buildingNumber;
+          addFun(e)
+        });
       }
+    }
 
       _setActive(e) {
         let el = e.path[0];
@@ -269,36 +291,46 @@
         el.className = "active";
       }
 
-      _addAppartment(iden, picsrc, name, desc, price, bath, bed,  size, tgs){
+      _addLocation(data) {
         this.push("appartments", {
-          Id : iden,
-          description : desc,
-          images1 : picsrc,
+          Id : data._id,
+          description : data.description,
+          images1 : data.pictures[0],
           requirements : [
-            {description: "Smoker", control:Boolean, val : tgs[0]},
-            {description: "Gender", control: String, val : tgs[1]},
-            {description: "animals", control: Boolean, val : true}
+            {description: "Smokers", control:Boolean, val : data.accept_smokers},
+            {description: "Preffered gender", control: String, val : data.gender},
+            {description: "Pets", control: Boolean, val : data.accept_animals}
           ],
           smarttitles : [
-            {img: "../../src/img/bed.svg", val: bed , title: "BEDROOM"},
-            {img: "../../src/img/blueprint.svg", val: size, title: "ROOM SIZE"},
-            {img: "../../src/img/money.svg", val: price, title: "RENT", notify: true},
-            {img: "../../src/img/toilet.svg", val: bath, title: "BATHROOMS"}
+            {img: "../../src/img/bed.svg", val: data.bedrooms , title: "BEDROOM"},
+            {img: "../../src/img/blueprint.svg", val: data.size, title: "ROOM SIZE"},
+            {img: "../../src/img/money.svg", val: data.monthly_price, title: "RENT", notify: true},
+            {img: "../../src/img/toilet.svg", val: data.bathrooms, title: "BATHROOMS"}
           ],
-          title : name
+          title : data.city + ", " + data.street + " " + data.buildingNumber,
+          type : true
           });
-
       }
-
-      _addPeople(iden, picsrc, nam, description, tgs) {
-        this.push("people", {
-          id: iden,
-          picSrc: picsrc,
-          name: nam,
-          desc: description,
-          tags: tgs
-        });
-      };
+      _addRoomie(data) {
+        this.push("appartments", {
+          Id : data._id,
+          description : data.description,
+          images1 : data.pictures[0],
+          requirements : [
+            {description: "Is a smoker", control:Boolean, val : data.accept_smokers},
+            {description: "Gender", control: String, val : data.gender},
+            {description: "Has a pet", control: Boolean, val : data.accept_animals}
+          ],
+          smarttitles : [
+            {img: "../../src/img/money.svg", val: data.max_price , title: "RENT BUDGET"},
+            {img: "../../src/img/blueprint.svg", val: data.age, title: "AGE"},
+            {img: "../../src/img/money.svg", val: data.monthly_price, title: "RENT", notify: true},
+            {img: "../../src/img/toilet.svg", val: data.bathrooms, title: "BATHROOMS"}
+          ],
+          title : e.city + ", " + e.street + " " + e.buildingNumber,
+          type: false
+          });
+      }
 
       _setCheckbox(e) {
         let el = e.target;
@@ -310,11 +342,13 @@
         }else {
           nextSibling.checked = false;
         }
-    }
+      }
 
     _filterAndDisplay(e) {
       let filter = {};
-      let popListFun = this._popList.bind(this);
+      let toggle = this.toggle;
+      let popListFunLoc = this._popListLocation.bind(this);
+      let popListFunRom = this._popListRoomie.bind(this);
       let city = this.shadowRoot.querySelector("#city").value;
       let checkboxes = this.shadowRoot.querySelectorAll("paper-checkbox");
 
@@ -351,12 +385,18 @@
         }
       }
 
-      console.log(filter);
-      doJSONRequest("POST", "/location/query", {}, filter, popListFun);
+      if(this.toggle) {
+        // refreshLocation();
+        doJSONRequest("POST", "/location/query", {}, filter, function(e) {
+          popListFunLoc(e);
+        });
+      }else {
+        doJSONRequest("POST", "/roomie/query", {}, filter, function(e) {
+          popListFunRom(e);
+        });
+      }
     }
   }
-
-
 
     customElements.define(MainPage.is, MainPage);
   </script>

@@ -184,7 +184,7 @@
 
 
 
-
+  <!-- <template is="dom-if" if="{{announcement.type}}"> -->
     <paper-button raised on-click="openDialog">more</paper-button>
     <paper-dialog id="dialog">
     <section>
@@ -206,10 +206,6 @@
                     <template is="dom-repeat" items="{{announcement.smarttitles}}">
                         <smart-recap recap={{item}}></smart-recap>
                     </template>
-
-
-
-
                 </div>
                 <div id="descriptionbox">
                     <div id="descriptiontitle">Description</div>
