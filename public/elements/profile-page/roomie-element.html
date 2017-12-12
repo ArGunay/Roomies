@@ -42,24 +42,18 @@
       }
 
       .person-quick-info {
-        width: 106vw;
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: space-around;
         margin-bottom: 50px;
       }
 
-      .imgcontainer {
-        width: 20vw;
-        display: flex;
-        justify-content: center;
-      }
-
       .profile-img {
         border: 1px solid #404040;
         border-radius: 10px;
-        max-width: 700px;
-        max-height: 450px;
+        max-width: 600px;
+        max-height: 400px;
       }
 
       .about-tags {
@@ -112,10 +106,7 @@
         <paper-dialog-scrollable>
           <div class="person-listing">
             <div class="person-quick-info">
-              <div class="imgcontainer">
-                <!-- <img class="profile-img" src="https://images.unsplash.com/photo-1506055306-3b99905bc598?auto=format&fit=crop&w=934&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D"> -->
-                <img class="profile-img" src="https://images.unsplash.com/photo-1493666438817-866a91353ca9?auto=format&fit=crop&w=2249&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D">
-              </div>
+                <img class="profile-img" src="{{myRoomie.picture}}">
               <div class="person-tag">
                 <template is="dom-repeat" items="{{myRoomie.stats}}">
                   <roomie-stat stat="{{item}}"></roomie-stat>
@@ -160,13 +151,10 @@
               age: 28,
               gender: "Female",
               stats: [{ title: "Rent Budget", value: "$350pw", img: "../../src/img/rent.svg" }, { title: "Preferred stay length", value: "1 year +", img: "../../src/img/clock.svg" }, { title: "Move date", value: "January 30th", img: "../../src/img/luggage.svg" }],
-              tags: ["Working full time", "Student", "Non-smoker", "No pets"]
+              tags: ["Working full time", "Student", "Non-smoker", "No pets"],
+              picture: "../../src/img/sarah.jpeg"
             }
 
-          },
-          roomieId: {
-            type: String,
-            value: "dialog"
           }
         }
       }
