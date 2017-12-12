@@ -12,9 +12,28 @@ const config = require("../../config.js")
 require('../../models/Location.js');
 const Location = mongoose.model("Location");
 
-//Get all the locations
+//Get all the locations regarding the filter
 router.get('/', (req, res) => {
     Location.find({}, (err, results) => {
+        if (err) {
+            console.log(err);
+            res.status(500).end();
+        } else {
+
+            res.status(200);
+            res.json(results);
+        }
+    });
+});
+
+
+//following stackoverflow suggestion:
+//https://stackoverflow.com/questions/978061/http-get-with-request-body
+//it should be avoided to put data in a get request, thus we can use a post request where the body is the filter
+//Get all the locations regarding the filter
+router.post('/query', (req, res) => {
+    const filter = req.body
+    Location.find(filter, (err, results) => {
         if (err) {
             console.log(err);
             res.status(500).end();
@@ -31,7 +50,6 @@ router.get('/', (req, res) => {
 //Get the location with the given id
 router.get('/:id', (req, res) => {
     const id = req.params.id
-
     Location.findOne({_id: id}, (err, results) => {
         if (err) {
             console.log(err);
