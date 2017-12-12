@@ -193,12 +193,13 @@
             <div class="container">
                 <div id="imagecontent">
                     <wa-carousel>
-                        <!-- {{myFunction(announcement.images)}} -->
+                        {{carousellFunction(announcement.images1)}}
 
 
+                        <!-- <img src="{{announcement.images1}}" slot="slide">
+                        <img src="https://source.unsplash.com/photos/BL1ipcOKmmE" slot="slide">
                         <img src="{{announcement.images1}}" slot="slide">
-                        <img src="{{announcement.images2}}" slot="slide">
-                        <img src="{{announcement.images3}}" slot="slide">
+                        <img src="https://source.unsplash.com/photos/BL1ipcOKmmE" slot="slide"> -->
                     </wa-carousel>
 
                 </div>
@@ -305,15 +306,6 @@
             }
 
 
-            // _deleteBookmark(element){
-            // let url = `http://localhost:3000/${ element.model.fav._id}/`;
-            //     doAJAXRequest('DELETE', url, {}, null, function(){
-            // }.bind(this))
-
-            // doJSONRequest('GET', 'http://localhost:3000/favorites', {}, null, function(f){
-            //     this.favourites = f;
-            // }.bind(this));}
-
             checknull(e){
                 return !(e == null);
             }
@@ -325,6 +317,9 @@
                 else if (typeof(e === "string") && e == "Female"){
                     return "Female";
                 }
+                else if (typeof(e === "string") && e == "Indifferent"){
+                    return "Indifferent";
+                }
                 else if ((typeof(e === "boolean") && e == true))
                 {
                     return "Accepted"
@@ -333,6 +328,12 @@
                 {
                     return "Not accepted"
                 }
+            }
+
+            carousellFunction(images){
+
+                console.log('<img src="{{'+images+'}}"slot="slide">')
+                
             }
 
 

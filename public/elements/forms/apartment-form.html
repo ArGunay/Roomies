@@ -13,7 +13,8 @@
 
             input[type=text],
             select,
-            textarea {
+            textarea,
+            #password {
                 width: 100%;
                 padding: 15px 20px;
                 margin: 8px 0;
@@ -113,7 +114,7 @@
             <form id="mailform" enctype="multipart/form-data">
 
                 <div class="doubles">
-                    <label for="email" >E-Mail *</label>
+                    <label for="email" class="labelgroup">E-Mail *</label>
                     <input type="text" id="email" name="mail" placeholder="Your E-mail.." value="{{apartment.administrator::input}}">
                     <label for="pswrd" class="labelgroup">Your password *</label>
                     <input type="password" id="password" name="psw" placeholder="Choose your super-secret password" value="{{apartment.deleteSecret::input}}">
@@ -157,13 +158,15 @@
                 <div class="doubles">
                     <div class="checks">
                         <label for="email">Smokers Allowed</label>
-                        <paper-checkbox id="smokersYes" on-change="setSmokers" noink>Yes</paper-checkbox>
+                        <paper-checkbox id="smokersYes" checked="{{apartment.accept_smokers::change}}" noink>Yes</paper-checkbox>
+                        <paper-checkbox id="smokersNo" checked="{{!apartment.accept_smokers::change}}" noink>No</paper-checkbox>
                         <!-- <paper-checkbox value="{{apartment.accept_smokers}}" noink>No</paper-checkbox> -->
                     </div>
 
                     <div class="checks">
                         <label for="text">Pets Allowed</label>
-                        <paper-checkbox id="petsYes" on-change="setPets" noink>Yes</paper-checkbox>
+                        <paper-checkbox id="petsYes" checked="{{apartment.accept_animals::change}}" noink>Yes</paper-checkbox>
+                        <paper-checkbox id="petsNo" checked="{{!apartment.accept_animals::change}}" noink>No</paper-checkbox>
                     </div>
 
                     <div class="checks">
@@ -171,10 +174,13 @@
                         <paper-checkbox id="femaleCheck" on-change="setGender" noink>Female</paper-checkbox>
                         <paper-checkbox id="maleCheck" on-change="setGender" noink>Male</paper-checkbox>
                         <paper-checkbox id="indifferentCheck" on-change="setGender" noink>Indifferent</paper-checkbox>
+                        
                     </div>
                 </div>
-                <input id="pictureInput" type="file" name="file" on-change="pictureUpload">
-                <img src="{{apartment.pictures[0]}}" />
+                <input id="pictureInput" type="file" name="file" accept="image/*" on-change="pictureUpload">
+                <template is="dom-repeat" items="{{apartment.pictures}}" as="picture">
+                    <img src="{{picture}}" />
+                </template>
                 <paper-button raised on-click="submitForm">Submit</paper-button>
 
             </form>
@@ -192,7 +198,7 @@
                     apartment: {
                         type: Object,
                         value: {
-                            administrator: 'your_email@gmail.com',
+                            administrator: '',
                             deleteSecret: '',
                             city: '',
                             postalCode: '',
@@ -232,54 +238,34 @@
                 }
             }
 
-            setSmokers(event) {
-                if (event.target.checked) {
-                    this.apartment.accept_smokers = true;
-                } else {
-                    this.apartment.accept_smokers = false;
-                }
-            }
-
-            setPets(event) {
-                if (event.target.checked) {
-                    this.apartment.accept_animals = true;
-                } else {
-                    this.apartment.accept_animals = false;
-                }
-            }
-
             submitForm() {
                 console.log('submitting', this.apartment);
 
                 doJSONRequest('POST', '/location', {}, this.apartment, function (data) {
                     console.log('callback!', data);
                 });
-
-
             }
 
             pictureUpload(event) {
                 // console.log('I\'m triggered', event, event.target, this.$.pictureInput);
                 this.getBase64(this.$.pictureInput.files[0], function (err, base64) {
                     if (!err) {
-                        this.apartment.pictures.push(base64);
+                        //observable push
+                        this.push('apartment.pictures', base64);
                     }
                 }.bind(this))
             }
 
             getBase64(file, callback) {
                 var reader = new FileReader();
-                if (file.substr(-4) === ".png") {
-                    reader.readAsDataURL(file);
-                    reader.onload = function () {
-                        callback(null, reader.result);
-                    };
-                    reader.onerror = function (error) {
-                        callback(error);
-                    };
-                } else {
-                    throw "file provided is not of type png";
-                }
+
+                reader.readAsDataURL(file);
+                reader.onload = function () {
+                    callback(null, reader.result);
+                };
+                reader.onerror = function (error) {
+                    callback(error);
+                };
             }
         }
         customElements.define(ApartmentForm.is, ApartmentForm);
