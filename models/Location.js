@@ -11,8 +11,8 @@ const LocationSchema = exports.LocationSchema = new Schema({
     },
 
     deleteSecret: {
-        required: true
         type: String,
+        required: true
     },
 
     city: {
