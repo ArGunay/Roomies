@@ -102,12 +102,14 @@ router.put('/:id', (req, res) => {
 //remove a listing
 router.delete('/:id', (req, res) => {
     const id = req.params.id;
-    const pass = req.body;
+    const pass = req.body.deleteSecret;
+    console.log(pass)
     //update the post with the given id 
     Location.remove({_id: id, deleteSecret: pass}, (err, results) => {
         if (err) {
-            next(err);
-        } else {
+            console.log(err);
+            res.status(500).end();
+                } else {
 
             res.status(200);
             res.json(results);

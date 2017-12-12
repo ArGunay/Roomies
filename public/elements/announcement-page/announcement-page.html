@@ -302,7 +302,7 @@
             _deleteAnnouncement(e){
                 console.log("DELETED", this.announcement.Id);
                 let url = `/location/${ this.announcement.Id}`;
-                doAJAXRequest('DELETE', url, {}, null, function(){
+                doJSONRequest('DELETE', url, {}, {deleteSecret : 1234}, function(){
                     console.log("ELEMENT DELETED")
                 }.bind(this))
                 this.$.dialog.close();
