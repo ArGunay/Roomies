@@ -13,7 +13,8 @@
 
             input[type=text],
             select,
-            textarea {
+            textarea,
+            #password {
                 width: 100%;
                 padding: 15px 20px;
                 margin: 8px 0;
@@ -113,7 +114,7 @@
             <form id="mailform" enctype="multipart/form-data">
 
                 <div class="doubles">
-                    <label for="email" >E-Mail *</label>
+                    <label for="email" class="labelgroup">E-Mail *</label>
                     <input type="text" id="email" name="mail" placeholder="Your E-mail.." value="{{apartment.administrator::input}}">
                     <label for="pswrd" class="labelgroup">Your password *</label>
                     <input type="password" id="password" name="psw" placeholder="Choose your super-secret password" value="{{apartment.deleteSecret::input}}">
@@ -173,7 +174,7 @@
                         <paper-checkbox id="indifferentCheck" on-change="setGender" noink>Indifferent</paper-checkbox>
                     </div>
                 </div>
-                <input id="pictureInput" type="file" name="file" on-change="pictureUpload">
+                <input id="pictureInput" type="file" name="file" on-change="pictureUpload" multiple>
                 <img src="{{apartment.pictures[0]}}" />
                 <paper-button raised on-click="submitForm">Submit</paper-button>
 
@@ -254,8 +255,6 @@
                 doJSONRequest('POST', '/location', {}, this.apartment, function (data) {
                     console.log('callback!', data);
                 });
-
-
             }
 
             pictureUpload(event) {
