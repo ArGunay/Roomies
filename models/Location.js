@@ -39,21 +39,25 @@ const LocationSchema = exports.LocationSchema = new Schema({
 
     monthly_price: {
         type: Number,
+        min: 0
         required: true
     },
 
     size: {
-      type: Number,
-      required: true
+        type: Number,
+        min: 1
+        required: true
     },
 
     bedrooms: {
         type: Number,
+        min: 1,
         required: true
     },
 
     bathrooms: {
         type: Number,
+        min: 1,
         required: true
     },
 
