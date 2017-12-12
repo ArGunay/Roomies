@@ -21,8 +21,11 @@ app.use(bodyParser.json());    // parse application/json
 app.use(bodyParser.text());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const location = require('./routes/location/router.js')
-app.use("/location", location)
+const location = require('./routes/location/router.js');
+const roomie = requre("./routes/roomie/router");
+
+app.use("/location", location);
+app.use("/roomie", roomie);
 
 // app.use("/message", message)
 

@@ -6,7 +6,9 @@
 const mongoose = require('mongoose');
 
 require("./Location");
+requre("./Roomie");
 
 module.exports = {
-    "Location": mongoose.model("Location")
+    "Location": mongoose.model("Location"),
+    "Roomie": mongoose.model("Roomie")
 };
