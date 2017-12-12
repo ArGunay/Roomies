@@ -20,16 +20,16 @@ const RoomieSchema = exports.RoomieSchema = new Schema({
     },
     max_price: {
         type: Number,
-        requred: true  
+        requred: true
     },
     description:{
-        type: String, 
+        type: String,
     },
     smoker:{
         type: Boolean,
     },
-    accept_animals: { 
-        type: Boolean 
+    accept_animals: {
+        type: Boolean
     },
     picture:[{
         type: String,
@@ -41,4 +41,4 @@ const RoomieSchema = exports.RoomieSchema = new Schema({
 
 });
 
-mongose.model('Roomie',RoomieSchema);
+mongoose.model('Roomie',RoomieSchema);
