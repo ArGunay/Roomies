@@ -1,105 +1,38 @@
-const express = require('express')
-const router = express.Router()
+// TODO:
+//  - correct status codes
 
+const express = require('express');
 const mongoose = require('mongoose');
 
+require('../../models/Roomie.js');
+const Roomie = mongoose.model("Location");
 
-const config = require("../../config.js")
-require("../../models/Roomie.js")
+const router = express.Router();
 
-//import the model
-const Roomie = mongoose.model("Roomie");
+const shared = require('../shared.js');
 
-
-
-router.get("/", (req,res) =>{
-  console.log("In roomie router")
-    Roomie.find({}, (err,response) => {
-        if(err){
-            console.log(err);
-            res.status(500).end();
-
-        }else{
-          console.log(response)
-            res.status(200);
-            res.json(response);
-        }
-    })
-})
-
+//Get all the locations regarding the filter
+router.get('/', (req, res) => {
+    shared.getall(Roomie, req, res);
+});
 
 router.post('/query', (req, res) => {
-    const filter = req.body
-    Roomie.find(filter, (err, results) => {
-        if (err) {
-            console.log(err);
-            res.status(500).end();
-        } else {
-
-            res.status(200);
-            res.json(results);
-        }
-    });
+    shared.query(Roomie, req, res);
 });
 
-
-
+//Get the location with the given id
 router.get('/:id', (req, res) => {
-    const id = req.params.id
-    Roomie.findOne({_id: id}, (err, results) => {
-        if (err) {
-            console.log(err);
-            res.status(500).end();
-            //return next(err)
-        } else {
-            if(!results) return next(err)
-            res.status(200);
-            res.json(results);
-        }
-    });
+    shared.getbyid(Roomie, req, res);
 });
-
-
 
 router.post('/', (req, res) => {
-    if(!req.is("application/json"))   return res.sendStatus(400)
-     var toSave = new Roomie(req.body)
-    toSave.save((err, newLocation)=>{
-        console.log("bella")
-        if(err){
-            console.log("THIS ERR",err)
-            res.status(500).end();
-        } else{
-            res.status(200)
-            res.json(newLocation)
-        }
-    })
-
+    shared.post(Roomie, req, res);
 });
 
-router.put('/:id', (req, res) => {
-    const id = req.params.id;
-    const pass = req.body;
-    Roomie.update({_id: id, deleteSecret: pass}, req.body, (err, results) => {
-        if (err) {
-            console.log(err);
-            res.status(500).end();
-        } else {
-
-            res.status(200);
-            res.json(results);
-        }
-    });
+//remove a listing
+router.delete('/:id', (req, res) => {
+    shared.del(Roomie, req, res);
 });
-
-
-
-
-
-
-
-
-
 
 
 module.exports = router
