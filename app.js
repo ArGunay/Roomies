@@ -23,6 +23,16 @@ const roomie = require("./routes/roomie/router");
 
 app.use("/location", location);
 app.use("/roomie", roomie);
+// app.use(function (err, req, res, next) {
+//   console.log("next is called")
+//     res.status(err.status || 500);
+//     console.log(err.status)
+
+//     res.sendStatus(err.status || 500);})
+
+
+const server = app.listen(config.port, () => console.log('listening on port 8081'))
+
 const io = require('socket.io').listen(server);
 
 io.on('connection', function(socket){
@@ -35,14 +45,5 @@ io.on('connection', function(socket){
     });
 });
 
-// app.use(function (err, req, res, next) {
-//   console.log("next is called")
-//     res.status(err.status || 500);
-//     console.log(err.status)
-
-//     res.sendStatus(err.status || 500);})
-
-
-app.listen(config.port, () => console.log('listening on port 8081'))
 
 module.exports.app = app;
