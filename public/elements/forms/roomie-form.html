@@ -267,12 +267,13 @@
             }
 
             submitForm() {
-                console.log('submitting', this.roomie);
+                // console.log('submitting', this.roomie);
+                let sock = this.socket;
 
                 doJSONRequest('POST', '/roomie', {}, this.roomie, function (data) {
                     // console.log('callback!', data);
                     window.location.replace("/index.html");
-                    this.socket.emit("newApartment");
+                    sock.emit("newApartment"); 
                 });
             }
 
