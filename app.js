@@ -56,7 +56,7 @@ app.post('/email', function (req, res, next) {
     app.mailer.send('email', {
       to: req.body.address, 
       subject: req.body.subject, 
-      message: "diocane bastardo"
+      message: req.body.message
     }, function (err) {
       if (err) {
         console.log(err);
