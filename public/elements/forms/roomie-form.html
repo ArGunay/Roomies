@@ -76,7 +76,6 @@
             .checks {
                 border: 1px solid rgb(218, 76, 76);
                 border-radius: 4px;
-                width: 38vw;
             }
 
             .description,
@@ -129,7 +128,7 @@
                 opacity: 0;
             }
 
-            #uploadedpic{
+            #uploadedpic {
                 padding: 20px 20px 0 20px;
                 max-width: 300px;
             }
@@ -152,8 +151,8 @@
                 <div class="doubles">
                     <label for="text" class="labelgroup">Age *</label>
                     <input type="text" name="age" placeholder="Your age" value="{{roomie.age::input}}">
-                    <label for="text" class="labelgroup">Gender</label>
-                    <input type="text" name="gender" placeholder="Your gender" value="{{roomie.gender::input}}">
+                    <label for="pswrd" class="labelgroup">Password *</label>
+                    <input type="password" id="password" name="psw" placeholder="Choose your super-secret password" value="{{roomie.deleteSecret::input}}">
                 </div>
 
                 <div class="doubles">
@@ -181,6 +180,12 @@
                         <paper-checkbox checked="{{roomie.accept_animals::change}}" noink>Yes</paper-checkbox>
                         <paper-checkbox checked="{{!roomie.accept_animals::change}}" noink>No</paper-checkbox>
                     </div>
+
+                    <div class="checks">
+                        <label for="text">Gender</label>
+                        <paper-checkbox id="femaleCheck" on-change="setGender" noink>Female</paper-checkbox>
+                        <paper-checkbox id="maleCheck" on-change="setGender" noink>Male</paper-checkbox>
+                    </div>
                 </div>
 
                 <div class="upload-btn-wrapper">
@@ -207,6 +212,7 @@
                     roomie: {
                         type: Object,
                         value: {
+                            deleteSecret: '',
                             name: '',
                             surname: '',
                             age: 18,
@@ -225,10 +231,25 @@
                 super();
             }
 
+            setGender(event) {
+                if (event.target.checked) {
+                    var elem = event.path[0];
+                    let gender = elem.innerHTML;
+                    this.roomie.gender = gender;
+                    this.$.femaleCheck.checked = gender == 'Female';
+                    this.$.maleCheck.checked = gender == 'Male';
+                } else {
+                    this.roomie.gender = '';
+                    this.$.femaleCheck.checked = false;
+                    this.$.maleCheck.checked = false;
+                }
+            }
+
             submitForm() {
                 console.log('submitting', this.roomie);
 
                 doJSONRequest('POST', '/roomie', {}, this.roomie, function (data) {
+                    // console.log('callback!', data);
                     window.location.replace("/index.html");
                 });
             }

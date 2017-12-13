@@ -5,7 +5,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 require('../../models/Roomie.js');
-const Roomie = mongoose.model("Location");
+const Roomie = mongoose.model("Roomie");
 
 const router = express.Router();
 
