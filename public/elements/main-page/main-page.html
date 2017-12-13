@@ -224,21 +224,23 @@
         let funLoc = this._refreshLocation.bind(this);
         let funRom = this._refreshRoomie.bind(this);
         this.socket = io();
-        this.socket.on('newRoomie', funRom);
-        this.socket.on('newApartment', funLoc);
-        // this.socket.on("deleteApartment",funLoc);
+        // if(! toggle) {
+          this.socket.on('newRoomie', funRom);
+        // }else {
+          this.socket.on('newApartment', funLoc);
+        // }
         this._refreshRoomie();
       }
 
       _refreshLocation(){
-        // console.log(document.querySelector("main-page"));
+        console.log("refreshing location");
         doJSONRequest('GET', '/location', {}, {}, (par) => {
           this._popListLocation(par);
         })
       }
 
       _refreshRoomie(){
-        console.log("In roomie refresh")
+        console.log("refreshing roomie");
         doJSONRequest('GET', '/roomie', {}, {}, (par) => {
           this._popListRoomie(par);
         })
@@ -277,8 +279,6 @@
     }
 
       _setActive(e) {
-        console.log(this);
-        console.log(this.shadowRoot);
         let el = e.path[0];
         if (el.className === "active") {
           return;
@@ -327,7 +327,6 @@
           images : data.picture,
           requirements : [
             {description: "Is a smoker", control:Boolean, val : data.smoker},
-            // {description: "Gender", control: String, val : data.gender},
             {description: "Has a pet", control: Boolean, val : data.accept_animals}
           ],
           smarttitles : [
@@ -367,17 +366,14 @@
       }
 
       price = parseInt(price);
-      console.log(price);
-      console.log(typeof price === 'string');
-      console.log(typeof price === 'number');
       if((typeof price === 'number') && (! (Number.isNaN(price)))) {
+        price = price+1;
         filter.monthly_price = {$gt: 0, $lt: price };
       }
 
       for(let i=0; i<checkboxes.length; i++) {
         if(checkboxes[i].checked) {
           let splitArr = checkboxes[i].id.split("-");
-
           if(splitArr[0]==="smokers") {
             if(splitArr[1]==="y") {
               filter.accept_smokers  = true;
@@ -417,7 +413,8 @@
         age = parseInt(age);
 
         if((typeof age === 'number') && (! (Number.isNaN(age)))) {
-              filter.age = {$gt: 0, $lt: age };
+          age = age+1;
+          filter.age = {$gt: 0, $lt: age };
         }
 
         for(let i=0; i<checkboxes.length; i++) {

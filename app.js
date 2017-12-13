@@ -5,7 +5,7 @@ const path = require('path');
 
 const mongoose = require('mongoose');
 
-mongoose.connect(config.mongoUrl + config.mongoDbName, { 
+mongoose.connect(config.mongoUrl + config.mongoDbName, {
     useMongoClient: true
 });
 
@@ -36,17 +36,16 @@ const server = app.listen(config.port, () => console.log('listening on port 8081
 const io = require('socket.io').listen(server);
 
 io.on('connection', function(socket){
+  console.log("connected")
     socket.on('newRoomie', function(){
+      console.log("In newRoomie serverside")
         socket.broadcast.emit("newRoomie", {});
     });
 
     socket.on('newApartment', function(){
+      console.log("In newap serverside")
         socket.broadcast.emit("newApartment", {});
     });
-
-    socket.on("deleteApartment", function(){
-        socket.broadcast.emit("deleteApartment");
-    })
 });
 
 
