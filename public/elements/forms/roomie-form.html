@@ -229,7 +229,7 @@
                 console.log('submitting', this.roomie);
 
                 doJSONRequest('POST', '/roomie', {}, this.roomie, function (data) {
-                    console.log('callback!', data);
+                    window.location.replace("/index.html");
                 });
             }
 

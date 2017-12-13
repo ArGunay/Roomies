@@ -274,7 +274,7 @@
                 console.log('submitting', this.apartment);
 
                 doJSONRequest('POST', '/location', {}, this.apartment, function (data) {
-                    console.log('callback!', data);
+                    window.location.replace("/index.html");
                 });
             }
 
