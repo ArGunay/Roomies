@@ -264,7 +264,7 @@
         class AnnouncementPage extends Polymer.Element{
             connectedCallback(){
                 super.connectedCallback();
-                console.log("conncall");
+                // console.log("conncall");
                 // console.log(this);
                 // console.log(this.shadowRoot);
                 this.announcement.sr = this.shadowRoot;
@@ -282,6 +282,7 @@
 
                         }
                     }
+                    
 
 
                 }
@@ -358,28 +359,12 @@
 
             carousellFunction(images){
                 
-                // let sr = this.shadowRoot;
-                // console.log(this.announcement.sr);
-                console.log("sr",this.shadowRoot)
-
                 images.forEach((element) => {
-                    // console.log("holacomova?", element)
-                    // console.log(sr.querySelector("#car"))   ;
-                    
-                    // .querySelector("#car"));
-                    // Polymer.dom("wa-carousell").node.innerHTML = '<img src="'+element+'" slot="slide">'
-                        // '<imgsrc="'+element+'" slot="slide"> \n'
-                        //  this.shadowRoot.querySelector("#car").innerHTML =
+                        let img = new Image();
+                        img.src = element
+                        img.setAttribute('slot', "slide");
+                        this.$.car.appendChild(img);
                 });
-                
-                
-                // root.innerHTML = images.forEach(element => {
-                //     // console.log("holacomova?", element)
-                //         '<imgsrc="'+element+'" slot="slide"> \n'
-                // });
-                
-               
-                
             }
 
 
