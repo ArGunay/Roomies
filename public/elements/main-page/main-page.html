@@ -365,7 +365,12 @@
       if(city !== "All") {
         filter.city = city;
       }
-      if(typeof price !== 'undefined') {
+
+      price = parseInt(price);
+      console.log(price);
+      console.log(typeof price === 'string');
+      console.log(typeof price === 'number');
+      if((typeof price === 'number') && (! (Number.isNaN(price)))) {
         filter.monthly_price = {$gt: 0, $lt: price };
       }
 
@@ -409,8 +414,10 @@
         let popListFun = this._popListRoomie.bind(this);
         let checkboxes = this.shadowRoot.querySelectorAll("paper-checkbox");
 
-        if(typeof age !== 'undefined') {
-          filter.age = {$gt: 0, $lt: age };
+        age = parseInt(age);
+
+        if((typeof age === 'number') && (! (Number.isNaN(age)))) {
+              filter.age = {$gt: 0, $lt: age };
         }
 
         for(let i=0; i<checkboxes.length; i++) {
