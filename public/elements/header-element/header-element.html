@@ -15,7 +15,6 @@
   </div>
     <div id="links">
       <a id="index-link" href="index.html">Home</a>
-      <a id="about-link" href="../about.html">About</a>
       <a id="ap-form-link" href="apartmentForm.html">List Apartment</a>
       <a id="ro-form-link" href="roomieForm.html">List Roomie</a>
     </div>
@@ -86,8 +85,6 @@
 
       if(el === "main-page") {
         this.shadowRoot.querySelector("#index-link").className = "active";
-      }else if(el === "about-page") {
-        this.shadowRoot.getElementById("about-link").className = "active";
       }else if(el === "ap-form-page") {
         this.shadowRoot.getElementById("ap-form-link").className = "active";
       }else if(el === "ro-form-page") {
