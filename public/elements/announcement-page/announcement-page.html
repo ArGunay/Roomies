@@ -192,9 +192,9 @@
         <paper-dialog-scrollable>
             <div class="container">
                 <div id="imagecontent">
-                    <wa-carousel>
-                        {{carousellFunction(announcement.images1)}}
-
+                    <wa-carousel id="car" on-load="{{carousellFunction(announcement.images)}}">
+                        
+                            
 
                         <!-- <img src="{{announcement.images1}}" slot="slide">
                         <img src="https://source.unsplash.com/photos/BL1ipcOKmmE" slot="slide">
@@ -246,7 +246,7 @@
                             <input type="submit" value="Submit">
 
 
-                            <paper-input placeholder="password"></paper-input>
+                            <paper-input placeholder="password" value="{{psw}}"></paper-input>
                             <paper-button raised on-click="_deleteAnnouncement">Delete Announcement</paper-button>
 
                         </form>
@@ -262,11 +262,13 @@
     <script>
 
         class AnnouncementPage extends Polymer.Element{
-            constructor(){
-                super();
-
+            connectedCallback(){
+                super.connectedCallback();
+                console.log("conncall");
+                // console.log(this);
+                // console.log(this.shadowRoot);
+                this.announcement.sr = this.shadowRoot;
             }
-
 
             static get is(){
                 return "announcement-page";
@@ -300,12 +302,23 @@
             }
 
             _deleteAnnouncement(e){
-                console.log("DELETED", this.announcement.Id);
+                // console.log("DELETED", this.announcement.Id);
                 let url = `/location/${ this.announcement.Id}`;
-                doJSONRequest('DELETE', url, {}, {deleteSecret : 1234}, function(){
-                    console.log("ELEMENT DELETED")
+                // var myPassword = this.valueNameToStore;
+                console.log("Main page",document.querySelector("main-page"));
+                var main = document.querySelector("main-page")
+                
+                doJSONRequest('DELETE', url, {}, {deleteSecret : this.psw}, function(e,n){
+                    // console.log("Err", e.n)
+                    if(e.n == 0){
+                        alert("Passwort not correct! Please insert a valid password");
+                    }
+                    else if(e.n == 1){
+                        main._refreshLocation();
+                        this.$.dialog.close();
+                    }
+
                 }.bind(this))
-                this.$.dialog.close();
 
             }
 
@@ -323,7 +336,7 @@
             }
 
             gender(e){
-                console.log("ACCEPTED?", e);
+                // console.log("ACCEPTED?", e);
                 if(typeof(e === "string") && e == "Male"){
                     return "Male";
                 }
@@ -344,18 +357,37 @@
             }
 
             carousellFunction(images){
+                
+                // let sr = this.shadowRoot;
+                // console.log(this.announcement.sr);
+                console.log("sr",this.shadowRoot)
 
-                console.log('<img src="{{'+images+'}}"slot="slide">')
-
+                images.forEach((element) => {
+                    // console.log("holacomova?", element)
+                    // console.log(sr.querySelector("#car"))   ;
+                    
+                    // .querySelector("#car"));
+                    // Polymer.dom("wa-carousell").node.innerHTML = '<img src="'+element+'" slot="slide">'
+                        // '<imgsrc="'+element+'" slot="slide"> \n'
+                        //  this.shadowRoot.querySelector("#car").innerHTML =
+                });
+                
+                
+                // root.innerHTML = images.forEach(element => {
+                //     // console.log("holacomova?", element)
+                //         '<imgsrc="'+element+'" slot="slide"> \n'
+                // });
+                
+               
+                
             }
-
 
 
 
         }
 
 
-
+        // {{carousellFunction(announcement.images)}}
 
         customElements.define(AnnouncementPage.is, AnnouncementPage)
     </script>
