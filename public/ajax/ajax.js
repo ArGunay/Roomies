@@ -3,7 +3,7 @@ function doAJAXRequest(method, url, headers, data, callback) {
     if (!(arguments.length == 5)) {
         throw new Error()
     }
-    //TODO: listings can be removed
+    //TODO: not sure that this ajax function is able to handle put requests
     if (!["GET", "POST", "DELETE"].includes(method)) throw new Error('Not valid method')
 
     if (method == "POST" || method == "PUT") {
@@ -20,7 +20,9 @@ function doAJAXRequest(method, url, headers, data, callback) {
         httpRequest.setRequestHeader(attrName, attrValue);
     }
 
-    if (method == "POST") {
+    // if (method == "POST" || method == "DELETE") {
+    if (data) {
+        console.log(data)
         httpRequest.send(data);
     } else {
         httpRequest.send();
@@ -56,7 +58,7 @@ function doJSONRequest(method, url, headers, data, callback) {
         }
     }
 
-    if (method == "POST") {
+    if (method == "POST" || method == "DELETE" ) { 
         headers["Content-Type"] = "application/json"
         data = JSON.stringify(data)
     }

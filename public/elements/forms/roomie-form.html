@@ -104,6 +104,35 @@
                 color: white !important;
                 width: 100%;
             }
+
+            .upload-btn-wrapper {
+                position: relative;
+                overflow: hidden;
+                display: inline-block;
+                padding-top: 30px;
+            }
+
+            .btn {
+                border: 1px solid rgb(218, 76, 76);
+                background-color: white;
+                padding: 8px 20px;
+                border-radius: 8px;
+                font-size: 16px;
+                font-family: var(--shared-serious-font);
+            }
+
+            .upload-btn-wrapper input[type=file] {
+                font-size: 100px;
+                position: absolute;
+                left: 0;
+                top: 0;
+                opacity: 0;
+            }
+
+            #uploadedpic{
+                padding: 20px 20px 0 20px;
+                max-width: 300px;
+            }
         </style>
 
 
@@ -117,7 +146,7 @@
                     <label for="text" class="labelgroup">Name *</label>
                     <input type="text" name="name" placeholder="Your name" value="{{roomie.name::input}}">
                     <label for="text" class="labelgroup">Surname *</label>
-                    <input type="text" name="name" placeholder="Your name" value="{{roomie.surname::input}}">
+                    <input type="text" name="name" placeholder="Your surname" value="{{roomie.surname::input}}">
                 </div>
 
                 <div class="doubles">
@@ -129,7 +158,7 @@
 
                 <div class="doubles">
                     <label for="text" class="labelgroup">Profession</label>
-                    <input type="text" id="profession" name="profession" placeholder="Street" value="{{roomie.profession::input}}">
+                    <input type="text" id="profession" name="profession" placeholder="Your profession" value="{{roomie.profession::input}}">
                     <label for="text" class="labelgroup">Max Rent (CHF) *</label>
                     <input type="text" id="maxrent" name="maxrent" placeholder="#" value="{{roomie.max_price::input}}">
                 </div>
@@ -137,7 +166,7 @@
                 <div class="description">
                     <label>Description *</label>
                     </br>
-                    <textarea type="text" id="description" name="description" placeholder="Your message" value="{{roomie.description::input}}"></textarea>
+                    <textarea type="text" id="description" name="description" placeholder="Your message to the world" value="{{roomie.description::input}}"></textarea>
                 </div>
 
                 <div class="doubles">
@@ -153,9 +182,13 @@
                         <paper-checkbox checked="{{!roomie.accept_animals::change}}" noink>No</paper-checkbox>
                     </div>
                 </div>
-                <input id="pictureInput" type="file" name="file" accept="image/*" on-change="pictureUpload">
+
+                <div class="upload-btn-wrapper">
+                    <button class="btn">Upload your picture(s) *</button>
+                    <input id="pictureInput" type="file" name="file" accept="image/*" on-change="pictureUpload">
+                </div>
                 <template is="dom-repeat" items="{{roomie.picture}}" as="picture">
-                    <img src="{{picture}}" />
+                    <img id="uploadedpic" src="{{picture}}" />
                 </template>
                 <paper-button raised on-click="submitForm">Submit</paper-button>
 
