@@ -217,7 +217,7 @@
             </form>
         </div>
     </template>
-
+    <script src="../../ajax/socket.io.js"></script>
     <script>
         class ApartmentForm extends Polymer.Element {
             static get is() {
@@ -249,6 +249,7 @@
                 }
             }
             constructor() {
+                this.socket = io();
                 super();
             }
 
@@ -271,6 +272,7 @@
 
                 doJSONRequest('POST', '/location', {}, this.apartment, function (data) {
                     window.location.replace("/index.html");
+                    this.socket.emit("newRoomie");
                 });
             }
 
