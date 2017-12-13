@@ -249,8 +249,8 @@
                 }
             }
             constructor() {
-                this.socket = io();
                 super();
+                this.socket = io();
             }
 
             setGender(event) {
@@ -268,12 +268,14 @@
             }
 
             submitForm() {
-                console.log('submitting', this.apartment);
+                // console.log('submitting', this.apartment);
+                let sock = this.socket;
 
                 doJSONRequest('POST', '/location', {}, this.apartment, function (data) {
                     window.location.replace("/index.html");
-                    this.socket.emit("newRoomie");
+                    sock.emit("newApartment");                    
                 });
+                
             }
 
             pictureUpload(event) {
