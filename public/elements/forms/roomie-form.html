@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<script src="../../ajax/socket.io.js"></script>
 
 <dom-module id="roomie-form">
 
@@ -218,7 +219,7 @@
             </form>
         </div>
     </template>
-
+    <script src="../../ajax/socket.io.js"></script>
     <script>
         class RoomieForm extends Polymer.Element {
             static get is() {
@@ -240,14 +241,15 @@
                             description: '',
                             gender: '',
                             picture: [],
-                            smoker: null,
-                            accept_animals: null
+                            smoker: false,
+                            accept_animals: false
                         }
                     }
                 }
             }
             constructor() {
                 super();
+                this.socket = io();
             }
 
             setGender(event) {
@@ -265,11 +267,13 @@
             }
 
             submitForm() {
-                console.log('submitting', this.roomie);
+                // console.log('submitting', this.roomie);
+                let sock = this.socket;
 
                 doJSONRequest('POST', '/roomie', {}, this.roomie, function (data) {
                     // console.log('callback!', data);
                     window.location.replace("/index.html");
+                    sock.emit("newRoomie"); 
                 });
             }
 

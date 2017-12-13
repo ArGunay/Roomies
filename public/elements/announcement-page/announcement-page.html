@@ -19,7 +19,7 @@
                 font-family: var(--shared-text-font);
             }
 
-            input[type=text], select, textarea {
+            input[type=text], select, textarea, paper-textarea,{
                 width: 100%;
                 padding: 12px 20px;
                 margin: 8px 0;
@@ -30,7 +30,7 @@
                 font-family: var(--shared-text-font);
             }
 
-            input[type=submit] {
+            .buttonStyle {
                 width: 100%;
                 background-color: var(--shared-main-color);
                 color: white;
@@ -193,14 +193,8 @@
         <paper-dialog-scrollable>
             <div class="container">
                 <div id="imagecontent">
-                    <wa-carousel id="car" on-load="{{carousellFunction(announcement.images)}}">
-                        
-                            
-
-                        <!-- <img src="{{announcement.images1}}" slot="slide">
-                        <img src="https://source.unsplash.com/photos/BL1ipcOKmmE" slot="slide">
-                        <img src="{{announcement.images1}}" slot="slide">
-                        <img src="https://source.unsplash.com/photos/BL1ipcOKmmE" slot="slide"> -->
+                    <wa-carousel id="car" >
+                            {{carousellFunction(announcement.images)}}
                     </wa-carousel>
 
                 </div>
@@ -233,12 +227,14 @@
                 </div>
                 <div id="messagebox">
                     <div id="mailform">
-                        <form action="mailto:{{announcement.email}}" method="GET">
-                            <input type="submit" value="Contant listing owner">
+                        <form>
+                            <!-- <input type="text" id="email" name="mail" placeholder="Your E-mail.." value={{}}> -->
+                            <paper-input type="email" auto-validate placeholder="Your E-mail.." value={{yourEmail}}></paper-input>
+                            <paper-textarea type="text" id="textarea" name="message" label="Your message" required rows="5" value="{{message}}"></paper-textarea>
+                            <paper-button class="buttonStyle" on-click="_sendEmail" >Send Email</paper-button>
 
-
-                            <paper-input placeholder="password" value="{{psw}}"></paper-input>
-                            <paper-button raised on-click="_deleteAnnouncement">Delete Announcement</paper-button>
+                            <paper-input placeholder="password" type="password" value="{{psw}}"></paper-input>
+                            <paper-button class="buttonStyle"  on-click="_deleteAnnouncement">Delete Announcement</paper-button>
 
                         </form>
                     </div>
@@ -249,16 +245,14 @@
     </paper-dialog>
 
     </template>
-
+    <script src="../../ajax/socket.io.js"></script>
     <script>
 
         class AnnouncementPage extends Polymer.Element{
+            
             connectedCallback(){
                 super.connectedCallback();
-                // console.log("conncall");
-                // console.log(this);
-                // console.log(this.shadowRoot);
-                this.announcement.sr = this.shadowRoot;
+
             }
 
             static get is(){
@@ -270,24 +264,32 @@
                     announcement:{
                         type: Object,
                         value:{
-
                         }
-                    }
-                    
-
-
+                    },
                 }
             } // END OF PROPERTIES
 
+            _sendEmail(){
+
+                console.log("SENDING MESSAGE", this.message, this.yourEmail)
+                
+                var body = {
+                    sender: this.yourEmail,
+                    receiver: this.announcement.email,
+                    message: this.message
+                }
+                console.log(this.announcement.email);
+                doJSONRequest('POST', "/email", {}, body, function(e,n){
+                    console.log('e',e,"n",n)
+                }.bind(this));
+
+            }
 
 
             openDialog() {
                 this.$.dialog.open();
             }
 
-            sendMessage(){
-                console.log("SendMEssaage")
-            }
 
             _display(e){
                 console.log("_display:", e);
@@ -297,7 +299,7 @@
                 
                 
                 var main = document.querySelector("main-page")
-
+                let socket = io();
                 if (this.announcement.type){
                     let url = `/location/${ this.announcement.Id}`;
 
@@ -308,6 +310,7 @@
                     }
                     else if(e.n == 1){
                         main._refreshLocation();
+                        socket.emit("newApartment");
                         this.$.dialog.close();
                     }
 
@@ -321,6 +324,7 @@
                     }
                     else if(e.n == 1){
                         main._refreshRoomie();
+                        socket.emit("newRoomie")
                         this.$.dialog.close();
                     }
                     }.bind(this))
@@ -330,6 +334,7 @@
 
             }
 
+            
 
             checknull(e){
                 return !(e == null);
@@ -365,13 +370,23 @@
             }
 
             carousellFunction(images){
+
+
+                    for(var i = 0; i < images.length; i++){
+                    let img = new Image();
+                    img.src = images[i]
+                    img.setAttribute('slot', "slide");
+                    this.$.car.appendChild(img);
+                    }
+  
                 
-                images.forEach((element) => {
-                        let img = new Image();
-                        img.src = element
-                        img.setAttribute('slot', "slide");
-                        this.$.car.appendChild(img);
-                });
+                
+                // images.forEach((element) => {
+                //         let img = new Image();
+                //         img.src = element
+                //         img.setAttribute('slot', "slide");
+                //         this.$.car.appendChild(img);
+                // });
             }
 
 

@@ -194,6 +194,7 @@
       }
     </style>
   </template>
+  <script src="../../ajax/socket.io.js"></script>
   <script src="../../ajax/ajax.js"></script>
   <script>
     class MainPage extends Polymer.Element {
@@ -220,11 +221,13 @@
 
       connectedCallback() {
         super.connectedCallback();
-        // refreshLocation();
-        // refreshRoomies();
-
+        let funLoc = this._refreshLocation.bind(this);
+        let funRom = this._refreshRoomie.bind(this);
+        this.socket = io();
+        this.socket.on('newRoomie', funRom);
+        this.socket.on('newApartment', funLoc);
+        // this.socket.on("deleteApartment",funLoc);
         this._refreshRoomie();
-        // this._refreshLocation();
       }
 
       _refreshLocation(){
@@ -235,6 +238,7 @@
       }
 
       _refreshRoomie(){
+        console.log("In roomie refresh")
         doJSONRequest('GET', '/roomie', {}, {}, (par) => {
           this._popListRoomie(par);
         })
@@ -361,7 +365,12 @@
       if(city !== "All") {
         filter.city = city;
       }
-      if(typeof price !== 'undefined') {
+
+      price = parseInt(price);
+      console.log(price);
+      console.log(typeof price === 'string');
+      console.log(typeof price === 'number');
+      if((typeof price === 'number') && (! (Number.isNaN(price)))) {
         filter.monthly_price = {$gt: 0, $lt: price };
       }
 
@@ -387,9 +396,9 @@
 
           if(splitArr[0]==="gender") {
             if(splitArr[1]==="y") {
-              filter.gender = "Male";
+              filter["$or"] = [{gender : "Male"}, {gender :"Indifferent"}];
             }else if(splitArr[1]==="n") {
-              filter.gender = "Female";
+              filter["$or"] = [{gender : "Female"}, {gender :"Indifferent"}];
             }
           }
         }
@@ -405,8 +414,10 @@
         let popListFun = this._popListRoomie.bind(this);
         let checkboxes = this.shadowRoot.querySelectorAll("paper-checkbox");
 
-        if(typeof age !== 'undefined') {
-          filter.age = {$gt: 0, $lt: age };
+        age = parseInt(age);
+
+        if((typeof age === 'number') && (! (Number.isNaN(age)))) {
+              filter.age = {$gt: 0, $lt: age };
         }
 
         for(let i=0; i<checkboxes.length; i++) {
@@ -431,9 +442,9 @@
 
             if(splitArr[0]==="gender") {
               if(splitArr[1]==="y") {
-                filter.gender = "Male";
+                filter["$or"] = [{gender : "Male"}, {gender :"Indifferent"}];
               }else if(splitArr[1]==="n") {
-                filter.gender = "Female";
+                filter["$or"] = [{gender : "Female"}, {gender :"Indifferent"}];
               }
             }
           }

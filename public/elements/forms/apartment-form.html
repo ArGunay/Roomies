@@ -202,7 +202,6 @@
                         <label for="text">Preferred Gender</label>
                         <paper-checkbox id="femaleCheck" on-change="setGender" noink>Female</paper-checkbox>
                         <paper-checkbox id="maleCheck" on-change="setGender" noink>Male</paper-checkbox>
-                        <paper-checkbox id="indifferentCheck" on-change="setGender" noink>Indifferent</paper-checkbox>
                     </div>
                 </div>
 
@@ -218,7 +217,7 @@
             </form>
         </div>
     </template>
-
+    <script src="../../ajax/socket.io.js"></script>
     <script>
         class ApartmentForm extends Polymer.Element {
             static get is() {
@@ -241,16 +240,17 @@
                             bedrooms: 0,
                             size: 0,
                             description: '',
-                            gender: '',
+                            gender: 'Indifferent',
                             pictures: [],
-                            accept_smokers: null,
-                            accept_animals: null
+                            accept_smokers: false,
+                            accept_animals: false
                         }
                     }
                 }
             }
             constructor() {
                 super();
+                this.socket = io();
             }
 
             setGender(event) {
@@ -260,22 +260,22 @@
                     this.apartment.gender = gender;
                     this.$.femaleCheck.checked = gender == 'Female';
                     this.$.maleCheck.checked = gender == 'Male';
-                    this.$.indifferentCheck.checked = gender == 'Indifferent';
-
                 } else {
                     this.apartment.gender = '';
                     this.$.femaleCheck.checked = false;
                     this.$.maleCheck.checked = false;
-                    this.$.indifferentCheck.checked = false;
                 }
             }
 
             submitForm() {
-                console.log('submitting', this.apartment);
+                // console.log('submitting', this.apartment);
+                let sock = this.socket;
 
                 doJSONRequest('POST', '/location', {}, this.apartment, function (data) {
                     window.location.replace("/index.html");
+                    sock.emit("newApartment");                    
                 });
+                
             }
 
             pictureUpload(event) {
