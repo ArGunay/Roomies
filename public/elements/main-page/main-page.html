@@ -29,26 +29,15 @@
 
         <template is="dom-if" if="{{!toggle}}">
           <div>
-            <p>Age</p>
-            <paper-dropdown-menu id="age"  label="Choose age">
-              <paper-listbox selected="0" slot="dropdown-content">
-                <paper-item>All</paper-item>
-                <paper-item>18-22</paper-item>
-                <paper-item>22-26</paper-item>
-                <paper-item>26-30</paper-item>
-                <paper-item>30+</paper-item>
-              </paper-listbox>
-            </paper-dropdown-menu>
+            <paper-input id="age" label="Maximum age"></paper-input>
           </div>
         </template>
 
         <template is="dom-if" if="{{toggle}}">
           <div>
-            <p>Maximum Price:</p>
-            <paper-input id="price"></paper-input>
+            <paper-input id="price" label="Maximum price"></paper-input>
           </div>
           <div>
-            <p>City:</p>
             <paper-dropdown-menu id="city"  label="Choose a city">
               <paper-listbox selected="0" slot="dropdown-content">
                 <paper-item>All</paper-item>
@@ -142,8 +131,11 @@
         text-align: center;
       }
 
-      aside h2,
-      p {
+      aside p {
+        margin-top: 10px;
+      }
+
+      aside h2, p {
         text-align: center;
         font-family: var(--shared-text-font);
       }
@@ -151,9 +143,6 @@
       p {
         margin: 0;
         padding: 0;
-      }
-
-      paper-toggle-button {
       }
 
       main {
@@ -172,7 +161,7 @@
 
       aside paper-button {
         display: block;
-        margin: 5px;
+        margin-top: 20px;
         font-size: 1.5em;
       }
 
@@ -338,9 +327,9 @@
           ],
           smarttitles : [
             {img: "../../src/img/money.svg", val: data.max_price , title: "RENT BUDGET"},
-            {img: "../../src/img/blueprint.svg", val: data.age, title: "AGE"},
-            {img: "../../src/img/money.svg", val: data.profession, title: "PROFESSION"},
-            {img: "../../src/img/toilet.svg", val: data.gender, title: "GENDER"}
+            {img: "../../src/img/age.svg", val: data.age, title: "AGE"},
+            {img: "../../src/img/profession.svg", val: data.profession, title: "PROFESSION"},
+            {img: "../../src/img/gender.svg", val: data.gender, title: "GENDER"}
           ],
           title : data.name + " " + data.surname,
           type: false,
@@ -414,14 +403,8 @@
         let popListFun = this._popListRoomie.bind(this);
         let checkboxes = this.shadowRoot.querySelectorAll("paper-checkbox");
 
-        if(age !== "All") {
-          let ageSplit = age.split("-");
-          if(ageSplit.length < 2) {
-            let newsplit = ageSplit[0].split("+");
-            filter.age = {$gt:newsplit[0] , $lt:0};
-          }else {
-            filter.age = {$gt:ageSplit[0]-1 , $lt:ageSplit[1]}
-          }
+        if(typeof age !== 'undefined') {
+          filter.age = {$gt: 0, $lt: age };
         }
 
         for(let i=0; i<checkboxes.length; i++) {
