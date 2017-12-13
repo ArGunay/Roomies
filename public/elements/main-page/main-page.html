@@ -25,7 +25,7 @@
         <h2>Quick Filter</h2>
         <p>I am looking for:</p>
         <paper-button class="active" raised id="toggleRoomies" on-click="_setActive">Roomies</paper-button>
-        <paper-button raised id="toggleAppartments" on-click="_setActive">Appartments</paper-button>
+        <paper-button raised id="toggleAppartments" on-click="_setActive">Apartments</paper-button>
 
         <template is="dom-if" if="{{!toggle}}">
           <div>
@@ -33,9 +33,9 @@
             <paper-dropdown-menu id="age"  label="Choose age">
               <paper-listbox selected="0" slot="dropdown-content">
                 <paper-item>All</paper-item>
-                <paper-item>18-21</paper-item>
-                <paper-item>22-25</paper-item>
-                <paper-item>25-30</paper-item>
+                <paper-item>18-22</paper-item>
+                <paper-item>22-26</paper-item>
+                <paper-item>26-30</paper-item>
                 <paper-item>30+</paper-item>
               </paper-listbox>
             </paper-dropdown-menu>
@@ -200,13 +200,8 @@
         margin-bottom: 3px;
       }
 
-      paper-search-bar {
-        border-radius: 22px;
-        padding: 0 8px;
-        display: inline-block;
-        width: 35%;
-        margin: auto;
-        background-color: white;
+      paper-item {
+        text-align: center;
       }
     </style>
   </template>
@@ -252,7 +247,6 @@
 
       _refreshRoomie(){
         doJSONRequest('GET', '/roomie', {}, {}, (par) => {
-
           this._popListRoomie(par);
         })
       }
@@ -290,6 +284,8 @@
     }
 
       _setActive(e) {
+        console.log(this);
+        console.log(this.shadowRoot);
         let el = e.path[0];
         if (el.className === "active") {
           return;
@@ -366,12 +362,16 @@
 
     _filterAndDisplayLocation(e) {
       let filter = {};
+      let price = this.shadowRoot.querySelector("#price").value
       let popListFun = this._popListLocation.bind(this);
       let city = this.shadowRoot.querySelector("#city").value;
       let checkboxes = this.shadowRoot.querySelectorAll("paper-checkbox");
 
       if(city !== "All") {
         filter.city = city;
+      }
+      if(typeof price !== 'undefined') {
+        filter.monthly_price = {$gt: 0, $lt: price };
       }
 
       for(let i=0; i<checkboxes.length; i++) {
@@ -410,12 +410,18 @@
 
       _filterAndDisplayRoomies(e) {
         let filter = {};
-        let popListFun = this._popListRoomie.bind(this);
         let age = this.shadowRoot.querySelector("#age").value;
+        let popListFun = this._popListRoomie.bind(this);
         let checkboxes = this.shadowRoot.querySelectorAll("paper-checkbox");
 
         if(age !== "All") {
-          filter.age = age;
+          let ageSplit = age.split("-");
+          if(ageSplit.length < 2) {
+            let newsplit = ageSplit[0].split("+");
+            filter.age = {$gt:newsplit[0] , $lt:0};
+          }else {
+            filter.age = {$gt:ageSplit[0]-1 , $lt:ageSplit[1]}
+          }
         }
 
         for(let i=0; i<checkboxes.length; i++) {
