@@ -38,7 +38,7 @@ app.set('view engine', 'jade');
 
 
 mailer.extend(app, {
-from: 'nick.zup@example.com',
+from: 'roomies777@gmail.com',
 host: 'smtp.gmail.com', // hostname
 secureConnection: true, // use SSL
 port: 465, // port for secure SMTP
@@ -49,19 +49,21 @@ pass: 'passwordperlaemail'
 }
 });
 
-app.get('/email', function (req, res, next) {
+app.post('/email', function (req, res, next) {
+    //req has to be a json file with fields: address, subject, content
+
+
     app.mailer.send('email', {
-      to: 'ardil.guenay@usi.ch', // REQUIRED. This can be a comma delimited string just like a normal email to field.
-      subject: 'You have won the lottery', // REQUIRED.
-      otherProperty: 'Other Property' // All additional properties are also passed to the template as local variables.
+      to: req.body.address, 
+      subject: req.body.subject, 
+      message: "diocane bastardo"
     }, function (err) {
       if (err) {
-        // handle error
         console.log(err);
         res.send('There was an error sending the email');
         return;
       }
-      res.send('Email Sent');
+      res.send('Email Sent Correctly');
     });
   });
 
