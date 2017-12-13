@@ -184,7 +184,7 @@
 
 
 
-
+  <!-- <template is="dom-if" if="{{announcement.type}}"> -->
     <paper-button raised on-click="openDialog">more</paper-button>
     <paper-dialog id="dialog">
     <section>
@@ -207,10 +207,6 @@
                     <template is="dom-repeat" items="{{announcement.smarttitles}}">
                         <smart-recap recap={{item}}></smart-recap>
                     </template>
-
-
-
-
                 </div>
                 <div id="descriptionbox">
                     <div id="descriptiontitle">Description</div>
@@ -221,8 +217,12 @@
                         <template is="dom-repeat" items="{{announcement.requirements}}" as="requirement" >
                             <template is="dom-if" if="{{checknull(requirement.val)}}">
                                     <div id="requiring">
-
+                                      <template is="dom-if" if="{{announcement.type}}">
                                         {{requirement.description}} : {{gender(requirement.val)}}
+                                      </template>
+                                      <template is="dom-if" if="{{!announcement.type}}">
+                                        {{requirement.description}} : {{roomie(requirement.val)}}
+                                      </template>
                                     </div>
                             </template>
 
@@ -313,6 +313,15 @@
             checknull(e){
                 return !(e == null);
             }
+
+            roomie(e) {
+              if(e===false) {
+                return "No";
+              }else {
+                return "Yes";
+              }
+            }
+
             gender(e){
                 console.log("ACCEPTED?", e);
                 if(typeof(e === "string") && e == "Male"){
@@ -337,7 +346,7 @@
             carousellFunction(images){
 
                 console.log('<img src="{{'+images+'}}"slot="slide">')
-                
+
             }
 
 
