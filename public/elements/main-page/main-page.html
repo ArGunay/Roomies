@@ -194,6 +194,7 @@
       }
     </style>
   </template>
+  <script src="../../js/socket.io.js"></script>
   <script src="../../ajax/ajax.js"></script>
   <script>
     class MainPage extends Polymer.Element {
@@ -220,11 +221,10 @@
 
       connectedCallback() {
         super.connectedCallback();
-        // refreshLocation();
-        // refreshRoomies();
-
+        this.socket = io();
+        this.socket.on('newRoomie', _refreshRoomie);
+        this.socket.on('newApartment', _refreshLocation);
         this._refreshRoomie();
-        // this._refreshLocation();
       }
 
       _refreshLocation(){
@@ -387,9 +387,9 @@
 
           if(splitArr[0]==="gender") {
             if(splitArr[1]==="y") {
-              filter.gender = "Male";
+              filter["$or"] = [{gender : "Male"}, {gender :"Indifferent"}];
             }else if(splitArr[1]==="n") {
-              filter.gender = "Female";
+              filter["$or"] = [{gender : "Female"}, {gender :"Indifferent"}];
             }
           }
         }
@@ -431,9 +431,9 @@
 
             if(splitArr[0]==="gender") {
               if(splitArr[1]==="y") {
-                filter.gender = "Male";
+                filter["$or"] = [{gender : "Male"}, {gender :"Indifferent"}];
               }else if(splitArr[1]==="n") {
-                filter.gender = "Female";
+                filter["$or"] = [{gender : "Female"}, {gender :"Indifferent"}];
               }
             }
           }
