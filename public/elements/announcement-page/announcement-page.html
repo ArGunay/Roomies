@@ -245,10 +245,11 @@
     </paper-dialog>
 
     </template>
-
+    <script src="../../ajax/socket.io.js"></script>
     <script>
 
         class AnnouncementPage extends Polymer.Element{
+            
             connectedCallback(){
                 super.connectedCallback();
 
@@ -298,7 +299,7 @@
                 
                 
                 var main = document.querySelector("main-page")
-
+                let socket = io();
                 if (this.announcement.type){
                     let url = `/location/${ this.announcement.Id}`;
 
@@ -309,6 +310,7 @@
                     }
                     else if(e.n == 1){
                         main._refreshLocation();
+                        socket.emit("newApartment");
                         this.$.dialog.close();
                     }
 
@@ -322,6 +324,7 @@
                     }
                     else if(e.n == 1){
                         main._refreshRoomie();
+                        socket.emit("newRoomie")
                         this.$.dialog.close();
                     }
                     }.bind(this))

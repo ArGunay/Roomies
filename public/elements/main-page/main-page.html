@@ -226,6 +226,7 @@
         this.socket = io();
         this.socket.on('newRoomie', funRom);
         this.socket.on('newApartment', funLoc);
+        // this.socket.on("deleteApartment",funLoc);
         this._refreshRoomie();
       }
 

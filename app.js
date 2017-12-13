@@ -43,6 +43,10 @@ io.on('connection', function(socket){
     socket.on('newApartment', function(){
         socket.broadcast.emit("newApartment", {});
     });
+
+    socket.on("deleteApartment", function(){
+        socket.broadcast.emit("deleteApartment");
+    })
 });
 
 
