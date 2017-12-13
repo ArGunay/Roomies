@@ -23,6 +23,17 @@ const roomie = require("./routes/roomie/router");
 
 app.use("/location", location);
 app.use("/roomie", roomie);
+const io = require('socket.io').listen(server);
+
+io.on('connection', function(socket){
+    socket.on('newRoomie', function(){
+        socket.broadcast.emit("newRoomie", {});
+    });
+
+    socket.on('newApartment', function(){
+        socket.broadcast.emit("newApartment", {});
+    });
+});
 
 // app.use(function (err, req, res, next) {
 //   console.log("next is called")
