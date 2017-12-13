@@ -88,7 +88,7 @@
       <main>
         <template is="dom-if" if="{{!toggle}}">
           <template is="dom-repeat" items="{{people}}" as="person">
-            <paper-card preloadImage="true" fadeImage="true" heading="{{person.title}}" image="{{person.images1}}" alt="pic">
+            <paper-card preloadImage="true" fadeImage="true" heading="{{person.title}}" image="{{person.firstImage}}" alt="pic">
               <div>
                 {{person.description}}
               </div>
@@ -103,7 +103,7 @@
         <!-- Apartments -->
         <template is="dom-if" if="{{toggle}}">
           <template is="dom-repeat" items="{{appartments}}" as="appartment">
-            <paper-card preloadImage="true" fadeImage="true" heading="{{appartment.title}}" image="{{appartment.images1}}" alt="pic">
+            <paper-card preloadImage="true" fadeImage="true" heading="{{appartment.title}}" image="{{appartment.firstImage}}" alt="pic">
               <div>
                 {{appartment.description}}
               </div>
@@ -312,7 +312,7 @@
         this.push("appartments", {
           Id : data._id,
           description : data.description,
-          images1 : data.pictures[0],
+          images : data.pictures,
           requirements : [
             {description: "Smokers", control:Boolean, val : data.accept_smokers},
             {description: "Preffered gender", control: String, val : data.gender},
@@ -325,7 +325,8 @@
             {img: "../../src/img/toilet.svg", val: data.bathrooms, title: "BATHROOMS"}
           ],
           title : data.city + ", " + data.street + " " + data.buildingNumber,
-          type : true
+          type : true,
+          firstImage : data.pictures[0]
           });
       }
 
@@ -333,7 +334,7 @@
         this.push("people", {
           Id : data._id,
           description : data.description,
-          images1 : data.picture[0],
+          images : data.picture,
           requirements : [
             {description: "Is a smoker", control:Boolean, val : data.smoker},
             // {description: "Gender", control: String, val : data.gender},
@@ -346,7 +347,8 @@
             {img: "../../src/img/toilet.svg", val: data.gender, title: "GENDER"}
           ],
           title : data.name + " " + data.surname,
-          type: false
+          type: false,
+          firstImage : data.picture[0]
           });
       }
 
