@@ -169,9 +169,10 @@
             }
 
             img{
-                max-height: 100%;
-                max-width: 99%;
-                width: auto;
+               
+                width: 90vw;
+                max-width: 450px;
+                
 
             }
             paper-button {
@@ -303,13 +304,14 @@
             }
 
             _deleteAnnouncement(e){
-                // console.log("DELETED", this.announcement.Id);
-                let url = `/location/${ this.announcement.Id}`;
-                // var myPassword = this.valueNameToStore;
-                console.log("Main page",document.querySelector("main-page"));
-                var main = document.querySelector("main-page")
                 
-                doJSONRequest('DELETE', url, {}, {deleteSecret : this.psw}, function(e,n){
+                
+                var main = document.querySelector("main-page")
+
+                if (this.announcement.type){
+                    let url = `/location/${ this.announcement.Id}`;
+
+                    doJSONRequest('DELETE', url, {}, {deleteSecret : this.psw}, function(e,n){
                     // console.log("Err", e.n)
                     if(e.n == 0){
                         alert("Passwort not correct! Please insert a valid password");
@@ -320,6 +322,21 @@
                     }
 
                 }.bind(this))
+                } else {
+                    let url = `/roomie/${ this.announcement.Id}`;
+                    doJSONRequest('DELETE', url, {}, {deleteSecret : this.psw}, function(e,n){
+                    // console.log("Err", e.n)
+                    if(e.n == 0){
+                        alert("Passwort not correct! Please insert a valid password");
+                    }
+                    else if(e.n == 1){
+                        main._refreshRoomie();
+                        this.$.dialog.close();
+                    }
+                    }.bind(this))
+                }
+                
+                
 
             }
 
