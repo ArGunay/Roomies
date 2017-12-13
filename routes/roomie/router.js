@@ -78,8 +78,9 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-    const id = req.params.id
-    Roomie.update({_id: id}, req.body, (err, results) => {
+    const id = req.params.id;
+    const pass = req.body;
+    Roomie.update({_id: id, deleteSecret: pass}, req.body, (err, results) => {
         if (err) {
             console.log(err);
             res.status(500).end();

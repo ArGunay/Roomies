@@ -3,6 +3,11 @@ const Schema = mongoose.Schema;
 
 
 const RoomieSchema = exports.RoomieSchema = new Schema({
+    deleteSecret: {
+        type: String,
+        required: true
+    },
+
     name:{
         type: String,
         required: true,
