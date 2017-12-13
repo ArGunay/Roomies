@@ -144,7 +144,7 @@
 
                 <div class="doubles">
                     <label for="email" class="labelgroup">E-Mail *</label>
-                    <input type="text" id="email" name="mail" placeholder="Your E-mail.." value="{{apartment.administrator::input}}">
+                    <input type="text" id="email" name="mail" placeholder="Your E-mail.." value="{{apartment.email::input}}">
                     <label for="pswrd" class="labelgroup">Your password *</label>
                     <input type="password" id="password" name="psw" placeholder="Choose your super-secret password" value="{{apartment.deleteSecret::input}}">
                 </div>
@@ -230,7 +230,7 @@
                     apartment: {
                         type: Object,
                         value: {
-                            administrator: '',
+                            email: '',
                             deleteSecret: '',
                             city: '',
                             postalCode: '',
