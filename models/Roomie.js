@@ -8,6 +8,12 @@ const RoomieSchema = exports.RoomieSchema = new Schema({
         required: true
     },
 
+    email: {
+        type: String,
+        required: true,
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+    },
+
     name:{
         type: String,
         required: true,
