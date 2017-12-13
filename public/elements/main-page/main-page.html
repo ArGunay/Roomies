@@ -9,6 +9,7 @@
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <!-- <link rel="import" href="../../bower_components/neon-animation/web-animations.html"> -->
 
 <link rel="import" href="../../bower_components/shadycss/apply-shim.html">
@@ -27,17 +28,25 @@
         <paper-button raised id="toggleAppartments" on-click="_setActive">Appartments</paper-button>
 
         <template is="dom-if" if="{{!toggle}}">
-          <span>
+          <div>
             <p>Age</p>
-            <paper-slider id="price" pin value="3" max="1000" editable></paper-slider>
-          </span>
+            <paper-dropdown-menu id="age"  label="Choose age">
+              <paper-listbox selected="0" slot="dropdown-content">
+                <paper-item>All</paper-item>
+                <paper-item>18-21</paper-item>
+                <paper-item>22-25</paper-item>
+                <paper-item>25-30</paper-item>
+                <paper-item>30+</paper-item>
+              </paper-listbox>
+            </paper-dropdown-menu>
+          </div>
         </template>
 
         <template is="dom-if" if="{{toggle}}">
-          <span>
-            <p>Price:</p>
-            <paper-slider id="price" pin value="3" max="1000" editable></paper-slider>
-          </span>
+          <div>
+            <p>Maximum Price:</p>
+            <paper-input id="price"></paper-input>
+          </div>
           <div>
             <p>City:</p>
             <paper-dropdown-menu id="city"  label="Choose a city">
@@ -49,32 +58,37 @@
               </paper-listbox>
             </paper-dropdown-menu>
           </div>
+          </template>
           <div id="smoker-div">
-            <p>Allows Smokers:</p>
+            <p>Smokers:</p>
             <paper-checkbox on-change="_setCheckbox" id="smokers-y">Yes</paper-checkbox>
             <paper-checkbox on-change="_setCheckbox" id="smokers-n">No</paper-checkbox>
           </div>
 
           <div id="pets-div">
-            <p>Allows Pets:</p>
+            <p>Pets:</p>
             <paper-checkbox on-change="_setCheckbox" id="pets-y">Yes</paper-checkbox>
             <paper-checkbox on-change="_setCheckbox" id="pets-n">No</paper-checkbox>
           </div>
 
           <div id="gender-div">
             <p>Gender:</p>
-            <paper-checkbox on-change="_setCheckbox" id="gender-y">Yes</paper-checkbox>
-            <paper-checkbox on-change="_setCheckbox" id="gender-n">No</paper-checkbox>
+            <paper-checkbox on-change="_setCheckbox" id="gender-y">Male</paper-checkbox>
+            <paper-checkbox on-change="_setCheckbox" id="gender-n">Female</paper-checkbox>
           </div>
-
-          <!-- PEOPLE -->
+        <template is="dom-if" if="{{toggle}}">
+          <paper-button on-click="_filterAndDisplayLocation" raised>Filter!</paper-button>
         </template>
-        <paper-button on-click="_filterAndDisplay" raised>Filter!</paper-button>
+
+        <template is="dom-if" if="{{!toggle}}">
+          <paper-button on-click="_filterAndDisplayRoomies" raised>Filter!</paper-button>
+        </template>
+
       </aside>
       <main>
         <template is="dom-if" if="{{!toggle}}">
           <template is="dom-repeat" items="{{people}}" as="person">
-            <paper-card preloadImage="true" fadeImage="true" heading="{{person.title}}" image="{{person.imageURL}}" alt="pic">
+            <paper-card preloadImage="true" fadeImage="true" heading="{{person.title}}" image="{{person.images1}}" alt="pic">
               <div>
                 {{person.description}}
               </div>
@@ -224,8 +238,9 @@
         super.connectedCallback();
         // refreshLocation();
         // refreshRoomies();
+
         this._refreshRoomie();
-        this._refreshLocation();
+        // this._refreshLocation();
       }
 
       _refreshLocation(){
@@ -236,8 +251,8 @@
       }
 
       _refreshRoomie(){
-        // console.log(document.querySelector("main-page"));
-        doJSONRequest('GET', '/location', {}, {}, (par) => {
+        doJSONRequest('GET', '/roomie', {}, {}, (par) => {
+
           this._popListRoomie(par);
         })
       }
@@ -251,7 +266,6 @@
       }
 
       _popListLocation(data) {
-
         this._deleteList(true);
           if (typeof data !== "undefined") {
             // let address;
@@ -261,9 +275,10 @@
               addFun(e)
             });
           }
-    }
+      }
 
     _popListRoomie(data) {
+      this._deleteList(false);
       if (typeof data !== "undefined") {
         // let address;
         let addFun = this._addRoomie.bind(this);
@@ -282,10 +297,12 @@
           if (el.id === "toggleRoomies") {
             this.shadowRoot.querySelector("#toggleAppartments").className = "";
             this.toggle = false;
+            this._refreshRoomie();
           }
           if (el.id === "toggleAppartments") {
             this.shadowRoot.querySelector("#toggleRoomies").className = "";
             this.toggle = true;
+            this._refreshLocation()
           }
         }
         el.className = "active";
@@ -311,23 +328,24 @@
           type : true
           });
       }
+
       _addRoomie(data) {
-        this.push("appartments", {
+        this.push("people", {
           Id : data._id,
           description : data.description,
-          images1 : data.pictures[0],
+          images1 : data.picture[0],
           requirements : [
-            {description: "Is a smoker", control:Boolean, val : data.accept_smokers},
-            {description: "Gender", control: String, val : data.gender},
+            {description: "Is a smoker", control:Boolean, val : data.smoker},
+            // {description: "Gender", control: String, val : data.gender},
             {description: "Has a pet", control: Boolean, val : data.accept_animals}
           ],
           smarttitles : [
             {img: "../../src/img/money.svg", val: data.max_price , title: "RENT BUDGET"},
             {img: "../../src/img/blueprint.svg", val: data.age, title: "AGE"},
-            {img: "../../src/img/money.svg", val: data.monthly_price, title: "RENT", notify: true},
-            {img: "../../src/img/toilet.svg", val: data.bathrooms, title: "BATHROOMS"}
+            {img: "../../src/img/money.svg", val: data.profession, title: "PROFESSION"},
+            {img: "../../src/img/toilet.svg", val: data.gender, title: "GENDER"}
           ],
-          title : e.city + ", " + e.street + " " + e.buildingNumber,
+          title : data.name + " " + data.surname,
           type: false
           });
       }
@@ -344,17 +362,16 @@
         }
       }
 
-    _filterAndDisplay(e) {
+    _filterAndDisplayLocation(e) {
       let filter = {};
-      let toggle = this.toggle;
-      let popListFunLoc = this._popListLocation.bind(this);
-      let popListFunRom = this._popListRoomie.bind(this);
+      let popListFun = this._popListLocation.bind(this);
       let city = this.shadowRoot.querySelector("#city").value;
       let checkboxes = this.shadowRoot.querySelectorAll("paper-checkbox");
 
       if(city !== "All") {
         filter.city = city;
       }
+
       for(let i=0; i<checkboxes.length; i++) {
         if(checkboxes[i].checked) {
           let splitArr = checkboxes[i].id.split("-");
@@ -384,18 +401,54 @@
           }
         }
       }
-
-      if(this.toggle) {
-        // refreshLocation();
         doJSONRequest("POST", "/location/query", {}, filter, function(e) {
-          popListFunLoc(e);
-        });
-      }else {
-        doJSONRequest("POST", "/roomie/query", {}, filter, function(e) {
-          popListFunRom(e);
+          popListFun(e);
         });
       }
-    }
+
+      _filterAndDisplayRoomies(e) {
+        let filter = {};
+        let popListFun = this._popListRoomie.bind(this);
+        let age = this.shadowRoot.querySelector("#age").value;
+        let checkboxes = this.shadowRoot.querySelectorAll("paper-checkbox");
+
+        if(age !== "All") {
+          filter.age = age;
+        }
+
+        for(let i=0; i<checkboxes.length; i++) {
+          if(checkboxes[i].checked) {
+            let splitArr = checkboxes[i].id.split("-");
+
+            if(splitArr[0]==="smokers") {
+              if(splitArr[1]==="y") {
+                filter.smoker  = true;
+              }else if(splitArr[1]==="n") {
+                filter.smoker  = false;
+              }
+            }
+
+            if(splitArr[0]==="pets") {
+              if(splitArr[1]==="y") {
+                filter.accept_animals  = true;
+              }else if(splitArr[1]==="n") {
+                filter.accept_animals = false;
+              }
+            }
+
+            if(splitArr[0]==="gender") {
+              if(splitArr[1]==="y") {
+                filter.gender = "Male";
+              }else if(splitArr[1]==="n") {
+                filter.gender = "Female";
+              }
+            }
+          }
+        }
+          doJSONRequest("POST", "/roomie/query", {}, filter, function(e) {
+            popListFun(e);
+          });
+        }
   }
 
     customElements.define(MainPage.is, MainPage);

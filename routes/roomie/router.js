@@ -13,12 +13,14 @@ const Roomie = mongoose.model("Roomie");
 
 
 router.get("/", (req,res) =>{
+  console.log("In roomie router")
     Roomie.find({}, (err,response) => {
         if(err){
             console.log(err);
             res.status(500).end();
 
         }else{
+          console.log(response)
             res.status(200);
             res.json(response);
         }
@@ -61,22 +63,22 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
     if(!req.is("application/json"))   return res.sendStatus(400)
-     var toSave = new Roomie(req.body)   
+     var toSave = new Roomie(req.body)
     toSave.save((err, newLocation)=>{
         console.log("bella")
         if(err){
             console.log("THIS ERR",err)
-            res.status(500).end();            
+            res.status(500).end();
         } else{
             res.status(200)
             res.json(newLocation)
         }
     })
-    
+
 });
 
 router.put('/:id', (req, res) => {
-    const id = req.params.id    
+    const id = req.params.id
     Roomie.update({_id: id}, req.body, (err, results) => {
         if (err) {
             console.log(err);
