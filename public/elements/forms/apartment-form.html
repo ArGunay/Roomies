@@ -202,7 +202,6 @@
                         <label for="text">Preferred Gender</label>
                         <paper-checkbox id="femaleCheck" on-change="setGender" noink>Female</paper-checkbox>
                         <paper-checkbox id="maleCheck" on-change="setGender" noink>Male</paper-checkbox>
-                        <paper-checkbox id="indifferentCheck" on-change="setGender" noink>Indifferent</paper-checkbox>
                     </div>
                 </div>
 
@@ -241,10 +240,10 @@
                             bedrooms: 0,
                             size: 0,
                             description: '',
-                            gender: '',
+                            gender: 'Indifferent',
                             pictures: [],
-                            accept_smokers: null,
-                            accept_animals: null
+                            accept_smokers: false,
+                            accept_animals: false
                         }
                     }
                 }
@@ -260,13 +259,10 @@
                     this.apartment.gender = gender;
                     this.$.femaleCheck.checked = gender == 'Female';
                     this.$.maleCheck.checked = gender == 'Male';
-                    this.$.indifferentCheck.checked = gender == 'Indifferent';
-
                 } else {
                     this.apartment.gender = '';
                     this.$.femaleCheck.checked = false;
                     this.$.maleCheck.checked = false;
-                    this.$.indifferentCheck.checked = false;
                 }
             }
 
