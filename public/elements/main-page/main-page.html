@@ -221,9 +221,11 @@
 
       connectedCallback() {
         super.connectedCallback();
+        let funLoc = this._refreshLocation.bind(this);
+        let funRom = this._refreshRoomie.bind(this);
         this.socket = io();
-        this.socket.on('newRoomie', this._refreshRoomie);
-        this.socket.on('newApartment', this._refreshLocation);
+        this.socket.on('newRoomie', funRom);
+        this.socket.on('newApartment', funLoc);
         this._refreshRoomie();
       }
 
@@ -235,6 +237,7 @@
       }
 
       _refreshRoomie(){
+        console.log("In roomie refresh")
         doJSONRequest('GET', '/roomie', {}, {}, (par) => {
           this._popListRoomie(par);
         })

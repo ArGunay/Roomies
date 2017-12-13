@@ -273,7 +273,7 @@
                 doJSONRequest('POST', '/roomie', {}, this.roomie, function (data) {
                     // console.log('callback!', data);
                     window.location.replace("/index.html");
-                    sock.emit("newApartment"); 
+                    sock.emit("newRoomie"); 
                 });
             }
 
