@@ -222,8 +222,8 @@
       connectedCallback() {
         super.connectedCallback();
         this.socket = io();
-        this.socket.on('newRoomie', _refreshRoomie);
-        this.socket.on('newApartment', _refreshLocation);
+        this.socket.on('newRoomie', this._refreshRoomie);
+        this.socket.on('newApartment', this._refreshLocation);
         this._refreshRoomie();
       }
 
