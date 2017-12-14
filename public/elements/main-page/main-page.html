@@ -1,8 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
@@ -21,21 +19,42 @@
 <dom-module id="main-page">
   <template>
     <div id="main_container">
+
       <aside>
-        <h2>Quick Filter</h2>
+        <div>
+        <h2>Sort</h2>
+          <paper-dropdown-menu id="sort" value="{{sortVal::change}}" label="Sort by...">
+            <paper-listbox slot="dropdown-content">
+              <template is="dom-if" if="{{!toggle}}">
+                <paper-item>Name-Ascending</paper-item>
+                <paper-item>Name-Descending</paper-item>
+                <paper-item>Surname-Ascending</paper-item>
+                <paper-item>Surname-Descending</paper-item>
+              </template>
+              <template is="dom-if" if="{{toggle}}">
+                <paper-item>Price-Ascending</paper-item>
+                <paper-item>Price-Descending</paper-item>
+                <paper-item>Size-Ascending</paper-item>
+                <paper-item>Size-Descending</paper-item>
+              </template>
+            </paper-listbox>
+          </paper-dropdown-menu>
+          <paper-button  raised on-click="_renderSort">Sort</paper-button>
+        </div>
+        <h2>Filter</h2>
         <p>I am looking for:</p>
         <paper-button class="active" raised id="toggleRoomies" on-click="_setActive">Roomies</paper-button>
         <paper-button raised id="toggleAppartments" on-click="_setActive">Apartments</paper-button>
 
         <template is="dom-if" if="{{!toggle}}">
           <div>
-            <paper-input id="age" label="Maximum age"></paper-input>
+            <paper-input auto-validate pattern="[0-9]*" id="age" label="Maximum age"></paper-input>
           </div>
         </template>
 
         <template is="dom-if" if="{{toggle}}">
           <div>
-            <paper-input id="price" label="Maximum price"></paper-input>
+            <paper-input auto-validate pattern="[0-9]*" id="price" label="Maximum price"></paper-input>
           </div>
           <div>
             <paper-dropdown-menu id="city"  label="Choose a city">
@@ -74,15 +93,14 @@
         </template>
 
       </aside>
-      <main>
+      <main id="main">
         <template is="dom-if" if="{{!toggle}}">
-          <template is="dom-repeat" items="{{people}}" as="person">
+          <template id="people-repeat" is="dom-repeat" items="{{people}}" as="person" sort="_sort">
             <paper-card preloadImage="true" fadeImage="true" heading="{{person.title}}" image="{{person.firstImage}}" alt="pic">
               <div>
                 {{person.description}}
               </div>
               <div class="contact-buttons">
-                <!-- <roomie-element></roomie-element> -->
                 <announcement-page announcement="{{person}}"></announcement-page>
               </div>
             </paper-card>
@@ -91,7 +109,7 @@
 
         <!-- Apartments -->
         <template is="dom-if" if="{{toggle}}">
-          <template is="dom-repeat" items="{{appartments}}" as="appartment">
+          <template id="ap-repeat" is="dom-repeat" items="{{appartments}}" as="appartment" sort="_sort">
             <paper-card preloadImage="true" fadeImage="true" heading="{{appartment.title}}" image="{{appartment.firstImage}}" alt="pic">
               <div>
                 {{appartment.description}}
@@ -105,6 +123,8 @@
         </template>
       </main>
     </div>
+
+
 
     <style include="shared-style">
       .active {
@@ -192,6 +212,12 @@
       paper-item {
         text-align: center;
       }
+
+      paper-dropdown-menu {
+        display : inline-block;
+        margin : auto;
+        margin-bottom: 10px;
+      }
     </style>
   </template>
   <script src="../../ajax/socket.io.js"></script>
@@ -221,15 +247,96 @@
 
       connectedCallback() {
         super.connectedCallback();
-        let funLoc = this._refreshLocation.bind(this);
-        let funRom = this._refreshRoomie.bind(this);
+        // let funLoc = this._refreshLocation.bind(this);
+        // let funRom = this._refreshRoomie.bind(this);
+        console.log(this);
+        let funLoc = this._filterAndDisplayLocation.bind(this);
+        let funRom = this._filterAndDisplayRoomies.bind(this);
         this.socket = io();
-        // if(! toggle) {
-          this.socket.on('newRoomie', funRom);
-        // }else {
-          this.socket.on('newApartment', funLoc);
-        // }
+        this.socket.on('newRoomie', funRom);
+        this.socket.on('newApartment', funLoc);
         this._refreshRoomie();
+      }
+
+      _renderSort() {
+        let main = this.$.main.children;
+        if(this.toggle) {
+          for(let i=0; i<main.length; i++) {
+            if(main[i].id="ap-repeat" && main[i].tagName==="DOM-REPEAT") {
+              console.log(main[i]);
+              main[i].render();
+            }
+          }
+        }else {
+          for(let i=0; i<main.length; i++) {
+            if(main[i].id="people-repeat" && main[i].tagName==="DOM-REPEAT") {
+              console.log(main[i]);
+              main[i].render();
+            }
+          }
+        }
+      }
+
+      _sort(a, b) {
+        let sort = this.shadowRoot.querySelector("#sort");
+        let val = sort.value;
+
+        if(val==="Name-Ascending") {
+          let titleSplitA = a.title.split(" ");
+          let titleSplitB = b.title.split(" ");
+          let nameA = titleSplitA[0];
+          let nameB = titleSplitB[0];
+          nameA = nameA.toLowerCase();
+          nameB = nameB.toLowerCase();
+          return nameA >= nameB ? -1 : 1;
+        }
+        if(val==="Name-Descending") {
+          let titleSplitA = a.title.split(" ");
+          let titleSplitB = b.title.split(" ");
+          let nameA = titleSplitA[0];
+          let nameB = titleSplitB[0];
+          nameA = nameA.toLowerCase();
+          nameB = nameB.toLowerCase();
+          return nameA <= nameB ? -1 : 1;
+        }
+        if(val==="Surname-Ascending") {
+          let titleSplitA = a.title.split(" ");
+          let titleSplitB = b.title.split(" ");
+          let nameA = titleSplitA[1];
+          let nameB = titleSplitB[1];
+          nameA = nameA.toLowerCase();
+          nameB = nameB.toLowerCase();
+          return nameA >= nameB ? -1 : 1;
+        }
+        if(val==="Surname-Descending") {
+          let titleSplitA = a.title.split(" ");
+          let titleSplitB = b.title.split(" ");
+          let nameA = titleSplitA[1];
+          let nameB = titleSplitB[1];
+          nameA = nameA.toLowerCase();
+          nameB = nameB.toLowerCase();
+          return nameA <= nameB ? -1 : 1;
+        }
+        if(val==="Price-Ascending") {
+          let priceA = a.smarttitles[2].val;
+          let priceB = b.smarttitles[2].val;
+          return priceA >= priceB ? -1 : 1;
+        }
+        if(val==="Price-Descending") {
+          let priceA = a.smarttitles[2].val;
+          let priceB = b.smarttitles[2].val;
+          return priceA <= priceB ? -1 : 1;
+        }
+        if(val==="Size-Ascending") {
+          let priceA = a.smarttitles[1].val;
+          let priceB = b.smarttitles[1].val;
+          return priceA >= priceB ? -1 : 1;
+        }
+        if(val==="Size-Descending") {
+          let priceA = a.smarttitles[1].val;
+          let priceB = b.smarttitles[1].val;
+          return priceA <= priceB ? -1 : 1;
+        }
       }
 
       _refreshLocation(){
