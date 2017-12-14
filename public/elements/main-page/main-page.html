@@ -248,8 +248,7 @@
       connectedCallback() {
         super.connectedCallback();
         // let funLoc = this._refreshLocation.bind(this);
-        // let funRom = this._refreshRoomie.bind(this);
-        console.log(this);
+        // let funRom = this._refreshRoomie.bind(this);;
         let funLoc = this._filterAndDisplayLocation.bind(this);
         let funRom = this._filterAndDisplayRoomies.bind(this);
         this.socket = io();
@@ -263,14 +262,12 @@
         if(this.toggle) {
           for(let i=0; i<main.length; i++) {
             if(main[i].id="ap-repeat" && main[i].tagName==="DOM-REPEAT") {
-              console.log(main[i]);
               main[i].render();
             }
           }
         }else {
           for(let i=0; i<main.length; i++) {
             if(main[i].id="people-repeat" && main[i].tagName==="DOM-REPEAT") {
-              console.log(main[i]);
               main[i].render();
             }
           }
@@ -288,7 +285,7 @@
           let nameB = titleSplitB[0];
           nameA = nameA.toLowerCase();
           nameB = nameB.toLowerCase();
-          return nameA >= nameB ? -1 : 1;
+          return nameA <= nameB ? -1 : 1;
         }
         if(val==="Name-Descending") {
           let titleSplitA = a.title.split(" ");
@@ -297,7 +294,7 @@
           let nameB = titleSplitB[0];
           nameA = nameA.toLowerCase();
           nameB = nameB.toLowerCase();
-          return nameA <= nameB ? -1 : 1;
+          return nameA >= nameB ? -1 : 1;
         }
         if(val==="Surname-Ascending") {
           let titleSplitA = a.title.split(" ");
@@ -306,7 +303,7 @@
           let nameB = titleSplitB[1];
           nameA = nameA.toLowerCase();
           nameB = nameB.toLowerCase();
-          return nameA >= nameB ? -1 : 1;
+          return nameA <= nameB ? -1 : 1;
         }
         if(val==="Surname-Descending") {
           let titleSplitA = a.title.split(" ");
@@ -315,7 +312,7 @@
           let nameB = titleSplitB[1];
           nameA = nameA.toLowerCase();
           nameB = nameB.toLowerCase();
-          return nameA <= nameB ? -1 : 1;
+          return nameA >= nameB ? -1 : 1;
         }
         if(val==="Price-Ascending") {
           let priceA = a.smarttitles[2].val;
@@ -340,14 +337,12 @@
       }
 
       _refreshLocation(){
-        console.log("refreshing location");
         doJSONRequest('GET', '/location', {}, {}, (par) => {
           this._popListLocation(par);
         })
       }
 
       _refreshRoomie(){
-        console.log("refreshing roomie");
         doJSONRequest('GET', '/roomie', {}, {}, (par) => {
           this._popListRoomie(par);
         })
@@ -401,6 +396,7 @@
             this._refreshLocation()
           }
         }
+        this.shadowRoot.querySelector("#sort")._setSelectedItem(null);
         el.className = "active";
       }
 
