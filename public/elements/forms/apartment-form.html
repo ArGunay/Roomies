@@ -14,9 +14,9 @@
 
             input[type=text],
             input[type=email],
+            input[type=password],
             select,
-            textarea,
-            #password {
+            textarea {
                 width: 100%;
                 padding: 15px 20px;
                 margin: 8px 0;
@@ -155,62 +155,61 @@
                 <div class="doubles">
                     <label for="email" class="labelgroup">E-Mail *</label>
                     <input type="email" id="email" name="mail" placeholder="Your E-mail" value="{{apartment.email::input}}">
-                    <label for="pswrd" class="labelgroup">Your password *</label>
+                    <label for="password" class="labelgroup">Your password *</label>
                     <input type="password" id="password" name="psw" placeholder="Choose your super-secret password" value="{{apartment.deleteSecret::input}}">
                 </div>
 
                 <div class="doubles">
-                    <label for="text" class="labelgroup">City *</label>
-                    <input type="text" id="city" name="city" placeholder="City" value="{{apartment.city::input}}">
-                    <label for="text" class="labelgroup">Postal code *</label>
-                    <input type="text" id="cap" name="cap" placeholder="CAP" value="{{apartment.postalCode::input}}" onkeypress='inputNumbers'>
+                    <label class="labelgroup">City *</label>
+                    <input type="text" id="city" name="city" placeholder="City" value="{{apartment.city::input}}" onkeypress="{{checkInput}}">
+                    <label class="labelgroup">Postal code *</label>
+                    <input type="text" id="cap" name="cap" placeholder="CAP" value="{{apartment.postalCode::input}}" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                 </div>
 
                 <div class="doubles">
-                    <label for="text" class="labelgroup">Street *</label>
-                    <input type="text" id="street" name="street" placeholder="Street" value="{{apartment.street::input}}">
-                    <label for="text" class="labelgroup">Building Number</label>
+                    <label class="labelgroup">Street *</label>
+                    <input type="text" id="street" name="street" placeholder="Street" value="{{apartment.street::input}}" onkeypress="{{checkInput}}">
+                    <label class="labelgroup">Building Number</label>
                     <input type="text" id="buildingNumber" name="buildingNumber" placeholder="#" value="{{apartment.buildingNumber::input}}"
                         onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                 </div>
 
                 <div class="doubles">
-                    <label for="email" class="labelgroup">Number of bedrooms *</label>
+                    <label class="labelgroup">Number of bedrooms *</label>
                     <input type="text" id="bedrooms" name="bedrooms" placeholder="#" value="{{apartment.bedrooms::input}}" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
 
-                    <label for="email" class="labelgroup">Number of bathrooms *</label>
+                    <label class="labelgroup">Number of bathrooms *</label>
                     <input type="text" id="bathrooms" name="bathrooms" placeholder="#" value="{{apartment.bathrooms::input}}" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                 </div>
 
                 <div class="doubles">
-                    <label for="text" class="labelgroup">Price (CHF) *</label>
-                    <input type="text" id="price" name="price" placeholder="Price" value="{{apartment.monthly_price::input}}" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                    <label for="text" class="labelgroup">Size of the room (mq) *</label>
-                    <input type="text" id="size" name="size" placeholder="Size of the place" value="{{apartment.size::input}}" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                    <label class="labelgroup">Price (CHF) *</label>
+                    <input type="text" name="price" placeholder="Price" value="{{apartment.monthly_price::input}}" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                    <label class="labelgroup">Size of the room (mq) *</label>
+                    <input type="text" name="size" placeholder="Size of the place" value="{{apartment.size::input}}" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                 </div>
 
                 <div class="description">
-                    <label>Description *</label>
+                    <label class="labelgroup" for="description">Description *</label>
                     </br>
                     <textarea type="text" id="description" name="description" placeholder="Your message" value="{{apartment.description::input}}"></textarea>
                 </div>
 
                 <div class="doubles">
                     <div class="checks">
-                        <label for="email">Smokers Allowed</label>
+                        <label class="labelgroup">Smokers Allowed</label>
                         <paper-checkbox id="smokersYes" checked="{{apartment.accept_smokers::change}}" noink>Yes</paper-checkbox>
                         <paper-checkbox id="smokersNo" checked="{{!apartment.accept_smokers::change}}" noink>No</paper-checkbox>
-                        <!-- <paper-checkbox value="{{apartment.accept_smokers}}" noink>No</paper-checkbox> -->
                     </div>
 
                     <div class="checks">
-                        <label for="text">Pets Allowed</label>
+                        <label class="labelgroup">Pets Allowed</label>
                         <paper-checkbox id="petsYes" checked="{{apartment.accept_animals::change}}" noink>Yes</paper-checkbox>
                         <paper-checkbox id="petsNo" checked="{{!apartment.accept_animals::change}}" noink>No</paper-checkbox>
                     </div>
 
                     <div class="checks">
-                        <label for="text">Preferred Gender</label>
+                        <label class="labelgroup">Preferred Gender</label>
                         <paper-checkbox id="femaleCheck" on-change="setGender" noink>Female</paper-checkbox>
                         <paper-checkbox id="maleCheck" on-change="setGender" noink>Male</paper-checkbox>
                     </div>
@@ -218,7 +217,7 @@
 
                 <div class="upload-btn-wrapper">
                     <button class="btn">Upload your picture(s) *</button>
-                    <input id="pictureInput" type="file" name="file" accept="image/*" on-change="pictureUpload">
+                    <input id="pictureInput" type="file" name="file" accept="image/*" on-change="pictureUpload" multiple>
                 </div>
                 <template is="dom-repeat" items="{{apartment.pictures}}" as="picture">
                     <img id="uploadedpic" src="{{picture}}" />
@@ -277,6 +276,10 @@
                     this.$.femaleCheck.checked = false;
                     this.$.maleCheck.checked = false;
                 }
+            }
+
+            checkInput(event){
+                return (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122);
             }
 
             submitForm() {

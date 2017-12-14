@@ -16,9 +16,9 @@
 
             input[type=text],
             input[type=email],
+            input[type=password],
             select,
-            textarea,
-            #password {
+            textarea {
                 width: 100%;
                 padding: 15px 20px;
                 margin: 8px 0;
@@ -168,16 +168,16 @@
                 <paper-toast id="toastAlert" class="toast-alert fit-bottom" text="Please fill in all the missing fields!"></paper-toast>
 
                 <div class="doubles">
-                    <label for="text" class="labelgroup">Name *</label>
-                    <input type="text" name="name" placeholder="Your name" value="{{roomie.name::input}}">
-                    <label for="text" class="labelgroup">Surname *</label>
-                    <input type="text" name="name" placeholder="Your surname" value="{{roomie.surname::input}}">
+                    <label class="labelgroup">Name *</label>
+                    <input type="text" name="name" placeholder="Your name" value="{{roomie.name::input}}" onkeypress="{{checkInput}}">
+                    <label class="labelgroup">Surname *</label>
+                    <input type="text" name="name" placeholder="Your surname" value="{{roomie.surname::input}}" onkeypress="{{checkInput}}">
                 </div>
 
                 <div class="doubles">
-                    <label for="text" class="labelgroup">Age *</label>
+                    <label class="labelgroup">Age *</label>
                     <input type="text" name="age" placeholder="Your age" value="{{roomie.age::input}}" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                    <label for="text" class="labelgroup">Gender</label>
+                    <label class="labelgroup">Gender</label>
                     <div class="checkbox">
                         <paper-checkbox id="femaleCheck" on-change="setGender" noink>Female</paper-checkbox>
                         <paper-checkbox id="maleCheck" on-change="setGender" noink>Male</paper-checkbox>
@@ -185,34 +185,34 @@
                 </div>
 
                 <div class="doubles">
-                    <label for="text" class="labelgroup">E-mail *</label>
+                    <label for="email" class="labelgroup">E-mail *</label>
                     <input type="email" id="email" name="mail" placeholder="Your E-mail address" value="{{roomie.email::input}}">
                     <label for="pswrd" class="labelgroup">Password *</label>
-                    <input type="password" id="password" name="psw" placeholder="Choose your super-secret password" value="{{roomie.deleteSecret::input}}">
+                    <input type="password" id="pswrd" name="psw" placeholder="Choose your super-secret password" value="{{roomie.deleteSecret::input}}">
                 </div>
 
                 <div class="doubles">
-                    <label for="text" class="labelgroup">Profession</label>
-                    <input type="text" id="profession" name="profession" placeholder="Your profession" value="{{roomie.profession::input}}">
-                    <label for="text" class="labelgroup">Max Rent (CHF) *</label>
-                    <input type="text" id="maxrent" name="maxrent" placeholder="#" value="{{roomie.max_price::input}}" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                    <label class="labelgroup">Profession</label>
+                    <input type="text" name="profession" placeholder="Your profession" value="{{roomie.profession::input}}" onkeypress="{{checkInput}}">
+                    <label class="labelgroup">Max Rent (CHF) *</label>
+                    <input type="text" name="maxrent" placeholder="#" value="{{roomie.max_price::input}}" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                 </div>
 
                 <div class="description">
-                    <label>Description *</label>
+                    <label for="description" class="labelgroup">Description *</label>
                     </br>
                     <textarea type="text" id="description" name="description" placeholder="Your message to the world" value="{{roomie.description::input}}"></textarea>
                 </div>
 
                 <div class="doubles">
                     <div class="checks">
-                        <label for="text">Are you a smoker?</label>
+                        <label class="labelgroup">Are you a smoker?</label>
                         <paper-checkbox checked="{{roomie.smoker::change}}" noink>Yes</paper-checkbox>
                         <paper-checkbox checked="{{!roomie.smoker::change}}" noink>No</paper-checkbox>
                     </div>
 
                     <div class="checks">
-                        <label for="text">Would you live in a house with pets?</label>
+                        <label class="labelgroup">Would you live in a house with pets?</label>
                         <paper-checkbox checked="{{roomie.accept_animals::change}}" noink>Yes</paper-checkbox>
                         <paper-checkbox checked="{{!roomie.accept_animals::change}}" noink>No</paper-checkbox>
                     </div>
@@ -277,6 +277,10 @@
                     this.$.femaleCheck.checked = false;
                     this.$.maleCheck.checked = false;
                 }
+            }
+
+            checkInput(event){
+                return (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122);
             }
 
             submitForm() {
