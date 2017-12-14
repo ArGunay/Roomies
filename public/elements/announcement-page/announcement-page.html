@@ -195,10 +195,7 @@
         <paper-dialog-scrollable>
             <div class="container">
                 <div id="imagecontent">
-                    <wa-carousel id="car" >
                             {{carousellFunction(announcement.images)}}
-                    </wa-carousel>
-
                 </div>
                 <div id="recapcontent">
                     <template is="dom-repeat" items="{{announcement.smarttitles}}">
@@ -393,21 +390,16 @@
             carousellFunction(images){
 
 
-                    for(var i = 0; i < images.length; i++){
-                    let img = new Image();
-                    img.src = images[i]
-                    img.setAttribute('slot', "slide");
-                    this.$.car.appendChild(img);
+
+                var html = "<wa-carousel>\n";
+                
+                for(var i = 0; i < images.length; i++){
+                    html += '<img src=\"'+images[i]+'\" slot="slide">\n'
                     }
-  
+                    html+="</wa-carousel>\n";
+                    // console.log(html)
+                this.$.imagecontent.innerHTML = html;
                 
-                
-                // images.forEach((element) => {
-                //         let img = new Image();
-                //         img.src = element
-                //         img.setAttribute('slot', "slide");
-                //         this.$.car.appendChild(img);
-                // });
             }
 
 
@@ -424,6 +416,14 @@
 </dom-module>
 
 
+<!-- 
+for(var i = 0; i < images.length; i++){
+    this.$.car.innerHTML += '<img src=\"'+images[i]+'\" slot="slide">\n'
+// let img = new Image();
+// img.src = images[i]
+// img.setAttribute('slot', "slide");
+// this.$.car.appendChild(img);
+} -->
 
 
 
