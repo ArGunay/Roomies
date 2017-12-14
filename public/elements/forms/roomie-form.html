@@ -1,6 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <script src="../../ajax/socket.io.js"></script>
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+
 
 <dom-module id="roomie-form">
 
@@ -13,6 +15,7 @@
             }
 
             input[type=text],
+            input[type=email],
             select,
             textarea,
             #password {
@@ -147,6 +150,12 @@
                 padding: 20px 20px 0 20px;
                 max-width: 300px;
             }
+
+            .toast-alert {
+                --paper-toast-background-color: #404040;
+                --paper-toast-color: rgb(218, 76, 76);
+                text-align: center;
+            }
         </style>
 
 
@@ -155,6 +164,8 @@
             <h4>(fields marked with * are required)</h4>
 
             <form id="mailform" enctype="multipart/form-data">
+
+                <paper-toast id="toastAlert" class="toast-alert fit-bottom" text="Please fill in all the missing fields!"></paper-toast>
 
                 <div class="doubles">
                     <label for="text" class="labelgroup">Name *</label>
@@ -165,7 +176,7 @@
 
                 <div class="doubles">
                     <label for="text" class="labelgroup">Age *</label>
-                    <input type="text" name="age" placeholder="Your age" value="{{roomie.age::input}}">
+                    <input type="text" name="age" placeholder="Your age" value="{{roomie.age::input}}" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                     <label for="text" class="labelgroup">Gender</label>
                     <div class="checkbox">
                         <paper-checkbox id="femaleCheck" on-change="setGender" noink>Female</paper-checkbox>
@@ -175,7 +186,7 @@
 
                 <div class="doubles">
                     <label for="text" class="labelgroup">E-mail *</label>
-                    <input type="text" id="email" name="mail" placeholder="Your E-mail address" value="{{roomie.email::input}}">
+                    <input type="email" id="email" name="mail" placeholder="Your E-mail address" value="{{roomie.email::input}}">
                     <label for="pswrd" class="labelgroup">Password *</label>
                     <input type="password" id="password" name="psw" placeholder="Choose your super-secret password" value="{{roomie.deleteSecret::input}}">
                 </div>
@@ -184,7 +195,7 @@
                     <label for="text" class="labelgroup">Profession</label>
                     <input type="text" id="profession" name="profession" placeholder="Your profession" value="{{roomie.profession::input}}">
                     <label for="text" class="labelgroup">Max Rent (CHF) *</label>
-                    <input type="text" id="maxrent" name="maxrent" placeholder="#" value="{{roomie.max_price::input}}">
+                    <input type="text" id="maxrent" name="maxrent" placeholder="#" value="{{roomie.max_price::input}}" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                 </div>
 
                 <div class="description">
@@ -209,16 +220,18 @@
 
                 <div class="upload-btn-wrapper">
                     <button class="btn">Upload your picture(s) *</button>
-                    <input id="pictureInput" type="file" name="file" accept="image/*" on-change="pictureUpload">
+                    <input id="pictureInput" type="file" name="file" accept="image/*" on-change="pictureUpload" multiple>
                 </div>
                 <template is="dom-repeat" items="{{roomie.picture}}" as="picture">
                     <img id="uploadedpic" src="{{picture}}" />
                 </template>
-                <paper-button raised on-click="submitForm">Submit</paper-button>
+                <paper-button id="submit" raised on-click="submitForm">Submit</paper-button>
 
             </form>
         </div>
     </template>
+
+
     <script src="../../ajax/socket.io.js"></script>
     <script>
         class RoomieForm extends Polymer.Element {
@@ -273,8 +286,11 @@
                 doJSONRequest('POST', '/roomie', {}, this.roomie, function (data) {
                     // console.log('callback!', data);
                     window.location.replace("/index.html");
-                    sock.emit("newRoomie"); 
-                });
+                    sock.emit("newRoomie");
+                }, function (error) {
+                    this.$.toastAlert.fitInto = this.$.mailform;
+                    this.$.toastAlert.open();
+                }.bind(this));
             }
 
             pictureUpload(event) {
@@ -301,5 +317,6 @@
         }
         customElements.define(RoomieForm.is, RoomieForm);
     </script>
+
 
 </dom-module>
