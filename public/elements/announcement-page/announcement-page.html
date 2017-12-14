@@ -274,9 +274,10 @@
                 console.log("SENDING MESSAGE", this.message, this.yourEmail)
                 
                 var body = {
-                    sender: this.yourEmail,
-                    receiver: this.announcement.email,
-                    message: this.message
+                    address : this.announcement.email, 
+                    subject : "Hi I'm interested in your announcement!",
+                    from : this.yourEmail,
+                    message: this.message,
                 }
                 console.log(this.announcement.email);
                 doJSONRequest('POST', "/email", {}, body, function(e,n){

@@ -52,11 +52,12 @@ pass: 'passwordperlaemail'
 app.post('/email', function (req, res, next) {
     //req has to be a json file with fields: address, subject, content
 
-
+    console.log("RB",req.body)
     app.mailer.send('email', {
       to: req.body.address, 
       subject: req.body.subject, 
-      message: req.body.message
+      message: req.body.message,
+      from: req.body.from
     }, function (err) {
       if (err) {
         console.log(err);
