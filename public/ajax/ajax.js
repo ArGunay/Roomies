@@ -1,6 +1,6 @@
-function doAJAXRequest(method, url, headers, data, callback) {
+function doAJAXRequest(method, url, headers, data, callback, errorcallback) {
 
-    if (!(arguments.length == 5)) {
+    if (!(arguments.length == 6)) {
         throw new Error()
     }
     //TODO: not sure that this ajax function is able to handle put requests
@@ -35,6 +35,8 @@ function doAJAXRequest(method, url, headers, data, callback) {
                 } else {
                     callback()
                 }
+            } else {
+                errorcallback(httpRequest.responseText);
             }
 
         }
@@ -42,9 +44,7 @@ function doAJAXRequest(method, url, headers, data, callback) {
 
 }
 
-function doJSONRequest(method, url, headers, data, callback) {
-    console.log(data)
-
+function doJSONRequest(method, url, headers, data, callback, errorcallback) {
     if (typeof data !== 'object') {
         if (typeof data === "string") {
             try {
@@ -58,13 +58,13 @@ function doJSONRequest(method, url, headers, data, callback) {
         }
     }
 
-    if (method == "POST" || method == "DELETE" ) { 
+    if (method == "POST" || method == "DELETE") {
         headers["Content-Type"] = "application/json"
         data = JSON.stringify(data)
     }
 
     doAJAXRequest(method, url, headers, data, (data) => {
         callback(JSON.parse(data))
-    })
+    }, errorcallback);
 
 }

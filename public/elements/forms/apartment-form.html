@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 
 <dom-module id="apartment-form">
 
@@ -12,6 +13,7 @@
             }
 
             input[type=text],
+            input[type=email],
             select,
             textarea,
             #password {
@@ -129,9 +131,15 @@
                 opacity: 0;
             }
 
-            #uploadedpic{
+            #uploadedpic {
                 padding: 20px 20px 0 20px;
                 max-width: 300px;
+            }
+
+            .toast-alert {
+                --paper-toast-background-color: #404040;
+                --paper-toast-color: rgb(218, 76, 76);
+                text-align: center;
             }
         </style>
 
@@ -142,9 +150,11 @@
 
             <form id="mailform" enctype="multipart/form-data">
 
+                <paper-toast id="toastAlert" class="toast-alert fit-bottom" text="Please fill in all the missing fields!"></paper-toast>
+
                 <div class="doubles">
                     <label for="email" class="labelgroup">E-Mail *</label>
-                    <input type="text" id="email" name="mail" placeholder="Your E-mail.." value="{{apartment.email::input}}">
+                    <input type="email" id="email" name="mail" placeholder="Your E-mail" value="{{apartment.email::input}}">
                     <label for="pswrd" class="labelgroup">Your password *</label>
                     <input type="password" id="password" name="psw" placeholder="Choose your super-secret password" value="{{apartment.deleteSecret::input}}">
                 </div>
@@ -153,29 +163,30 @@
                     <label for="text" class="labelgroup">City *</label>
                     <input type="text" id="city" name="city" placeholder="City" value="{{apartment.city::input}}">
                     <label for="text" class="labelgroup">Postal code *</label>
-                    <input type="text" id="cap" name="cap" placeholder="CAP" value="{{apartment.postalCode::input}}">
+                    <input type="text" id="cap" name="cap" placeholder="CAP" value="{{apartment.postalCode::input}}" onkeypress='inputNumbers'>
                 </div>
 
                 <div class="doubles">
                     <label for="text" class="labelgroup">Street *</label>
                     <input type="text" id="street" name="street" placeholder="Street" value="{{apartment.street::input}}">
                     <label for="text" class="labelgroup">Building Number</label>
-                    <input type="text" id="buildingNumber" name="buildingNumber" placeholder="#" value="{{apartment.buildingNumber::input}}">
+                    <input type="text" id="buildingNumber" name="buildingNumber" placeholder="#" value="{{apartment.buildingNumber::input}}"
+                        onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                 </div>
 
                 <div class="doubles">
                     <label for="email" class="labelgroup">Number of bedrooms *</label>
-                    <input type="text" id="bedrooms" name="bedrooms" placeholder="#" value="{{apartment.bedrooms::input}}">
+                    <input type="text" id="bedrooms" name="bedrooms" placeholder="#" value="{{apartment.bedrooms::input}}" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
 
                     <label for="email" class="labelgroup">Number of bathrooms *</label>
-                    <input type="text" id="bathrooms" name="bathrooms" placeholder="#" value="{{apartment.bathrooms::input}}">
+                    <input type="text" id="bathrooms" name="bathrooms" placeholder="#" value="{{apartment.bathrooms::input}}" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                 </div>
 
                 <div class="doubles">
                     <label for="text" class="labelgroup">Price (CHF) *</label>
-                    <input type="text" id="price" name="price" placeholder="Price" value="{{apartment.monthly_price::input}}">
+                    <input type="text" id="price" name="price" placeholder="Price" value="{{apartment.monthly_price::input}}" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                     <label for="text" class="labelgroup">Size of the room (mq) *</label>
-                    <input type="text" id="size" name="size" placeholder="Size of the place" value="{{apartment.size::input}}">
+                    <input type="text" id="size" name="size" placeholder="Size of the place" value="{{apartment.size::input}}" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                 </div>
 
                 <div class="description">
@@ -236,8 +247,8 @@
                             street: '',
                             buildingNumber: '',
                             monthly_price: 0,
-                            bathrooms: 0,
-                            bedrooms: 0,
+                            bathrooms: 1,
+                            bedrooms: 1,
                             size: 0,
                             description: '',
                             gender: 'Indifferent',
@@ -252,6 +263,7 @@
                 super();
                 this.socket = io();
             }
+
 
             setGender(event) {
                 if (event.target.checked) {
@@ -273,9 +285,12 @@
 
                 doJSONRequest('POST', '/location', {}, this.apartment, function (data) {
                     window.location.replace("/index.html");
-                    sock.emit("newApartment");                    
-                });
-                
+                    sock.emit("newApartment");
+                }, function (error) {
+                    this.$.toastAlert.fitInto = this.$.mailform;
+                    this.$.toastAlert.open();
+                }.bind(this));
+
             }
 
             pictureUpload(event) {

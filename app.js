@@ -2,6 +2,8 @@ const config = require('./config');
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+mailer = require('express-mailer');
+
 
 const mongoose = require('mongoose');
 
@@ -28,7 +30,45 @@ app.use("/roomie", roomie);
 //     res.status(err.status || 500);
 //     console.log(err.status)
 
-//     res.sendStatus(err.status || 500);})
+
+//send email
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jade');
+
+
+
+mailer.extend(app, {
+from: 'roomies777@gmail.com',
+host: 'smtp.gmail.com', // hostname
+secureConnection: true, // use SSL
+port: 465, // port for secure SMTP
+transportMethod: 'SMTP', // default is SMTP. Accepts anything that nodemailer accepts
+auth: {
+user: 'roomies777@gmail.com',
+pass: 'passwordperlaemail'
+}
+});
+
+app.post('/email', function (req, res, next) {
+    //req has to be a json file with fields: address, subject, content
+
+    console.log("RB",req.body)
+    app.mailer.send('email', {
+      to: req.body.address, 
+      subject: req.body.subject, 
+      message: req.body.message,
+      from: req.body.from
+    }, function (err) {
+      if (err) {
+        console.log(err);
+        res.send('There was an error sending the email');
+        return;
+      }
+      res.send('Email Sent Correctly');
+    });
+  });
+
+
 
 
 const server = app.listen(config.port, () => console.log('listening on port 8081'))
