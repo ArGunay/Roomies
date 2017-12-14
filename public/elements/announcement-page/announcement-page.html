@@ -13,22 +13,24 @@
 
 
         <style include="shared-style">
-            textarea {
+            #textarea {
                 resize: none;
-                height: 120px;
+                /* height: 120px; */
                 font-family: var(--shared-text-font);
-            }
-
-            input[type=text], select, textarea, paper-textarea,{
-                width: 100%;
-                padding: 12px 20px;
-                margin: 8px 0;
-                display: inline-block;
                 border: 1px solid rgb(218, 76, 76);
                 border-radius: 4px;
                 box-sizing: border-box;
-                font-family: var(--shared-text-font);
+                margin: 8px 0;
+                padding: 0 20px 12px 20px;
             }
+
+            .smallimput{
+                font-family: var(--shared-text-font);
+                border: 1px solid rgb(218, 76, 76);
+                border-radius: 4px;
+                padding: 0 10px 6px 10px;
+            }
+            
 
             .buttonStyle {
                 width: 100%;
@@ -220,7 +222,7 @@
                                       </template>
                                     </div>
                             </template>
-
+                            
                         </template>
                     </paper-dialog-scrollable>
 
@@ -229,18 +231,21 @@
                     <div id="mailform">
                         <form>
                             <!-- <input type="text" id="email" name="mail" placeholder="Your E-mail.." value={{}}> -->
-                            <paper-input type="email" auto-validate placeholder="Your E-mail.." value={{yourEmail}}></paper-input>
-                            <paper-textarea type="text" id="textarea" name="message" label="Your message" required rows="5" value="{{message}}"></paper-textarea>
+                            <paper-input class="smallimput" type="email" auto-validate placeholder="Your E-mail.." value={{yourEmail}}></paper-input>
+                            <paper-textarea id="textarea" type="text" name="message" label="Your message" required rows="5" value="{{message}}"></paper-textarea>
                             <paper-button class="buttonStyle" on-click="_sendEmail" >Send Email</paper-button>
 
-                            <paper-input placeholder="password" type="password" value="{{psw}}"></paper-input>
+                            <paper-input class="smallimput" placeholder="password" type="password" value="{{psw}}"></paper-input>
                             <paper-button class="buttonStyle"  on-click="_deleteAnnouncement">Delete Announcement</paper-button>
-
+                            
                         </form>
                     </div>
                 </div>
+               
             </div>
+            
         </paper-dialog-scrollable>
+        
     </section>
     </paper-dialog>
 
@@ -269,21 +274,36 @@
                 }
             } // END OF PROPERTIES
 
+            
             _sendEmail(){
 
                 console.log("SENDING MESSAGE", this.message, this.yourEmail)
-                
-                var body = {
-                    address : this.announcement.email, 
-                    subject : "Hi I'm interested in your announcement!",
-                    from : this.yourEmail,
-                    message: this.message,
-                }
-                console.log(this.announcement.email);
-                doJSONRequest('POST', "/email", {}, body, function(e,n){
-                    console.log('e',e,"n",n)
-                }.bind(this));
 
+                if((this.message === undefined ) ||
+                   (this.message === "") ||
+                   (this.yourEmail === undefined) ||
+                   (this.yourEmail === ""))
+                   {
+                       alert("Please enter valid Email and text");
+                       return;
+                   }else{
+                        var body = {
+                            address : this.announcement.email, 
+                            subject : "Hi I'm interested in your announcement!",
+                            from : this.yourEmail,
+                            message: this.message,
+                        }
+                        console.log(this.announcement.email);
+                        doJSONRequest('POST', "/email", {}, body, function(e,n){
+                            console.log('e',e,"n",n)
+                        }.bind(this));
+                        alert("Message sent Sent")
+                        console.log("EMAIL SENT")
+                        this.message = "";
+                        this.yourEmail = "";
+                   }
+                    
+                
             }
 
 
@@ -402,3 +422,9 @@
 </dom-module>
 
 </dom-module>
+
+
+
+
+
+
