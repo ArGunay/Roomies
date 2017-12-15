@@ -22,9 +22,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const location = require('./routes/location/router');
 const roomie = require("./routes/roomie/router");
+const points = require("./routes/points/router.js")
 
 app.use("/location", location);
 app.use("/roomie", roomie);
+app.use("/points", points)
 // app.use(function (err, req, res, next) {
 //   console.log("next is called")
 //     res.status(err.status || 500);

@@ -1,0 +1,54 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/google-map/google-map.html">
+
+<script src="../../ajax/ajax.js"></script>
+
+<dom-module id="r-map">
+
+    <template>
+
+        <google-map latitude="46.0058" longitude="8.94" id="markers" api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc"></google-map>
+
+        <style >
+
+            google-map {
+            height: 70vh;
+            width: 100vw;
+  	    }
+            
+        </style>
+
+    </template>
+   
+    <script>
+        class Map extends Polymer.Element{
+            static get is(){
+                return "r-map";
+            }
+
+            connectedCallback(){
+                super.connectedCallback();
+
+                doJSONRequest('GET', '/points', {}, {}, (points) => {
+                    points.forEach(function(p){
+                        let marker = document.createElement('google-map-marker');
+                        marker.setAttribute('longitude', p.lon)
+                        marker.setAttribute('latitude', p.lat)
+                        this.$.markers.appendChild(marker);
+                }.bind(this));
+
+                });
+            }
+
+        }
+        
+        customElements.define(Map.is, Map);
+
+    </script>
+</dom-module>
+
+</dom-module>
+
+
+
+

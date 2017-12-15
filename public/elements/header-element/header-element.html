@@ -13,6 +13,7 @@
       <a id="index-link" href="index.html">Home</a>
       <a id="ap-form-link" href="apartmentForm.html">List Apartment</a>
       <a id="ro-form-link" href="roomieForm.html">List Roomie</a>
+      <a id="mapid" href="mapPage.html">Map</a>
     </div>
   </div>
   <style include="shared-style">
@@ -22,7 +23,7 @@
       a {
         color: white;
         text-decoration: none;
-        text
+        
         }
         #headerTop {
           background-color: #ff3333;
@@ -79,6 +80,8 @@
         this.shadowRoot.getElementById("ap-form-link").className = "active";
       }else if(el === "ro-form-page") {
         this.shadowRoot.getElementById("ro-form-link").className = "active";
+      }else if (el === "mapid"){
+        this.shadowRoot.getElementById("mapid").className = "active";
       }
     }
 
