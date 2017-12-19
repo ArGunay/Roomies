@@ -18,7 +18,7 @@
                 resize: none;
                 /* height: 120px; */
                 font-family: var(--shared-text-font);
-                border: 1px solid rgb(218, 76, 76);
+                border: 1px solid var(--shared-main-color);
                 border-radius: 4px;
                 box-sizing: border-box;
                 margin: 8px 0;
@@ -27,7 +27,7 @@
 
             .smallimput{
                 font-family: var(--shared-text-font);
-                border: 1px solid rgb(218, 76, 76);
+                border: 1px solid var(--shared-main-color);
                 border-radius: 4px;
                 padding: 0 10px 6px 10px;
             }
@@ -244,13 +244,20 @@
                         </form>
                     </div>
                 </div>
-                <div>
-                  <google-map id="map"
-                  api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc"
-                  zoom="13">
-                </google-map>
-                </div>
+                  <template id="mapHolder" is="dom-if" if="{{announcement.type}}">
+                    <google-map id="map"
+                      api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc"
+                      longitude="[[announcement.longitude]]"
+                      latitude="[[announcement.latitude]]"
+                      fit-to-markers
+                      >
+                      <google-map-marker
+                        latitude="{{announcement.latitude}}"
+                        longitude="{{announcement.longitude}}">
+                      </google-map-marker>
+                    </google-map>
 
+                  </template>
             </div>
 
         </paper-dialog-scrollable>
@@ -265,20 +272,7 @@
         class AnnouncementPage extends Polymer.Element{
 
             connectedCallback(){
-                super.connectedCallback();
-                console.log(this.announcement.Id);
-                if(this.announcement.type) {
-                  doJSONRequest("GET", "/points/" + this.announcement.Id, {}, {}, (obj)=> {
-                    let map = this.$.map;
-                    console.log(obj)
-                    map.latitude = obj.lat;
-                    map.longitude = obj.lon;
-                    let marker = document.createElement('google-map-marker');
-                    marker.setAttribute('longitude', obj.lon)
-                    marker.setAttribute('latitude', obj.lat)
-                    map.appendChild(marker)
-                  });
-                }
+              super.connectedCallback();
             }
 
             static get is(){
@@ -291,9 +285,9 @@
                         type: Object,
                         value:{
                         }
-                    },
+                    }
                 }
-            } // END OF PROPERTIES
+          } // END OF PROPERTIES
 
 
             _sendEmail(){

@@ -338,7 +338,9 @@
 
       _refreshLocation(){
         doJSONRequest('GET', '/location', {}, {}, (par) => {
-          this._popListLocation(par);
+          doJSONRequest('GET', '/points', {}, {}, (par2) => {
+            this._popListLocation(par, par2);
+          })
         })
       }
 
@@ -356,17 +358,19 @@
         }
       }
 
-      _popListLocation(data) {
+      _popListLocation(data, points) {
         this._deleteList(true);
-          if (typeof data !== "undefined") {
-            // let address;
-            let addFun = this._addLocation.bind(this);
-            data.forEach(function (e) {
-              // address = e.city + ", " + e.street + " " + e.buildingNumber;
-              addFun(e)
-            });
-          }
+        if (typeof data !== "undefined") {
+          let addFun = this._addLocation.bind(this);
+          if(typeof points!== 'undefined') {
+            for(let i=0; i<data.length; i++) {
+              data[i].lon = points[i].lon;
+              data[i].lat = points[i].lat;
+              addFun(data[i]);
+            }
+        }
       }
+    }
 
     _popListRoomie(data) {
       this._deleteList(false);
@@ -401,26 +405,28 @@
       }
 
       _addLocation(data) {
-        this.push("appartments", {
-          Id : data._id,
-          description : data.description,
-          images : data.pictures,
-          requirements : [
-            {description: "Smokers", control:Boolean, val : data.accept_smokers},
-            {description: "Preffered gender", control: String, val : data.gender},
-            {description: "Pets", control: Boolean, val : data.accept_animals}
-          ],
-          smarttitles : [
-            {img: "../../src/img/bed.svg", val: data.bedrooms , title: "BEDROOM"},
-            {img: "../../src/img/blueprint.svg", val: data.size, title: "ROOM SIZE"},
-            {img: "../../src/img/money.svg", val: data.monthly_price, title: "RENT", notify: true},
-            {img: "../../src/img/toilet.svg", val: data.bathrooms, title: "BATHROOMS"}
-          ],
-          title : data.city + ", " + data.street + " " + data.buildingNumber,
-          type : true,
-          firstImage : data.pictures[0],
-          email: data.email
-          });
+          this.push("appartments", {
+            Id : data._id,
+            description : data.description,
+            images : data.pictures,
+            requirements : [
+              {description: "Smokers", control:Boolean, val : data.accept_smokers},
+              {description: "Preffered gender", control: String, val : data.gender},
+              {description: "Pets", control: Boolean, val : data.accept_animals}
+            ],
+            smarttitles : [
+              {img: "../../src/img/bed.svg", val: data.bedrooms , title: "BEDROOM"},
+              {img: "../../src/img/blueprint.svg", val: data.size, title: "ROOM SIZE"},
+              {img: "../../src/img/money.svg", val: data.monthly_price, title: "RENT", notify: true},
+              {img: "../../src/img/toilet.svg", val: data.bathrooms, title: "BATHROOMS"}
+            ],
+            title : data.city + ", " + data.street + " " + data.buildingNumber,
+            type : true,
+            firstImage : data.pictures[0],
+            email: data.email,
+            latitude: data.lat,
+            longitude:data.lon
+            });
       }
 
       _addRoomie(data) {
@@ -502,9 +508,13 @@
           }
         }
       }
-        doJSONRequest("POST", "/location/query", {}, filter, function(e) {
-          popListFun(e);
+      doJSONRequest("POST", "/location/query", {}, filter, function(e) {
+        doJSONRequest("POST", "/points/query", {}, filter, function(obj) {
+          popListFun(e,obj)
         });
+
+      });
+          // popListFun(e, obj);
       }
 
       _filterAndDisplayRoomies(e) {
