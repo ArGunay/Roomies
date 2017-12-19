@@ -14,7 +14,7 @@ mongoose.connect(config.mongoUrl + config.mongoDbName, {
 const app = express();
 
 //configure app
-app.use(bodyParser({limit: '5mb'}));
+app.use(bodyParser({limit: '50mb'}));
 app.use(bodyParser.urlencoded({ extended: false }));    // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());    // parse application/json
 app.use(bodyParser.text());
