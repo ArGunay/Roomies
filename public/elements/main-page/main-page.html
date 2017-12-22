@@ -195,6 +195,7 @@
         min-width: 400px;
         height: auto;
         margin-bottom: 5px;
+        margin-top: 20px;
         --paper-card-header-color: white;
       }
 
@@ -413,7 +414,7 @@
           ],
           smarttitles : [
             {img: "../../src/img/bed.svg", val: data.bedrooms , title: "BEDROOM"},
-            {img: "../../src/img/blueprint.svg", val: data.size, title: "ROOM SIZE"},
+            {img: "../../src/img/blueprint.svg", val: data.size, title: "ROOM SIZE M2"},
             {img: "../../src/img/money.svg", val: data.monthly_price, title: "RENT CHF", notify: true},
             {img: "../../src/img/toilet.svg", val: data.bathrooms, title: "BATHROOMS"}
           ],
@@ -434,7 +435,7 @@
             {description: "Has a pet", control: Boolean, val : data.accept_animals}
           ],
           smarttitles : [
-            {img: "../../src/img/money.svg", val: data.max_price , title: "BUDGET CHF"},
+            {img: "../../src/img/money.svg", val: data.max_price , title: "MAX BUDGET CHF"},
             {img: "../../src/img/age.svg", val: data.age, title: "AGE"},
             {img: "../../src/img/profession.svg", val: data.profession, title: "PROFESSION"},
             {img: "../../src/img/gender.svg", val: data.gender, title: "GENDER"}

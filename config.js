@@ -7,5 +7,5 @@ module.exports = {
     //Server URL
     url: "http://localhost:3000",
 
-    port: 8081
+    port: 4444
 }
